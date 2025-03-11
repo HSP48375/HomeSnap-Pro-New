@@ -216,7 +216,8 @@ nav + div {
   display: inline-block;
   height: 1.5em; /* Fixed height container */
   overflow: hidden;
-  vertical-align: baseline;
+  vertical-align: bottom;
+  position: relative;
 }
 
 .word-rotation {
@@ -227,6 +228,8 @@ nav + div {
   line-height: normal;
   vertical-align: baseline;
   display: inline-block;
+  bottom: 0;
+  margin-bottom: 1px; /* Fine-tune alignment */
 }
 
 .word-rotation.active {
