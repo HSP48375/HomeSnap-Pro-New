@@ -225,7 +225,7 @@ const HomePage: React.FC = () => {
             {/* Right Side: Before/After Slider */}
             <div>
               <BeforeAfterSlider
-                beforeImage="https://images.pexels.com/photos/7335655/pexels-photo-7335655.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                beforeImage="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1600"
                 afterImage="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1600"
                 beforeLabel="AMATEUR SHOT"
                 afterLabel="PROFESSIONAL"
