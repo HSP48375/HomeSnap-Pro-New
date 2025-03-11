@@ -123,25 +123,21 @@ const HomePage: React.FC = () => {
             </div>
             
             {/* Subheadline with Dynamic Rotating Word */}
-            <div className="text-xl md:text-2xl text-white/80 mb-12 flex items-center justify-center">
-              <div className="flex items-center justify-center">
-                <div className="inline-flex items-baseline justify-center">
-                  <span>You Snap, We Edit, You</span>
-                  <div className="word-rotation-container" style={{ lineHeight: 'inherit' }}>
-                    {spinningWords.map((word, index) => (
-                      <span 
-                        key={word} 
-                        className={`word-rotation gradient-text-accent font-bold ${
-                          index === activeWordIndex ? 'active' : 
-                          index === prevWordIndex ? 'exit' : ''
-                        }`}
-                      >
-                        {word}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
+            <div className="text-xl md:text-2xl text-white/80 mb-12 text-center">
+              <span>You Snap, We Edit, You</span>
+              <span className="word-rotation-container">
+                {spinningWords.map((word, index) => (
+                  <span 
+                    key={word} 
+                    className={`word-rotation gradient-text-accent font-bold ${
+                      index === activeWordIndex ? 'active' : 
+                      index === prevWordIndex ? 'exit' : ''
+                    }`}
+                  >
+                    {word}
+                  </span>
+                ))}
+              </span>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
