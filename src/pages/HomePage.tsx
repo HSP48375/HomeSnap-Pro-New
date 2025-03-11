@@ -117,9 +117,11 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             {/* Main Logo & Headline */}
-            <div className="flex items-center justify-center mb-6">
-              <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent" />
-              <h1 className="text-5xl md:text-7xl font-bold gradient-text-accent ml-4">HomeSnap Pro</h1>
+            <div className="flex flex-col items-center justify-center mb-6">
+              <div className="flex items-center justify-center">
+                <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent" />
+                <h1 className="text-5xl md:text-7xl font-bold gradient-text-accent ml-4">HomeSnap Pro</h1>
+              </div>
             </div>
             
             {/* Subheadline with Dynamic Rotating Word */}
