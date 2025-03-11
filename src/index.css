@@ -213,9 +213,10 @@ nav + div {
 .word-rotation-container {
   @apply relative inline-block ml-2;
   min-width: 100px;
-  vertical-align: middle;
+  display: inline-flex;
+  align-items: baseline;
   position: relative;
-  top: -2px;
+  top: 0;
 }
 
 .word-rotation {
