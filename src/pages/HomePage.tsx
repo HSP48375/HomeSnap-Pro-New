@@ -225,8 +225,10 @@ const HomePage: React.FC = () => {
             {/* Right Side: Before/After Slider */}
             <div>
               <BeforeAfterSlider
-                beforeImage="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80"
-                afterImage="https://images.unsplash.com/photo-1600607687644-a7f91448d969?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80"
+                beforeImage="https://images.pexels.com/photos/7335655/pexels-photo-7335655.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                afterImage="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                beforeLabel="AMATEUR SHOT"
+                afterLabel="PROFESSIONAL"
               />
               <p className="text-white/70 text-center mt-4">
                 Drag the slider to see the difference
