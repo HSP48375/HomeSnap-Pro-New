@@ -8,6 +8,7 @@ export default {
         secondary: '#FF3DFF',
         'neon-green': '#00FF66',
         'neon-purple': '#9D00FF',
+        'neon-orange': '#FF5E00',
         dark: {
           DEFAULT: '#0A0A14',
           lighter: '#12121E',
