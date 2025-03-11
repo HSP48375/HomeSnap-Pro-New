@@ -216,7 +216,7 @@ nav + div {
   display: inline-flex;
   align-items: baseline;
   position: relative;
-  top: -4px;
+  top: 3px;
 }
 
 .word-rotation {

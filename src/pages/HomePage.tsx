@@ -127,7 +127,7 @@ const HomePage: React.FC = () => {
               <div className="flex items-center justify-center">
                 <div className="inline-flex items-baseline justify-center">
                   <span>You Snap, We Edit, You</span>
-                  <div className="word-rotation-container" style={{ lineHeight: 'inherit' }}>
+                  <div className="word-rotation-container" style={{ lineHeight: 'inherit', position: 'relative', top: '3px' }}>
                     {spinningWords.map((word, index) => (
                       <span 
                         key={word} 
