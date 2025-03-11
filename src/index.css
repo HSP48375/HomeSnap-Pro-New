@@ -213,15 +213,20 @@ nav + div {
 .word-rotation-container {
   @apply relative inline-block ml-2;
   min-width: 100px;
-  display: inline;
+  display: inline-block;
+  height: 1.5em; /* Fixed height container */
+  overflow: hidden;
+  vertical-align: baseline;
 }
 
 .word-rotation {
   @apply absolute left-0 opacity-0 transition-all duration-500;
   transform: translateY(20px);
+  font-size: inherit;
+  font-weight: bold;
+  line-height: normal;
+  vertical-align: baseline;
   display: inline-block;
-  position: relative;
-  bottom: 0;
 }
 
 .word-rotation.active {
