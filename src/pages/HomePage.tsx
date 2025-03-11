@@ -123,7 +123,7 @@ const HomePage: React.FC = () => {
             </div>
             
             {/* Subheadline with Dynamic Rotating Word */}
-            <div className="text-xl md:text-2xl text-white/80 mb-12">
+            <div className="text-xl md:text-2xl text-white/80 mb-12 flex items-center justify-center">
               <div className="flex items-center justify-center">
                 <div className="inline-flex items-baseline justify-center">
                   <span>You Snap, We Edit, You</span>

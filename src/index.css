@@ -211,8 +211,9 @@ nav + div {
 
 /* Word Rotation Animation */
 .word-rotation-container {
-  @apply relative inline-block h-8 ml-2;
+  @apply relative inline-block ml-2;
   min-width: 100px;
+  vertical-align: baseline;
 }
 
 .word-rotation {
