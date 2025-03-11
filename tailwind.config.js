@@ -1,3 +1,4 @@
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -6,9 +7,9 @@ export default {
       colors: {
         primary: '#00EEFF',
         secondary: '#FF3DFF',
-        'neon-green': '#00FF66',
+        'neon-green': '#00DDFF',
         'neon-purple': '#9D00FF',
-        'neon-orange': '#FF5E00',
+        'neon-pink': '#FF00C1',
         dark: {
           DEFAULT: '#0A0A14',
           lighter: '#12121E',

@@ -33,7 +33,7 @@ const AuthLayout: React.FC = () => {
         }}
       ></div>
       <div 
-        className="floating-orb floating-orb-pink w-80 h-80"
+        className="floating-orb floating-orb-purple w-80 h-80"
         style={{
           bottom: '15%',
           right: '15%',
