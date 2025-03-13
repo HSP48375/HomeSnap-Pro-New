@@ -110,12 +110,25 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin = false }) => {
               </div>
             ) : (
               <>
-                <Link to="/login" className="text-sm font-medium text-white/80 hover:text-white transition-colors">
+                <Link to="/login" className="text-sm font-medium text-white/80 hover:text-white transition-colors mr-2">
                   Log In
                 </Link>
-                <Link to="/register" className="btn btn-primary">
-                  Start Taking Photos Now
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <a href="#" className="store-button">
+                    <img 
+                      src="/assets/app-store-badge.svg" 
+                      alt="Download on the App Store" 
+                      className="h-8 sm:h-10"
+                    />
+                  </a>
+                  <a href="#" className="store-button">
+                    <img 
+                      src="/assets/google-play-badge.svg" 
+                      alt="Get it on Google Play" 
+                      className="h-8 sm:h-10"
+                    />
+                  </a>
+                </div>
               </>
             )}
           </div>
