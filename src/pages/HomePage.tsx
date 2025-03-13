@@ -4,10 +4,10 @@ import { Camera, ArrowRight, CheckCircle, Zap, Image, Shield, Star, User, Lock }
 import BeforeAfterSlider from '../components/ui/BeforeAfterSlider';
 
 const HomePage: React.FC = () => {
+  const spinningWords = ["Impress", "Close", "Sell"];
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [prevWordIndex, setPrevWordIndex] = useState(spinningWords.length - 1);
-  const spinningWords = ["Impress", "Close", "Sell"];
 
   const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
 
