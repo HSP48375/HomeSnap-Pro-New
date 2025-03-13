@@ -223,10 +223,11 @@ const HomePage: React.FC = () => {
             {/* Right Side: Before/After Slider */}
             <div>
               <BeforeAfterSlider
-                beforeImage="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                afterImage="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                beforeImage="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80&brightness=0.8&contrast=0.8&saturation=0.8"
+                afterImage="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80&brightness=1.2&contrast=1.15&saturation=1.2"
                 beforeLabel="AMATEUR SHOT"
                 afterLabel="PROFESSIONAL"
+                height={400}
               />
               <p className="text-white/70 text-center mt-4">
                 Drag the slider to see the difference
@@ -258,10 +259,11 @@ const HomePage: React.FC = () => {
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="before1.jpg" // Replace with actual image URLs
-                  afterImage="after1.jpg"  // Replace with actual image URLs
+                  beforeImage="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&brightness=0.7&contrast=0.8"
+                  afterImage="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&brightness=1.1&contrast=1.1&saturation=1.15"
                   beforeLabel="Before"
                   afterLabel="After"
+                  height={250}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Standard Editing</h3>
@@ -275,10 +277,11 @@ const HomePage: React.FC = () => {
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="before2.jpg" // Replace with actual image URLs
-                  afterImage="after2.jpg"  // Replace with actual image URLs
-                  beforeLabel="Before"
-                  afterLabel="After"
+                  beforeImage="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  afterImage="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  beforeLabel="Empty"
+                  afterLabel="Staged"
+                  height={250}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Virtual Staging</h3>
@@ -292,10 +295,11 @@ const HomePage: React.FC = () => {
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="before3.jpg" // Replace with actual image URLs
-                  afterImage="after3.jpg"  // Replace with actual image URLs
-                  beforeLabel="Before"
-                  afterLabel="After"
+                  beforeImage="https://images.unsplash.com/photo-1592595896616-c37162298647?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&brightness=1.1"
+                  afterImage="https://images.unsplash.com/photo-1549517045-bc93de075e53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  beforeLabel="Day"
+                  afterLabel="Twilight"
+                  height={250}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Twilight Conversion</h3>
@@ -309,10 +313,11 @@ const HomePage: React.FC = () => {
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="before4.jpg" // Replace with actual image URLs
-                  afterImage="after4.jpg"  // Replace with actual image URLs
-                  beforeLabel="Before"
-                  afterLabel="After"
+                  beforeImage="https://images.unsplash.com/photo-1484101403633-562f891dc89a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  afterImage="https://images.unsplash.com/photo-1518713350467-2908d317911a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  beforeLabel="Cluttered"
+                  afterLabel="Clean"
+                  height={250}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Decluttering</h3>

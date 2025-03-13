@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
@@ -14,8 +15,20 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
   afterImage,
   beforeLabel = 'BEFORE',
   afterLabel = 'AFTER',
-  height = 400,
+  height = 300,
 }) => {
+  // Default images if the provided ones don't load
+  const defaultBeforeImage = 'https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
+  const defaultAfterImage = 'https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80&brightness=1.2&contrast=1.1&saturation=1.2';
+
+  const handleBeforeImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = defaultBeforeImage;
+  };
+
+  const handleAfterImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = defaultAfterImage;
+  };
+
   return (
     <div className="relative rounded-lg overflow-hidden shadow-2xl">
       {/* BEFORE Label */}
@@ -34,6 +47,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
           <ReactCompareSliderImage
             src={beforeImage}
             alt="Before editing"
+            onError={handleBeforeImageError}
             style={{
               width: '100%',
               height: '100%',
@@ -47,6 +61,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
           <ReactCompareSliderImage
             src={afterImage}
             alt="After editing"
+            onError={handleAfterImageError}
             style={{
               width: '100%',
               height: '100%',

@@ -59,6 +59,18 @@ body {
                0 0 30px rgba(255, 61, 255, 0.2);
 }
 
+/* Card Styles */
+.card {
+  @apply bg-black/40 backdrop-blur-md rounded-xl p-6 shadow-xl;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 30px rgba(0, 238, 255, 0.2);
+  border: 1px solid rgba(0, 238, 255, 0.3);
+}
+
 .neon-text-magenta {
   text-shadow: 0 0 10px rgba(255, 61, 255, 0.5),
                0 0 20px rgba(255, 61, 255, 0.3),
