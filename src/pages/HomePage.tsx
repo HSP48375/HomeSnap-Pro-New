@@ -255,9 +255,8 @@ const HomePage: React.FC = () => {
               <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 7 - Final Step */}
-              <div className="relative">
-                <div className="roadmap-final-step-number">7</div>
-                <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow overflow-visible" style={{ zIndex: 1 }}>
+              <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow overflow-visible">
+                <div className="absolute -top-4 -left-4 bg-gradient-to-r from-[#FF00C1] to-[#FF3DFF] text-white font-bold h-11 w-11 rounded-full flex items-center justify-center text-lg shadow-glow-pink z-[9999]" style={{ transform: 'translateZ(50px)' }}>7</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4" style={{ boxShadow: 'inset 0 0 20px rgba(255, 0, 193, 0.5)' }}>
                     <span className="text-3xl">🚀</span>
@@ -265,7 +264,6 @@ const HomePage: React.FC = () => {
                   <h3 className="text-xl font-bold text-white neon-text-magenta" style={{ fontFamily: 'Poppins, sans-serif' }}>Receive Stunning Photos</h3>
                 </div>
                 <p className="text-white/80 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Professionally edited in <span className="font-bold gradient-text-accent">less than 12 hours!</span></p>
-                </div>
               </div>
             </div>
 

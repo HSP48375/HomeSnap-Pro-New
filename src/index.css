@@ -176,6 +176,11 @@ body {
               inset 0 0 10px rgba(255, 61, 255, 0.2);
 }
 
+.shadow-glow-pink {
+  box-shadow: 0 0 15px rgba(255, 0, 193, 0.7),
+              0 0 30px rgba(255, 0, 193, 0.4);
+}
+
 /* Floating Orbs */
 .floating-orb {
   @apply absolute rounded-full blur-3xl opacity-30 pointer-events-none;
