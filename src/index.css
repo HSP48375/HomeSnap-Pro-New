@@ -73,12 +73,13 @@ body {
 }
 
 .roadmap-final-step {
-  @apply relative overflow-hidden transition-all duration-300;
+  @apply relative overflow-visible transition-all duration-300;
   background: rgba(20, 20, 40, 0.7);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 0, 193, 0.3);
   box-shadow: 0 0 20px rgba(255, 0, 193, 0.3);
+  isolation: isolate;
 }
 
 .roadmap-final-step:hover {
