@@ -8,9 +8,9 @@ const HomePage: React.FC = () => {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [prevWordIndex, setPrevWordIndex] = useState(-1);
   const spinningWords = ["Sell", "Rent", "Shine", "Inspire", "Create"];
-  
+
   const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
-  
+
   const headlines = [
     {
       text: "We're the app your photographer doesn't want you to find out about.",
@@ -60,16 +60,16 @@ const HomePage: React.FC = () => {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    
+
     const intervalRef = setInterval(() => {
       setPrevWordIndex(activeWordIndex);
       setActiveWordIndex((prev) => (prev + 1) % spinningWords.length);
     }, 3000);
-    
+
     const headlineIntervalRef = setInterval(() => {
       setCurrentHeadlineIndex((prev) => (prev + 1) % headlines.length);
     }, 5000);
-    
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       clearInterval(intervalRef);
@@ -79,7 +79,7 @@ const HomePage: React.FC = () => {
 
   const renderHeadlineWithHighlight = (text: string, highlight: string) => {
     if (!text.includes(highlight)) return text;
-    
+
     const parts = text.split(highlight);
     return (
       <>
@@ -113,7 +113,7 @@ const HomePage: React.FC = () => {
             animation: 'float 10s ease-in-out infinite 1s'
           }}
         ></div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             {/* Main Logo & Headline */}
@@ -123,7 +123,7 @@ const HomePage: React.FC = () => {
                 <h1 className="text-5xl md:text-7xl font-bold gradient-text-accent ml-4">HomeSnap Pro</h1>
               </div>
             </div>
-            
+
             {/* Subheadline with Dynamic Rotating Word */}
             <div className="text-xl md:text-2xl text-white/80 mb-12 text-center">
               <span>You Snap, We Edit, You</span>
@@ -141,7 +141,7 @@ const HomePage: React.FC = () => {
                 ))}
               </span>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/upload" className="btn btn-primary">
                 Start Taking Photos Now
@@ -166,7 +166,7 @@ const HomePage: React.FC = () => {
               Pro-quality edits at a fraction of the cost. No expensive equipment needed.
             </p>
           </div>
-          
+
           {/* Phone Mockup and Before/After Slider */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-12">
             {/* Left Side: Phone Mockup */}
@@ -183,7 +183,7 @@ const HomePage: React.FC = () => {
                         alt="Los Angeles luxury home exterior" 
                         className="w-full h-full object-cover"
                       />
-                      
+
                       {/* Camera Grid Lines */}
                       <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none">
                         {Array.from({ length: 4 }).map((_, i) => (
@@ -199,7 +199,7 @@ const HomePage: React.FC = () => {
                     <div className="absolute bottom-0 left-0 right-0">
                       {/* Dark gradient overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent h-32"></div>
-                      
+
                       {/* Controls */}
                       <div className="relative flex items-center justify-center py-6">
                         {/* Shutter Button */}
@@ -209,7 +209,7 @@ const HomePage: React.FC = () => {
                             {/* Inner circle */}
                             <div className="w-16 h-16 rounded-full bg-white transition-transform transform group-active:scale-95"></div>
                           </div>
-                          
+
                           {/* Subtle glow effect */}
                           <div className="absolute inset-0 rounded-full bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </button>
@@ -219,7 +219,7 @@ const HomePage: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Right Side: Before/After Slider */}
             <div>
               <BeforeAfterSlider
@@ -233,7 +233,7 @@ const HomePage: React.FC = () => {
               </p>
             </div>
           </div>
-          
+
           {/* CTA Button */}
           <div className="text-center mt-12">
             <Link to="/upload" className="btn btn-primary text-lg px-8 py-3">
@@ -256,10 +256,13 @@ const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Service 1 */}
             <div className="card hover:scale-105 transition-all duration-300">
-              <div className="flex justify-center mb-4">
-                <div className="h-16 w-16 rounded-full bg-white/5 flex items-center justify-center">
-                  <Image className="h-8 w-8 text-white" />
-                </div>
+              <div className="mb-4">
+                <BeforeAfterSlider
+                  beforeImage="before1.jpg" // Replace with actual image URLs
+                  afterImage="after1.jpg"  // Replace with actual image URLs
+                  beforeLabel="Before"
+                  afterLabel="After"
+                />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Standard Editing</h3>
               <p className="text-white/80 text-center">
@@ -270,10 +273,13 @@ const HomePage: React.FC = () => {
 
             {/* Service 2 */}
             <div className="card hover:scale-105 transition-all duration-300">
-              <div className="flex justify-center mb-4">
-                <div className="h-16 w-16 rounded-full bg-white/5 flex items-center justify-center">
-                  <Zap className="h-8 w-8 text-white" />
-                </div>
+              <div className="mb-4">
+                <BeforeAfterSlider
+                  beforeImage="before2.jpg" // Replace with actual image URLs
+                  afterImage="after2.jpg"  // Replace with actual image URLs
+                  beforeLabel="Before"
+                  afterLabel="After"
+                />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Virtual Staging</h3>
               <p className="text-white/80 text-center">
@@ -284,10 +290,13 @@ const HomePage: React.FC = () => {
 
             {/* Service 3 */}
             <div className="card hover:scale-105 transition-all duration-300">
-              <div className="flex justify-center mb-4">
-                <div className="h-16 w-16 rounded-full bg-white/5 flex items-center justify-center">
-                  <Camera className="h-8 w-8 text-white" />
-                </div>
+              <div className="mb-4">
+                <BeforeAfterSlider
+                  beforeImage="before3.jpg" // Replace with actual image URLs
+                  afterImage="after3.jpg"  // Replace with actual image URLs
+                  beforeLabel="Before"
+                  afterLabel="After"
+                />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Twilight Conversion</h3>
               <p className="text-white/80 text-center">
@@ -298,10 +307,13 @@ const HomePage: React.FC = () => {
 
             {/* Service 4 */}
             <div className="card hover:scale-105 transition-all duration-300">
-              <div className="flex justify-center mb-4">
-                <div className="h-16 w-16 rounded-full bg-white/5 flex items-center justify-center">
-                  <CheckCircle className="h-8 w-8 text-white" />
-                </div>
+              <div className="mb-4">
+                <BeforeAfterSlider
+                  beforeImage="before4.jpg" // Replace with actual image URLs
+                  afterImage="after4.jpg"  // Replace with actual image URLs
+                  beforeLabel="Before"
+                  afterLabel="After"
+                />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Decluttering</h3>
               <p className="text-white/80 text-center">

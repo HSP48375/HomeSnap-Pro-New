@@ -32,15 +32,14 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
       <ReactCompareSlider
         itemOne={
           <ReactCompareSliderImage
-            src={afterImage} /* Use the same image but apply lower quality filters */
+            src={beforeImage}
             alt="Before editing"
             style={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
               /* Enhance the effect to make it look more amateur */
-              filter: 'brightness(0.7) contrast(0.85) saturate(0.8) blur(0.5px)',
-              transform: 'rotate(0.5deg)', /* Slight rotation to simulate poor alignment */
+              filter: 'brightness(0.7) contrast(0.85) saturate(0.8)',
             }}
           />
         }
