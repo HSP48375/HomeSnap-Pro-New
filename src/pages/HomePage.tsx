@@ -265,7 +265,7 @@ const HomePage: React.FC = () => {
               <p className="text-white/80 text-center">
                 Professional color correction, exposure balance, and lens correction for perfect property photos.
               </p>
-              <p className="text-center mt-4 text-white font-semibold">$8.99 per photo</p>
+              <p className="text-center mt-4 text-white font-semibold">$1.50 per photo</p>
             </div>
 
             {/* Service 2 */}
@@ -279,7 +279,7 @@ const HomePage: React.FC = () => {
               <p className="text-white/80 text-center">
                 Transform empty rooms with beautiful virtual furniture to help buyers visualize the space.
               </p>
-              <p className="text-center mt-4 text-white font-semibold">$15.99 per photo</p>
+              <p className="text-center mt-4 text-white font-semibold">$10.00 per photo</p>
             </div>
 
             {/* Service 3 */}
@@ -293,7 +293,7 @@ const HomePage: React.FC = () => {
               <p className="text-white/80 text-center">
                 Convert daytime exterior photos into stunning twilight scenes with glowing windows.
               </p>
-              <p className="text-center mt-4 text-white font-semibold">$10.99 per photo</p>
+              <p className="text-center mt-4 text-white font-semibold">$3.99 per photo</p>
             </div>
 
             {/* Service 4 */}

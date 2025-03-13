@@ -174,12 +174,12 @@ export const useOrderStore = create<OrderState>((set, get) => ({
     if (!currentOrder) return 0;
     
     // Base price per photo
-    const basePrice = 8.99;
+    const basePrice = 1.50;
     
     // Additional services prices
-    const virtualStagingPrice = 15.99;
-    const twilightConversionPrice = 10.99;
-    const declutteringPrice = 12.99;
+    const virtualStagingPrice = 10.00;
+    const twilightConversionPrice = 3.99;
+    const declutteringPrice = 2.99;
     
     // Calculate total based on number of photos and selected services
     let total = currentOrder.photos.length * basePrice;

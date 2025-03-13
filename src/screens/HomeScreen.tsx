@@ -65,10 +65,10 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const services = [
-  { title: 'Standard Editing', price: '8.99', icon: 'image' },
-  { title: 'Virtual Staging', price: '15.99', icon: 'home' },
-  { title: 'Twilight Effect', price: '10.99', icon: 'sun' },
-  { title: 'Decluttering', price: '12.99', icon: 'trash-2' },
+  { title: 'Standard Editing', price: '1.50', icon: 'image' },
+  { title: 'Virtual Staging', price: '10.00', icon: 'home' },
+  { title: 'Twilight Effect', price: '3.99', icon: 'sun' },
+  { title: 'Decluttering', price: '2.99', icon: 'trash-2' },
 ];
 
 const features = [

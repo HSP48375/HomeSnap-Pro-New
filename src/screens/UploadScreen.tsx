@@ -99,17 +99,17 @@ const UploadScreen = ({ navigation }) => {
   };
 
   const calculateTotal = () => {
-    const basePrice = 8.99 * photos.length; // Standard editing
+    const basePrice = 1.50 * photos.length; // Standard editing
     let total = basePrice;
 
     if (selectedServices.virtualStaging) {
-      total += 15.99 * photos.length;
+      total += 10.00 * photos.length;
     }
     if (selectedServices.twilightConversion) {
-      total += 10.99 * photos.length;
+      total += 3.99 * photos.length;
     }
     if (selectedServices.decluttering) {
-      total += 12.99 * photos.length;
+      total += 2.99 * photos.length;
     }
 
     // Apply volume discount
@@ -198,7 +198,7 @@ const UploadScreen = ({ navigation }) => {
                     .replace(/^./, str => str.toUpperCase())}
                 </Text>
                 <Text style={styles.servicePrice}>
-                  ${service === 'virtualStaging' ? '15.99' : service === 'twilightConversion' ? '10.99' : service === 'decluttering' ? '12.99' : '8.99'}/photo
+                  ${service === 'virtualStaging' ? '10.00' : service === 'twilightConversion' ? '3.99' : service === 'decluttering' ? '2.99' : '1.50'}/photo
                 </Text>
               </View>
               <Icon
