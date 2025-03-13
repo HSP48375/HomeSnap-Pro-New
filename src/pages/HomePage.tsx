@@ -125,7 +125,7 @@ const HomePage: React.FC = () => {
             </div>
 
             {/* Subheadline with Dynamic Rotating Word */}
-            <div className="text-xl md:text-2xl text-white/80 mb-12 text-center">
+            <div className="text-xl md:text-2xl text-white/80 mb-12 text-center flex items-center justify-center flex-wrap">
               <span>You Snap, We Edit, You</span>
               <span className="word-rotation-container">
                 {spinningWords.map((word, index) => (
