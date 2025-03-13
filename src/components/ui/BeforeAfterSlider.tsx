@@ -8,6 +8,10 @@ interface BeforeAfterSliderProps {
   beforeLabel?: string;
   afterLabel?: string;
   height?: number;
+  isBeforeDark?: boolean;
+  isVirtualStaging?: boolean;
+  isTwilight?: boolean;
+  isDecluttering?: boolean;
 }
 
 const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
@@ -16,10 +20,14 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
   beforeLabel = 'BEFORE',
   afterLabel = 'AFTER',
   height = 300,
+  isBeforeDark = false,
+  isVirtualStaging = false,
+  isTwilight = false,
+  isDecluttering = false,
 }) => {
   // Default images if the provided ones don't load
-  const defaultBeforeImage = 'https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80';
-  const defaultAfterImage = 'https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80&brightness=1.2&contrast=1.1&saturation=1.2';
+  const defaultBeforeImage = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+  const defaultAfterImage = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
 
   const handleBeforeImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.src = defaultBeforeImage;
@@ -27,6 +35,66 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
 
   const handleAfterImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.src = defaultAfterImage;
+  };
+
+  // Apply appropriate styling based on the edit type
+  const getBeforeStyle = () => {
+    if (isBeforeDark) {
+      return {
+        filter: 'brightness(0.7) contrast(0.85) saturate(0.8)',
+      };
+    }
+    if (isVirtualStaging) {
+      return {
+        filter: 'brightness(0.95) contrast(0.95)',
+      };
+    }
+    if (isTwilight) {
+      return {
+        filter: 'brightness(1.05) contrast(1.0) saturate(1.0)',
+      };
+    }
+    if (isDecluttering) {
+      return {
+        filter: 'brightness(1.0) contrast(1.0) saturate(1.0)',
+      };
+    }
+    return {
+      filter: 'brightness(0.85) contrast(0.9) saturate(0.85)',
+    };
+  };
+
+  const getAfterStyle = () => {
+    if (isBeforeDark) {
+      return {
+        filter: 'brightness(1.1) contrast(1.05) saturate(1.1)',
+      };
+    }
+    if (isVirtualStaging) {
+      // Virtual staging effect
+      return {
+        filter: 'brightness(1.05) contrast(1.05) saturate(1.05)',
+        backgroundImage: `url(https://images.unsplash.com/photo-1582417728413-b2347161b864?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.99, // Slightly transparent to blend
+      };
+    }
+    if (isTwilight) {
+      return {
+        filter: 'brightness(0.75) contrast(1.15) saturate(1.2) hue-rotate(-10deg)',
+        backgroundImage: 'linear-gradient(to bottom, rgba(20, 30, 100, 0.5), rgba(10, 20, 60, 0.7))',
+        backgroundBlendMode: 'overlay',
+      };
+    }
+    if (isDecluttering) {
+      return {
+        filter: 'brightness(1.05) contrast(1.05) saturate(1.02)',
+      };
+    }
+    return {
+      filter: 'brightness(1.1) contrast(1.05) saturate(1.1)',
+    };
   };
 
   return (
@@ -52,8 +120,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              /* Enhance the effect to make it look more amateur */
-              filter: 'brightness(0.7) contrast(0.85) saturate(0.8)',
+              ...getBeforeStyle(),
             }}
           />
         }
@@ -66,7 +133,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              filter: 'brightness(1.1) contrast(1.05) saturate(1.1)',
+              ...getAfterStyle(),
             }}
           />
         }

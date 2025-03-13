@@ -291,40 +291,42 @@ const HomePage: React.FC = () => {
               <p className="text-center mt-4 text-white font-semibold">$10.00 per photo</p>
             </div>
 
-            {/* Service 3 */}
+            {/* Service 3 - Twilight Conversion */}
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="https://images.unsplash.com/photo-1592595896616-c37162298647?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&brightness=1.1"
-                  afterImage="https://images.unsplash.com/photo-1549517045-bc93de075e53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  beforeImage="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  afterImage="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                   beforeLabel="Day"
                   afterLabel="Twilight"
                   height={250}
+                  isTwilight={true}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Twilight Conversion</h3>
               <p className="text-white/80 text-center">
-                Convert daytime exterior photos into stunning twilight scenes with glowing windows.
+                Turn ordinary daylight exteriors into stunning twilight images with dramatic lighting.
               </p>
               <p className="text-center mt-4 text-white font-semibold">$3.99 per photo</p>
             </div>
 
-            {/* Service 4 */}
+            {/* Service 4 - Decluttering */}
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="https://images.unsplash.com/photo-1484101403633-562f891dc89a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  afterImage="https://images.unsplash.com/photo-1518713350467-2908d317911a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  beforeImage="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  afterImage="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                   beforeLabel="Cluttered"
                   afterLabel="Clean"
                   height={250}
+                  isDecluttering={true}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Decluttering</h3>
               <p className="text-white/80 text-center">
-                Remove unwanted objects and clutter from your property photos for a cleaner look.
+                Remove distracting elements and clutter from photos for a cleaner, more appealing look.
               </p>
-              <p className="text-center mt-4 text-white font-semibold">$12.99 per photo</p>
+              <p className="text-center mt-4 text-white font-semibold">$2.99 per photo</p>
             </div>
           </div>
         </div>
