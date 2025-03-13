@@ -106,6 +106,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
 
       {/* Slider */}
       <ReactCompareSlider
+        className="slider-background"
         itemOne={
           <ReactCompareSliderImage
             src={beforeImage}
@@ -114,7 +115,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              objectFit: 'contain',
               ...getBeforeStyle(),
             }}
           />
@@ -127,7 +128,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              objectFit: 'contain',
               ...getAfterStyle(),
             }}
           />
