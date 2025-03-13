@@ -255,15 +255,16 @@ const HomePage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Service 1 */}
+            {/* Service 1 - Standard Editing */}
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&brightness=0.7&contrast=0.8"
-                  afterImage="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&brightness=1.1&contrast=1.1&saturation=1.15"
+                  beforeImage="/assets/before-after/Editing_Before.JPEG"
+                  afterImage="/assets/before-after/Editing_After.JPEG"
                   beforeLabel="Before"
                   afterLabel="After"
                   height={250}
+                  isBeforeDark={true}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Standard Editing</h3>
@@ -273,15 +274,16 @@ const HomePage: React.FC = () => {
               <p className="text-center mt-4 text-white font-semibold">$1.50 per photo</p>
             </div>
 
-            {/* Service 2 */}
+            {/* Service 2 - Virtual Staging */}
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  afterImage="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  beforeImage="/assets/before-after/VirtualStaging_Before.JPEG"
+                  afterImage="/assets/before-after/VirtualStaging_After.JPEG"
                   beforeLabel="Empty"
                   afterLabel="Staged"
                   height={250}
+                  isVirtualStaging={true}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Virtual Staging</h3>
@@ -295,8 +297,8 @@ const HomePage: React.FC = () => {
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  afterImage="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  beforeImage="/assets/before-after/Twilight_Before.JPG"
+                  afterImage="/assets/before-after/Twilight_After.JPG"
                   beforeLabel="Day"
                   afterLabel="Twilight"
                   height={250}
@@ -314,8 +316,8 @@ const HomePage: React.FC = () => {
             <div className="card hover:scale-105 transition-all duration-300">
               <div className="mb-4">
                 <BeforeAfterSlider
-                  beforeImage="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  afterImage="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  beforeImage="/assets/before-after/Decluttering_Before.JPEG"
+                  afterImage="/assets/before-after/Decluttering_After.JPEG"
                   beforeLabel="Cluttered"
                   afterLabel="Clean"
                   height={250}
@@ -324,7 +326,7 @@ const HomePage: React.FC = () => {
               </div>
               <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Decluttering</h3>
               <p className="text-white/80 text-center">
-                Remove distracting elements and clutter from photos for a cleaner, more appealing look.
+                Remove distracting elements and virtually tidy spaces for cleaner, more appealing photos.
               </p>
               <p className="text-center mt-4 text-white font-semibold">$2.99 per photo</p>
             </div>

@@ -254,6 +254,8 @@ nav + div {
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
 }
 
 .compare-slider-label {
@@ -266,6 +268,8 @@ nav + div {
   font-weight: 700;
   border-radius: 0.5rem;
   backdrop-filter: blur(4px);
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 /* Background Patterns */
