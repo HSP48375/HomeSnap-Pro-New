@@ -154,106 +154,118 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* How It Works - Roadmap Section */}
-      <div className="py-16 md:py-24 bg-black/40">
+      {/* How It Works / Roadmap */}
+      <div className="py-16 md:py-24 bg-hex-grid">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">How It Works</h2>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              Your journey from regular photos to professional real estate photography in 7 simple steps
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: 'Poppins, sans-serif' }}>HomeSnap Pro – How It Works</h2>
+            <p className="text-lg text-white/80 max-w-2xl mx-auto" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              We've streamlined the process to get you professional photos with minimal effort.
             </p>
           </div>
 
-          <div className="relative">
-            {/* Connecting Path - Decorative Element */}
-            <div className="absolute left-1/2 top-12 bottom-12 w-1 bg-gradient-to-b from-primary via-neon-purple to-secondary hidden md:block"></div>
-
-            {/* Roadmap Steps */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mx-auto max-w-6xl">
+            {/* Horizontal Flow Steps 1-3 */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
               {/* Step 1 */}
-              <div className="card hover:border-primary/60 transition-colors group cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm">1</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10">1</div>
                 <div className="text-center mb-3">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-black/50 border border-white/20 mb-4 text-3xl group-hover:border-primary/60">
-                    📥
+                  <div className="roadmap-icon-container mb-4">
+                    <span className="text-3xl">📱</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Download the App</h3>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Download the App</h3>
                 </div>
-                <p className="text-white/70 text-center">Available on iOS & Android. No special camera needed!</p>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Available on iOS & Android. No special camera needed!</p>
               </div>
+
+              {/* Arrow 1 */}
+              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 2 */}
-              <div className="card hover:border-primary/60 transition-colors group cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm">2</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10">2</div>
                 <div className="text-center mb-3">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-black/50 border border-white/20 mb-4 text-3xl group-hover:border-primary/60">
-                    ✍️
+                  <div className="roadmap-icon-container mb-4">
+                    <span className="text-3xl">👤</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Create Your Free Account</h3>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Create Your Free Account</h3>
                 </div>
-                <p className="text-white/70 text-center">Sign up in seconds. No subscription required!</p>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Sign up in seconds. No subscription required!</p>
               </div>
+
+              {/* Arrow 2 */}
+              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 3 */}
-              <div className="card hover:border-primary/60 transition-colors group cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm">3</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10">3</div>
                 <div className="text-center mb-3">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-black/50 border border-white/20 mb-4 text-3xl group-hover:border-primary/60">
-                    🏡
+                  <div className="roadmap-icon-container mb-4">
+                    <span className="text-3xl">🏡</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Enter Property Address</h3>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Enter Property Address</h3>
                 </div>
-                <p className="text-white/70 text-center">Just type in the listing details when you're ready to shoot.</p>
-              </div>
-
-              {/* Step 4 */}
-              <div className="card hover:border-primary/60 transition-colors group cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm">4</div>
-                <div className="text-center mb-3">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-black/50 border border-white/20 mb-4 text-3xl group-hover:border-primary/60">
-                    📸
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Take Photos & Scan Floorplan</h3>
-                </div>
-                <p className="text-white/70 text-center">Follow our built-in guides for the best shots.</p>
-              </div>
-
-              {/* Step 5 */}
-              <div className="card hover:border-primary/60 transition-colors group cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm">5</div>
-                <div className="text-center mb-3">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-black/50 border border-white/20 mb-4 text-3xl group-hover:border-primary/60">
-                    🎨
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Select Add-Ons</h3>
-                </div>
-                <p className="text-white/70 text-center">Want an extra wow factor? Pick your enhancements.</p>
-              </div>
-
-              {/* Step 6 */}
-              <div className="card hover:border-primary/60 transition-colors group cursor-pointer relative animate-pulse-slow">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm">6</div>
-                <div className="text-center mb-3">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-black/50 border border-primary/40 mb-4 text-3xl group-hover:border-primary">
-                    ✅
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Submit Your Order</h3>
-                </div>
-                <p className="text-white/70 text-center">One tap, and we'll handle the rest!</p>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Just type in the listing details when you're ready to shoot.</p>
               </div>
             </div>
 
-            {/* Final Step (Highlighted) */}
-            <div className="mt-12 max-w-md mx-auto">
-              <div className="card border-primary/40 bg-gradient-to-br from-black to-black/60 hover:from-black/80 hover:to-black/80 transition-all group cursor-pointer animate-pulse-slow">
-                <div className="absolute -top-3 -left-3 bg-secondary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm">7</div>
+            {/* Horizontal Flow Steps 4-6 */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
+              {/* Step 4 */}
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10">4</div>
                 <div className="text-center mb-3">
-                  <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-black/50 border border-secondary/40 mb-4 text-3xl">
-                    🚀
+                  <div className="roadmap-icon-container mb-4">
+                    <span className="text-3xl">📸</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white">Receive Stunning Photos in &lt;12 Hours!</h3>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Take Photos & Scan Floorplan</h3>
                 </div>
-                <p className="text-white/70 text-center">Professionally edited – no AI, just real experts!</p>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Follow our built-in guides for the best shots.</p>
+              </div>
+
+              {/* Arrow 3 */}
+              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
+
+              {/* Step 5 */}
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10">5</div>
+                <div className="text-center mb-3">
+                  <div className="roadmap-icon-container mb-4">
+                    <span className="text-3xl">✨</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Select Add-Ons</h3>
+                </div>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Want an extra wow factor? Pick your enhancements.</p>
+              </div>
+
+              {/* Arrow 4 */}
+              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
+
+              {/* Step 6 */}
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10">6</div>
+                <div className="text-center mb-3">
+                  <div className="roadmap-icon-container mb-4 border border-primary/50">
+                    <span className="text-3xl">✅</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Submit Your Order</h3>
+                </div>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>One tap, and we'll handle the rest!</p>
+              </div>
+            </div>
+
+            {/* Final Highlighted Step */}
+            <div className="max-w-xl mx-auto">
+              <div className="roadmap-final-step rounded-xl p-8 cursor-pointer animate-pulse-slow">
+                <div className="absolute -top-3 -left-3 bg-secondary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10 shadow-lg shadow-secondary/20">7</div>
+                <div className="text-center mb-3">
+                  <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-black/70 border border-secondary/50 mb-4 text-4xl animate-pulse-slow">
+                    <span>🚀</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white neon-text" style={{ fontFamily: 'Poppins, sans-serif' }}>Receive Stunning Photos in &lt;12 Hours!</h3>
+                </div>
+                <p className="text-white/80 text-center text-lg" style={{ fontFamily: 'Poppins, sans-serif' }}>Professionally edited – no AI, just real experts!</p>
               </div>
             </div>
           </div>
