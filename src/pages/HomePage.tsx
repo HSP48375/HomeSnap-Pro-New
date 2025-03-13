@@ -255,8 +255,8 @@ const HomePage: React.FC = () => {
               <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 7 - Final Step */}
-              <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow overflow-visible">
-                <div className="absolute -top-3 -left-3 bg-gradient-to-r from-[#FF00C1] to-[#FF3DFF] text-white font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">7</div>
+              <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow overflow-visible" style={{ zIndex: 1 }}>
+                <div className="roadmap-final-step-number">7</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4" style={{ boxShadow: 'inset 0 0 20px rgba(255, 0, 193, 0.5)' }}>
                     <span className="text-3xl">🚀</span>
