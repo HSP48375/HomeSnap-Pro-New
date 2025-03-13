@@ -45,12 +45,13 @@ body {
 
 /* Roadmap Glassmorphism */
 .roadmap-step {
-  @apply relative overflow-hidden transition-all duration-300;
+  @apply relative transition-all duration-300;
   background: rgba(10, 10, 20, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(157, 0, 255, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow: visible;
 }
 
 .roadmap-step:hover {
@@ -100,7 +101,7 @@ body {
 }
 
 .roadmap-step-number {
-  @apply absolute -top-4 -left-4 font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100];
+  @apply absolute -top-4 -left-4 font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999];
   background: linear-gradient(135deg, #9D00FF, #FF00C1);
   color: white;
   box-shadow: 0 0 15px rgba(255, 0, 193, 0.5);

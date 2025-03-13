@@ -165,8 +165,8 @@ const HomePage: React.FC = () => {
             {/* Horizontal Flow Steps 1-3 */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
               {/* Step 1 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">1</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">1</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">📱</span>
@@ -180,8 +180,8 @@ const HomePage: React.FC = () => {
               <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 2 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">2</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">2</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">👤</span>
@@ -195,8 +195,8 @@ const HomePage: React.FC = () => {
               <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 3 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">3</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">3</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">🏡</span>
@@ -210,8 +210,8 @@ const HomePage: React.FC = () => {
             {/* Horizontal Flow Steps 4-6 */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
               {/* Step 4 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">4</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">4</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">📸</span>
@@ -225,8 +225,8 @@ const HomePage: React.FC = () => {
               <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 5 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">5</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">5</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">✨</span>
@@ -240,8 +240,8 @@ const HomePage: React.FC = () => {
               <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 6 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">6</div>
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">6</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">✅</span>
@@ -255,7 +255,7 @@ const HomePage: React.FC = () => {
               <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 7 - Final Step */}
-              <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow">
+              <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow overflow-visible">
                 <div className="roadmap-step-number" style={{ background: 'linear-gradient(135deg, #FF00C1, #FF3DFF)' }}>7</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4" style={{ boxShadow: 'inset 0 0 20px rgba(255, 0, 193, 0.5)' }}>
