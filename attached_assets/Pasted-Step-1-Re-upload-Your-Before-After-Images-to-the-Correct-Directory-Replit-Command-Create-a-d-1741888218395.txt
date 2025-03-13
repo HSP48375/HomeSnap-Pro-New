@@ -1,0 +1,110 @@
+Step 1: Re-upload Your Before & After Images to the Correct Directory
+➡️ Replit Command:
+
+Create a directory for the images:
+sh
+Copy
+Edit
+mkdir -p public/assets/before-after
+Move your uploaded images into this directory:
+sh
+Copy
+Edit
+cp attached_assets/Editing_Before.JPEG public/assets/before-after/
+cp attached_assets/Editing_After.JPEG public/assets/before-after/
+cp attached_assets/VirtualStaging_Before.JPEG public/assets/before-after/
+cp attached_assets/VirtualStaging_After.JPEG public/assets/before-after/
+cp attached_assets/Twilight_Before.JPG public/assets/before-after/
+cp attached_assets/Twilight_After.JPG public/assets/before-after/
+cp attached_assets/Decluttering_Before.JPEG public/assets/before-after/
+cp attached_assets/Decluttering_After.JPEG public/assets/before-after/
+Step 2: Update the BeforeAfterSlider Component
+➡️ Replit Command:
+
+Modify BeforeAfterSlider.tsx to use the updated Before & After images:
+tsx
+Copy
+Edit
+import Image from "next/image";
+
+const BeforeAfterSlider = ({ before, after, alt }) => {
+    return (
+        <div className="relative w-full max-w-md mx-auto">
+            <div className="overflow-hidden relative">
+                <Image src={before} alt={`Before - ${alt}`} className="absolute inset-0 object-cover w-full h-full" />
+                <Image src={after} alt={`After - ${alt}`} className="relative object-cover w-full h-full" />
+            </div>
+        </div>
+    );
+};
+
+export default BeforeAfterSlider;
+Step 3: Implement the Updated Sliders in HomePage.tsx
+➡️ Replit Command:
+
+Modify HomePage.tsx to reference your uploaded images:
+tsx
+Copy
+Edit
+import BeforeAfterSlider from "../components/ui/BeforeAfterSlider";
+
+const HomePage = () => {
+    return (
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BeforeAfterSlider 
+                before="/assets/before-after/Editing_Before.JPEG" 
+                after="/assets/before-after/Editing_After.JPEG" 
+                alt="Standard Editing"
+            />
+            <BeforeAfterSlider 
+                before="/assets/before-after/VirtualStaging_Before.JPEG" 
+                after="/assets/before-after/VirtualStaging_After.JPEG" 
+                alt="Virtual Staging"
+            />
+            <BeforeAfterSlider 
+                before="/assets/before-after/Twilight_Before.JPG" 
+                after="/assets/before-after/Twilight_After.JPG" 
+                alt="Twilight Conversion"
+            />
+            <BeforeAfterSlider 
+                before="/assets/before-after/Decluttering_Before.JPEG" 
+                after="/assets/before-after/Decluttering_After.JPEG" 
+                alt="Decluttering"
+            />
+        </section>
+    );
+};
+
+export default HomePage;
+Step 4: Ensure Images Display Correctly (Prevent Zoomed-in Issues)
+➡️ Replit Command:
+
+Modify CSS to ensure full images display without zooming in too much:
+css
+Copy
+Edit
+.before-after-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.before-after-container img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+Step 5: Restart Replit to Apply Fixes
+➡️ Replit Command:
+
+Stop and restart the Replit server to refresh all updates:
+sh
+Copy
+Edit
+npm run dev -- --host 0.0.0.0
+Final Check
+Once Replit completes all steps, verify that Before & After sliders: ✅ Show full images (no zoom-in issues)
+✅ Use your uploaded property images
+✅ Work without black screens
