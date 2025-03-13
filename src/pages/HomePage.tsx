@@ -159,9 +159,6 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: 'Poppins, sans-serif' }}>HomeSnap Pro – How It Works</h2>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto" style={{ fontFamily: 'Poppins, sans-serif' }}>
-              We've streamlined the process to get you professional photos with minimal effort.
-            </p>
           </div>
 
           <div className="mx-auto max-w-6xl">
@@ -244,7 +241,7 @@ const HomePage: React.FC = () => {
 
               {/* Step 6 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="roadmap-step-number">6</div>
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10">6</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">✅</span>

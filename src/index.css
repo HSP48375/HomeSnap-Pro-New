@@ -100,7 +100,7 @@ body {
 }
 
 .roadmap-step-number {
-  @apply absolute -top-4 -left-4 font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-10;
+  @apply absolute -top-3 -left-3 font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-50;
   background: linear-gradient(135deg, #9D00FF, #FF00C1);
   color: white;
   box-shadow: 0 0 15px rgba(255, 0, 193, 0.5);
