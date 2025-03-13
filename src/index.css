@@ -45,15 +45,18 @@ body {
 
 /* Roadmap Glassmorphism */
 .roadmap-step {
-  @apply bg-black/40 backdrop-blur-xl relative overflow-hidden transition-all duration-300;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  @apply relative overflow-hidden transition-all duration-300;
+  background: rgba(10, 10, 20, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(157, 0, 255, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .roadmap-step:hover {
-  @apply bg-black/50;
-  border: 1px solid rgba(0, 238, 255, 0.2);
-  box-shadow: 0 0 15px rgba(0, 238, 255, 0.2);
+  background: rgba(20, 20, 40, 0.6);
+  border: 1px solid rgba(255, 0, 193, 0.3);
+  box-shadow: 0 0 20px rgba(255, 0, 193, 0.25);
   transform: translateY(-2px);
 }
 
@@ -64,33 +67,43 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at top right, rgba(0, 238, 255, 0.05), transparent 70%);
+  background: radial-gradient(circle at top right, rgba(157, 0, 255, 0.1), transparent 70%);
   z-index: -1;
 }
 
 .roadmap-final-step {
-  @apply bg-black/60 backdrop-blur-xl relative overflow-hidden transition-all duration-300;
-  border: 1px solid rgba(0, 238, 255, 0.2);
-  box-shadow: 0 0 20px rgba(0, 238, 255, 0.2);
+  @apply relative overflow-hidden transition-all duration-300;
+  background: rgba(20, 20, 40, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 0, 193, 0.3);
+  box-shadow: 0 0 20px rgba(255, 0, 193, 0.3);
 }
 
 .roadmap-final-step:hover {
-  box-shadow: 0 0 30px rgba(0, 238, 255, 0.4);
+  box-shadow: 0 0 30px rgba(255, 0, 193, 0.5);
 }
 
 .roadmap-arrow {
-  @apply h-1 bg-gradient-to-r from-primary/50 to-secondary/50 opacity-70;
+  @apply h-1.5 bg-gradient-to-r from-[#9D00FF]/70 to-[#FF00C1]/70 opacity-80;
   animation: pulse-glow 3s infinite;
 }
 
 .roadmap-icon-container {
   @apply inline-flex items-center justify-center h-16 w-16 rounded-full transition-all duration-300;
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: inset 0 0 10px rgba(0, 238, 255, 0.1);
+  background: rgba(20, 20, 40, 0.7);
+  box-shadow: inset 0 0 15px rgba(157, 0, 255, 0.2);
 }
 
 .roadmap-step:hover .roadmap-icon-container {
-  box-shadow: inset 0 0 15px rgba(0, 238, 255, 0.3);
+  box-shadow: inset 0 0 20px rgba(255, 0, 193, 0.4);
+}
+
+.roadmap-step-number {
+  @apply absolute -top-4 -left-4 font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-10;
+  background: linear-gradient(135deg, #9D00FF, #FF00C1);
+  color: white;
+  box-shadow: 0 0 15px rgba(255, 0, 193, 0.5);
 }
 
 @keyframes flow-animation {
@@ -336,8 +349,26 @@ nav + div {
 
 /* Add a pulsing glow effect to the active word */
 @keyframes pulse-glow {
-  0%, 100% { text-shadow: 0 0 8px rgba(255, 61, 255, 0.4); }
-  50% { text-shadow: 0 0 15px rgba(0, 238, 255, 0.6); }
+  0%, 100% { 
+    text-shadow: 0 0 8px rgba(255, 61, 255, 0.4);
+    box-shadow: 0 0 8px rgba(255, 61, 255, 0.4);
+  }
+  50% { 
+    text-shadow: 0 0 15px rgba(0, 238, 255, 0.6);
+    box-shadow: 0 0 15px rgba(0, 238, 255, 0.6);
+  }
+}
+
+@keyframes flow-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* BeforeAfter Slider Styles */

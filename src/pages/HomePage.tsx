@@ -244,29 +244,35 @@ const HomePage: React.FC = () => {
 
               {/* Step 6 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10">6</div>
+                <div className="roadmap-step-number">6</div>
                 <div className="text-center mb-3">
-                  <div className="roadmap-icon-container mb-4 border border-primary/50">
+                  <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">✅</span>
                   </div>
                   <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Submit Your Order</h3>
                 </div>
                 <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>One tap, and we'll handle the rest!</p>
               </div>
+
+              {/* Arrow 5 */}
+              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
+
+              {/* Step 7 - Final Step */}
+              <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow">
+                <div className="roadmap-step-number" style={{ background: 'linear-gradient(135deg, #FF00C1, #FF3DFF)' }}>7</div>
+                <div className="text-center mb-3">
+                  <div className="roadmap-icon-container mb-4" style={{ boxShadow: 'inset 0 0 20px rgba(255, 0, 193, 0.5)' }}>
+                    <span className="text-3xl">🚀</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white neon-text-magenta" style={{ fontFamily: 'Poppins, sans-serif' }}>Receive Stunning Photos</h3>
+                </div>
+                <p className="text-white/80 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Professionally edited in <span className="font-bold gradient-text-accent">less than 12 hours!</span></p>
+              </div>
             </div>
 
             {/* Final Highlighted Step */}
             <div className="max-w-xl mx-auto">
-              <div className="roadmap-final-step rounded-xl p-8 cursor-pointer animate-pulse-slow">
-                <div className="absolute -top-3 -left-3 bg-secondary text-black font-bold h-8 w-8 rounded-full flex items-center justify-center text-sm z-10 shadow-lg shadow-secondary/20">7</div>
-                <div className="text-center mb-3">
-                  <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-black/70 border border-secondary/50 mb-4 text-4xl animate-pulse-slow">
-                    <span>🚀</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white neon-text" style={{ fontFamily: 'Poppins, sans-serif' }}>Receive Stunning Photos in &lt;12 Hours!</h3>
-                </div>
-                <p className="text-white/80 text-center text-lg" style={{ fontFamily: 'Poppins, sans-serif' }}>Professionally edited – no AI, just real experts!</p>
-              </div>
+              {/* This section is already handled in the previous changes */}
             </div>
           </div>
         </div>
