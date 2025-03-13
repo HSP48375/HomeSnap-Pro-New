@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { ReactCompareSlider, ReactCompareSliderImage, ReactCompareSliderHandle } from 'react-compare-slider';
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 interface BeforeAfterSliderProps {
   beforeImage: string;
@@ -92,12 +93,16 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
   };
 
   return (
-    <div className="compare-slider-container" style={{ height: `${height}px` }}>
+    <div className="compare-slider-container">
       {/* BEFORE Label */}
-      <div className="compare-slider-label" style={{ top: '12px', left: '12px' }}>{beforeLabel}</div>
+      <div className="compare-slider-label" style={{ top: '12px', left: '12px' }}>
+        {beforeLabel}
+      </div>
 
       {/* AFTER Label */}
-      <div className="compare-slider-label" style={{ top: '12px', right: '12px' }}>{afterLabel}</div>
+      <div className="compare-slider-label" style={{ top: '12px', right: '12px' }}>
+        {afterLabel}
+      </div>
 
       {/* Slider */}
       <ReactCompareSlider
@@ -108,7 +113,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
             onError={handleBeforeImageError}
             style={{
               width: '100%',
-              height: 'auto',
+              height: '100%',
               objectFit: 'cover',
               ...getBeforeStyle(),
             }}
@@ -121,7 +126,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
             onError={handleAfterImageError}
             style={{
               width: '100%',
-              height: 'auto',
+              height: '100%',
               objectFit: 'cover',
               ...getAfterStyle(),
             }}
@@ -129,37 +134,9 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
         }
         position={50}
         style={{
-          height: '100%',
+          height: `${height}px`,
           borderRadius: '8px',
-          // Add cyber-tech styling here (placeholder)
-          background: 'linear-gradient(to right, #002036, #3b5998, #002036)', // Example gradient
         }}
-        handle={
-          <ReactCompareSliderHandle
-            buttonStyle={{
-              backdropFilter: 'blur(10px)',
-              backgroundColor: 'rgba(0, 200, 255, 0.9)',
-              border: '2px solid rgba(157, 0, 255, 0.8)',
-              color: '#1a1a1a',
-              boxShadow: '0 0 15px rgba(0, 200, 255, 0.7)',
-              transition: 'box-shadow 0.3s ease',
-            }}
-            onPositionChange={() => {
-              // This triggers a slight animation when handle position changes
-              const handle = document.querySelector('.reactcompare-handle');
-              if (handle) {
-                handle.animate([
-                  { boxShadow: '0 0 15px rgba(0, 200, 255, 0.7)' },
-                  { boxShadow: '0 0 25px rgba(157, 0, 255, 0.9)' },
-                  { boxShadow: '0 0 15px rgba(0, 200, 255, 0.7)' }
-                ], {
-                  duration: 1000,
-                  easing: 'ease'
-                });
-              }
-            }}
-          />
-        }
       />
     </div>
   );
