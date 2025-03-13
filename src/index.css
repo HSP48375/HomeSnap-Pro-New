@@ -211,34 +211,28 @@ nav + div {
 
 /* Word Rotation Animation */
 .word-rotation-container {
-  @apply relative inline-block ml-2;
-  min-width: 100px;
-  display: inline-block;
-  height: 1.5em; /* Fixed height container */
-  overflow: hidden;
-  vertical-align: bottom;
   position: relative;
+  display: inline-block;
+  height: 1.5em;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  overflow: hidden;
 }
 
 .word-rotation {
-  @apply absolute left-0 opacity-0 transition-all duration-500;
+  position: absolute;
+  opacity: 0;
   transform: translateY(20px);
-  font-size: inherit;
-  font-weight: bold;
-  line-height: normal;
-  vertical-align: baseline;
-  display: inline-block;
-  bottom: 0;
-  margin-bottom: 1px; /* Fine-tune alignment */
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .word-rotation.active {
-  @apply opacity-100;
+  opacity: 100;
   transform: translateY(0);
 }
 
 .word-rotation.exit {
-  @apply opacity-0;
+  opacity: 0;
   transform: translateY(-20px);
 }
 
