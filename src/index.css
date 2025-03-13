@@ -107,6 +107,7 @@ body {
   box-shadow: 0 0 15px rgba(255, 0, 193, 0.5);
   transform: scale(1.1);
   position: absolute;
+  pointer-events: none;
 }
 
 @keyframes flow-animation {
@@ -205,8 +206,9 @@ body {
 }
 
 .btn-primary {
-  @apply bg-primary text-dark hover:bg-primary/90;
-  box-shadow: 0 0 10px rgba(0, 238, 255, 0.3);
+  @apply text-white hover:opacity-90 transition-all duration-200;
+  background: linear-gradient(135deg, #9D00FF, #FF00C1);
+  box-shadow: 0 0 15px rgba(255, 0, 193, 0.3);
 }
 
 .btn-secondary {

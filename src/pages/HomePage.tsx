@@ -256,7 +256,7 @@ const HomePage: React.FC = () => {
 
               {/* Step 7 - Final Step */}
               <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow overflow-visible">
-                <div className="roadmap-step-number" style={{ background: 'linear-gradient(135deg, #FF00C1, #FF3DFF)' }}>7</div>
+                <div className="roadmap-step-number" style={{ background: 'linear-gradient(135deg, #FF00C1, #FF3DFF)', position: 'absolute', zIndex: 999, transform: 'scale(1.1)' }}>7</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4" style={{ boxShadow: 'inset 0 0 20px rgba(255, 0, 193, 0.5)' }}>
                     <span className="text-3xl">🚀</span>
