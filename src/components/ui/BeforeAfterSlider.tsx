@@ -108,7 +108,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
             onError={handleBeforeImageError}
             style={{
               width: '100%',
-              height: '100%',
+              height: 'auto',
               objectFit: 'cover',
               ...getBeforeStyle(),
             }}
@@ -121,7 +121,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
             onError={handleAfterImageError}
             style={{
               width: '100%',
-              height: '100%',
+              height: 'auto',
               objectFit: 'cover',
               ...getAfterStyle(),
             }}

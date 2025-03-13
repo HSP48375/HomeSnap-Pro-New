@@ -162,14 +162,16 @@ const HomePage: React.FC = () => {
           }}
         ></div>
         <div
-          className="floating-orb floating-orb-purple w-80 h-80" {/* Changed color */}
+          className="floating-orb floating-orb-purple w-80 h-80"
           style={{
             bottom: '15%',
             right: '15%',
             transform: `translate(${(mousePosition.x - window.innerWidth / 2) / -40}px, ${(mousePosition.y - window.innerHeight / 2) / -40}px)`,
             animation: 'float 10s ease-in-out infinite 1s'
           }}
-        ></div>
+        >
+          {/* Changed color */}
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
@@ -298,6 +300,55 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
+      {/* How It Works Section */}
+      <section className="mt-20 mb-16">
+        <h2 className="text-center text-white text-3xl font-bold mb-10 gradient-text">How It Works</h2>
+        <div className="grid grid-cols-1 md:grid-cols-7 gap-4 max-w-5xl mx-auto">
+          <div className="card p-4 flex flex-col items-center text-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center mb-3 pulsing">
+              <span className="text-white font-bold">1</span>
+            </div>
+            <p className="text-white">Download the App</p>
+          </div>
+          <div className="card p-4 flex flex-col items-center text-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center mb-3 pulsing">
+              <span className="text-white font-bold">2</span>
+            </div>
+            <p className="text-white">Create an Account</p>
+          </div>
+          <div className="card p-4 flex flex-col items-center text-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center mb-3 pulsing">
+              <span className="text-white font-bold">3</span>
+            </div>
+            <p className="text-white">Enter Property Address</p>
+          </div>
+          <div className="card p-4 flex flex-col items-center text-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center mb-3 pulsing">
+              <span className="text-white font-bold">4</span>
+            </div>
+            <p className="text-white">Take Photos & Floorplan</p>
+          </div>
+          <div className="card p-4 flex flex-col items-center text-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center mb-3 pulsing">
+              <span className="text-white font-bold">5</span>
+            </div>
+            <p className="text-white">Select Add-Ons</p>
+          </div>
+          <div className="card p-4 flex flex-col items-center text-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center mb-3 pulsing">
+              <span className="text-white font-bold">6</span>
+            </div>
+            <p className="text-white">Submit Order</p>
+          </div>
+          <div className="card p-4 flex flex-col items-center text-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple flex items-center justify-center mb-3 pulsing">
+              <span className="text-white font-bold">7</span>
+            </div>
+            <p className="text-white">Get Edited Photos in &lt; 12 hours!</p>
+          </div>
+        </div>
+      </section>
+
       {/* Services Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="container mx-auto max-w-7xl">
@@ -313,7 +364,7 @@ const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Service 1: Standard Editing */}
             <div className="card hover:animate-pulse-slow">
-              <div className="h-64 mb-4">
+              <div className="h-64 mb-4 relative w-full pulsing">
                 <BeforeAfterSlider
                   beforeImage="/assets/before-after/Editing_Before.JPEG"
                   afterImage="/assets/before-after/Editing_After.JPEG"
@@ -335,7 +386,7 @@ const HomePage: React.FC = () => {
 
             {/* Service 2: Virtual Staging */}
             <div className="card hover:animate-pulse-slow">
-              <div className="h-64 mb-4">
+              <div className="h-64 mb-4 relative w-full pulsing">
                 <BeforeAfterSlider
                   beforeImage="/assets/before-after/VirtualStaging_Before.JPEG"
                   afterImage="/assets/before-after/VirtualStaging_After.JPEG"
@@ -357,7 +408,7 @@ const HomePage: React.FC = () => {
 
             {/* Service 3: Twilight Conversion */}
             <div className="card hover:animate-pulse-slow">
-              <div className="h-64 mb-4">
+              <div className="h-64 mb-4 relative w-full pulsing">
                 <BeforeAfterSlider
                   beforeImage="/assets/before-after/Twilight_Before.JPG"
                   afterImage="/assets/before-after/Twilight_After.JPG"
@@ -379,7 +430,7 @@ const HomePage: React.FC = () => {
 
             {/* Service 4: Decluttering */}
             <div className="card hover:animate-pulse-slow">
-              <div className="h-64 mb-4">
+              <div className="h-64 mb-4 relative w-full pulsing">
                 <BeforeAfterSlider
                   beforeImage="/assets/before-after/Decluttering_Before.JPEG"
                   afterImage="/assets/before-after/Decluttering_After.JPEG"
