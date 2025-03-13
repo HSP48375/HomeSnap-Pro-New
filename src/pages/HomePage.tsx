@@ -166,7 +166,7 @@ const HomePage: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
               {/* Step 1 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-50">1</div>
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">1</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">📱</span>
@@ -181,7 +181,7 @@ const HomePage: React.FC = () => {
 
               {/* Step 2 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-50">2</div>
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">2</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">👤</span>
@@ -196,7 +196,7 @@ const HomePage: React.FC = () => {
 
               {/* Step 3 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-50">3</div>
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">3</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">🏡</span>
@@ -211,7 +211,7 @@ const HomePage: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
               {/* Step 4 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-50">4</div>
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">4</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">📸</span>
@@ -226,7 +226,7 @@ const HomePage: React.FC = () => {
 
               {/* Step 5 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-50">5</div>
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">5</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">✨</span>
@@ -241,7 +241,7 @@ const HomePage: React.FC = () => {
 
               {/* Step 6 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-50">6</div>
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[100]">6</div>
                 <div className="text-center mb-3">
                   <div className="roadmap-icon-container mb-4">
                     <span className="text-3xl">✅</span>
