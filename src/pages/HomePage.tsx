@@ -75,7 +75,7 @@ const HomePage: React.FC = () => {
       clearInterval(intervalRef);
       clearInterval(headlineIntervalRef);
     };
-  }, [activeWordIndex]);
+  }, [activeWordIndex, spinningWords.length, headlines.length]);
 
   const renderHeadlineWithHighlight = (text: string, highlight: string) => {
     if (!text.includes(highlight)) return text;

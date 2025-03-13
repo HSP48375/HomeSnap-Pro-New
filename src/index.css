@@ -238,9 +238,28 @@ nav + div {
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
+.word-rotation-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+  min-width: 80px;
+  text-align: left;
+  height: 30px;
+}
+
+.word-rotation {
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  text-align: left;
+}
+
 .word-rotation.active {
   opacity: 1;
   transform: translateY(0);
+  animation: pulse-glow 2s infinite;
 }
 
 .word-rotation.exit {
@@ -252,10 +271,6 @@ nav + div {
 @keyframes pulse-glow {
   0%, 100% { text-shadow: 0 0 8px rgba(255, 61, 255, 0.4); }
   50% { text-shadow: 0 0 15px rgba(0, 238, 255, 0.6); }
-}
-
-.word-rotation.active {
-  animation: pulse-glow 2s infinite;
 }
 
 /* BeforeAfter Slider Styles */
