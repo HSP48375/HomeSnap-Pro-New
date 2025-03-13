@@ -1,0 +1,139 @@
+It looks like there are multiple issues with the syntax and styles that need fixing in Replit. Here’s what I’ll have Replit do:
+
+Fixes Needed:
+Syntax Error in HomePage.tsx
+
+Move comments outside JSX attributes.
+Ensure style={{ ... }} is correctly formatted.
+Update Color Theme
+
+Replace the pink-to-blue gradient with the cyber-tech color scheme you uploaded.
+Fix Image Scaling in Before/After Sliders
+
+Ensure full images are visible instead of being zoomed in.
+Pulsing Effect
+
+Add a pulsing ripple effect to key elements.
+Replace the 'Amateur vs. Professional' Section
+
+Remove that section and add a "How It Works" step-by-step roadmap using animations.
+Ensure Tailwind Configuration Matches
+
+Update tailwind.config.js to reflect new styles.
+I’ll now trigger Replit to fix all of this! 🚀
+
+It looks like I can't directly fix this in Replit, but here's exactly what you need to do to make all the necessary changes.
+
+1️⃣ Fix Syntax Error in HomePage.tsx
+Error Location:
+tsx
+Copy
+Edit
+className="floating-orb floating-orb-purple w-80 h-80" {/* Changed color */}
+style={{
+    bottom: '15%',
+    right: '15%',
+✅ Fixed Code:
+tsx
+Copy
+Edit
+<div 
+  className="floating-orb floating-orb-purple w-80 h-80" 
+  style={{
+    bottom: '15%',
+    right: '15%'
+  }}
+>
+  {/* Changed color */}
+</div>
+2️⃣ Update the Color Theme Across the App
+Tailwind Configuration (tailwind.config.js)
+Change the theme colors:
+
+js
+Copy
+Edit
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: "#00EEFF", // Cyan
+        secondary: "#9D00FF", // Neon Purple
+        accent: "#FF00C1", // Magenta
+        background: "#0A1A2F", // Deep Blue
+      },
+      animation: {
+        pulse: "pulse 2s infinite alternate",
+      },
+      keyframes: {
+        pulse: {
+          "0%": { boxShadow: "0 0 5px rgba(0, 200, 255, 0.6), 0 0 10px rgba(157, 0, 255, 0.5)" },
+          "50%": { boxShadow: "0 0 15px rgba(0, 200, 255, 0.8), 0 0 30px rgba(157, 0, 255, 0.6)" },
+          "100%": { boxShadow: "0 0 5px rgba(0, 200, 255, 0.6), 0 0 10px rgba(157, 0, 255, 0.5)" },
+        },
+      },
+    },
+  },
+  plugins: [],
+};
+3️⃣ Fix Image Scaling in Before/After Sliders
+Fix in BeforeAfterSlider.tsx
+Change:
+
+tsx
+Copy
+Edit
+<img src={beforeImage} className="w-full h-full object-cover" />
+To:
+
+tsx
+Copy
+Edit
+<img src={beforeImage} className="w-full h-auto object-contain" />
+4️⃣ Add a Pulsing Effect
+CSS (index.css)
+css
+Copy
+Edit
+@keyframes rippleEffect {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.pulsing {
+  animation: rippleEffect 2s infinite;
+}
+5️⃣ Replace the ‘Amateur vs. Professional’ Section with a "How It Works" Roadmap
+Replace in HomePage.tsx
+tsx
+Copy
+Edit
+<section className="how-it-works">
+  <h2 className="text-center text-white text-3xl font-bold">How It Works</h2>
+  <div className="steps-container">
+    <div className="step">1. Download the App</div>
+    <div className="step">2. Create an Account</div>
+    <div className="step">3. Enter Property Address</div>
+    <div className="step">4. Take Photos & Floorplan</div>
+    <div className="step">5. Select Add-Ons</div>
+    <div className="step">6. Submit Order</div>
+    <div className="step">7. Get Edited Photos in < 12 hours!</div>
+  </div>
+</section>
+6️⃣ Ensure Tailwind Is Recompiled
+Run:
+
+sh
+Copy
+Edit
+npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+That should completely fix everything and match your vision. 🚀 Let me know if any of these steps cause issues.
+
+
+
+
+
+
+
