@@ -440,22 +440,21 @@ nav + div {
 }
 
 .animate-pulse-slow {
+  animation: pulse-slow 3s infinite;
+}
 
 /* App store buttons styling */
 .store-button {
-  transition: all 0.2s ease;
-  filter: brightness(1);
+  display: inline-block;
+  transition: transform 0.2s ease;
+  height: 40px;
 }
 
 .store-button:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+  transform: scale(1.05);
 }
 
-.store-button:active {
-  filter: brightness(0.9);
-  transform: translateY(1px);
-}
-
-  animation: pulse-slow 3s infinite;
+.store-button img {
+  height: 40px;
+  width: auto;
 }
