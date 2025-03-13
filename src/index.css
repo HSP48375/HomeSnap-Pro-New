@@ -253,9 +253,20 @@ nav + div {
   position: relative;
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 200, 255, 0.2);
   height: 100%;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0A1A2F;
+  border: 1px solid rgba(0, 200, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.compare-slider-container:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(157, 0, 255, 0.3);
+  border: 1px solid rgba(0, 200, 255, 0.3);
 }
 
 .compare-slider-label {

@@ -84,18 +84,75 @@ const HomePage: React.FC = () => {
     return (
       <>
         {parts[0]}
-        <span className="gradient-text-accent font-bold">{highlight}</span>
+        <span className="text-purple-500 font-bold">{highlight}</span>
         {parts[1]}
       </>
     );
   };
 
+  useEffect(() => {
+    const spinningWordsInterval = setInterval(() => {
+      setPrevWordIndex(activeWordIndex);
+      setActiveWordIndex(prev => (prev + 1) % spinningWords.length);
+    }, 3000);
+
+    return () => clearInterval(spinningWordsInterval);
+  }, [activeWordIndex, spinningWords.length]);
+
+  useEffect(() => {
+    const headlineInterval = setInterval(() => {
+      setCurrentHeadlineIndex(prev => (prev + 1) % headlines.length);
+    }, 5000);
+
+    return () => clearInterval(headlineInterval);
+  }, [headlines.length]);
+
+  // Add ripple effect to buttons
+  useEffect(() => {
+    const buttons = document.querySelectorAll('.btn.ripple-effect');
+
+    const handleClick = (e) => {
+      const button = e.currentTarget;
+
+      // Create ripple element
+      const ripple = document.createElement('span');
+      button.appendChild(ripple);
+
+      // Position the ripple
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+
+      // Style the ripple
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      ripple.classList.add('ripple');
+
+      // Remove the ripple after animation completes
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    };
+
+    buttons.forEach(button => {
+      button.addEventListener('click', handleClick);
+    });
+
+    return () => {
+      buttons.forEach(button => {
+        button.removeEventListener('click', handleClick);
+      });
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-700"> {/* Added background gradient */}
       {/* Hero Section */}
       <div className="relative overflow-hidden py-12 md:py-16">
-        {/* Floating orbs */}
-        <div 
+        {/* Floating orbs (modified for color) */}
+        <div
           className="floating-orb floating-orb-blue w-96 h-96"
           style={{
             top: '10%',
@@ -104,8 +161,8 @@ const HomePage: React.FC = () => {
             animation: 'float 8s ease-in-out infinite'
           }}
         ></div>
-        <div 
-          className="floating-orb floating-orb-pink w-80 h-80"
+        <div
+          className="floating-orb floating-orb-purple w-80 h-80" {/* Changed color */}
           style={{
             bottom: '15%',
             right: '15%',
@@ -119,8 +176,8 @@ const HomePage: React.FC = () => {
             {/* Main Logo & Headline */}
             <div className="mb-6">
               <div className="flex items-center justify-center">
-                <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent" />
-                <h1 className="text-5xl md:text-7xl font-bold gradient-text-accent ml-4">HomeSnap Pro</h1>
+                <Camera className="h-12 w-12 md:h-16 md:w-16 text-white text-purple-500" /> {/* Changed color */}
+                <h1 className="text-5xl md:text-7xl font-bold text-purple-500 ml-4">HomeSnap Pro</h1> {/* Changed color */}
               </div>
             </div>
 
@@ -129,12 +186,9 @@ const HomePage: React.FC = () => {
               <span>You Snap, We Edit, You</span>
               <span className="word-rotation-container">
                 {spinningWords.map((word, index) => (
-                  <span 
-                    key={word} 
-                    className={`word-rotation gradient-text-accent ${
-                      index === activeWordIndex ? 'active' : 
-                      index === prevWordIndex ? 'exit' : ''
-                    }`}
+                  <span
+                    key={word}
+                    className={`word-rotation text-purple-500 ${index === activeWordIndex ? 'active' : index === prevWordIndex ? 'exit' : ''}`}
                   >
                     {word}
                   </span>
@@ -143,10 +197,10 @@ const HomePage: React.FC = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/upload" className="btn btn-primary">
+              <Link to="/upload" className="btn btn-primary ripple-effect"> {/* Added ripple class */}
                 Start Taking Photos Now
               </Link>
-              <Link to="/tutorials" className="btn btn-outline">
+              <Link to="/tutorials" className="btn btn-outline ripple-effect"> {/* Added ripple class */}
                 See How It Works
               </Link>
             </div>
@@ -178,9 +232,9 @@ const HomePage: React.FC = () => {
                   <div className="relative h-full">
                     {/* Camera Preview */}
                     <div className="absolute inset-0">
-                      <img 
-                        src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2053&q=80" 
-                        alt="Los Angeles luxury home exterior" 
+                      <img
+                        src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2053&q=80"
+                        alt="Los Angeles luxury home exterior"
                         className="w-full h-full object-cover"
                       />
 
@@ -203,7 +257,7 @@ const HomePage: React.FC = () => {
                       {/* Controls */}
                       <div className="relative flex items-center justify-center py-6">
                         {/* Shutter Button */}
-                        <button className="relative group">
+                        <button className="relative group ripple-effect"> {/* Added ripple class */}
                           {/* Outer ring */}
                           <div className="w-20 h-20 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center transition-transform transform group-active:scale-95">
                             {/* Inner circle */}
@@ -237,7 +291,7 @@ const HomePage: React.FC = () => {
 
           {/* CTA Button */}
           <div className="text-center mt-12">
-            <Link to="/upload" className="btn btn-primary text-lg px-8 py-3">
+            <Link to="/upload" className="btn btn-primary text-lg px-8 py-3 ripple-effect"> {/* Added ripple class */}
               Start Taking Photos Now
             </Link>
           </div>
@@ -245,94 +299,108 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Services Section */}
-      <div className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Our Services</h2>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              We offer a range of professional editing services to make your property photos stand out in the market.
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-purple-500 mb-4"> {/* Changed color */}
+              Our Services
+            </h2>
+            <p className="text-lg text-white/70">
+              Transform your property photos with our professional editing services
             </p>
+            <div className="h-1 w-32 mx-auto bg-gradient-to-r from-purple-500 via-pink-500 to-magenta-500 mt-6 rounded-full"></div> {/* Added gradient */}
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Service 1 - Standard Editing */}
-            <div className="card hover:scale-105 transition-all duration-300">
-              <div className="mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Service 1: Standard Editing */}
+            <div className="card hover:animate-pulse-slow">
+              <div className="h-64 mb-4">
                 <BeforeAfterSlider
                   beforeImage="/assets/before-after/Editing_Before.JPEG"
                   afterImage="/assets/before-after/Editing_After.JPEG"
                   beforeLabel="Before"
                   afterLabel="After"
-                  height={250}
+                  height={300}
                   isBeforeDark={true}
                 />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Standard Editing</h3>
-              <p className="text-white/80 text-center">
-                Professional color correction, exposure balance, and lens correction for perfect property photos.
+              <h3 className="text-xl font-bold mb-2 text-purple-500">Standard Editing</h3> {/* Changed color */}
+              <p className="text-white/70 mb-4">
+                Color correction, exposure balancing, vertical alignment, and sky replacement.
               </p>
-              <p className="text-center mt-4 text-white font-semibold">$1.50 per photo</p>
+              <div className="flex items-center">
+                <p className="text-white text-lg font-bold">$1.50</p>
+                <span className="text-white/60 ml-1">per photo</span>
+              </div>
             </div>
 
-            {/* Service 2 - Virtual Staging */}
-            <div className="card hover:scale-105 transition-all duration-300">
-              <div className="mb-4">
+            {/* Service 2: Virtual Staging */}
+            <div className="card hover:animate-pulse-slow">
+              <div className="h-64 mb-4">
                 <BeforeAfterSlider
                   beforeImage="/assets/before-after/VirtualStaging_Before.JPEG"
                   afterImage="/assets/before-after/VirtualStaging_After.JPEG"
                   beforeLabel="Empty"
                   afterLabel="Staged"
-                  height={250}
+                  height={300}
                   isVirtualStaging={true}
                 />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Virtual Staging</h3>
-              <p className="text-white/80 text-center">
-                Transform empty rooms with beautiful virtual furniture to help buyers visualize the space.
+              <h3 className="text-xl font-bold mb-2 text-pink-500">Virtual Staging</h3> {/* Changed color */}
+              <p className="text-white/70 mb-4">
+                Transform empty rooms with virtual furniture and decor for better visualization.
               </p>
-              <p className="text-center mt-4 text-white font-semibold">$10.00 per photo</p>
+              <div className="flex items-center">
+                <p className="text-white text-lg font-bold">$10.00</p>
+                <span className="text-white/60 ml-1">per photo</span>
+              </div>
             </div>
 
-            {/* Service 3 - Twilight Conversion */}
-            <div className="card hover:scale-105 transition-all duration-300">
-              <div className="mb-4">
+            {/* Service 3: Twilight Conversion */}
+            <div className="card hover:animate-pulse-slow">
+              <div className="h-64 mb-4">
                 <BeforeAfterSlider
                   beforeImage="/assets/before-after/Twilight_Before.JPG"
                   afterImage="/assets/before-after/Twilight_After.JPG"
                   beforeLabel="Day"
                   afterLabel="Twilight"
-                  height={250}
+                  height={300}
                   isTwilight={true}
                 />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Twilight Conversion</h3>
-              <p className="text-white/80 text-center">
-                Turn ordinary daylight exteriors into stunning twilight images with dramatic lighting.
+              <h3 className="text-xl font-bold mb-2 text-magenta-500">Twilight Conversion</h3> {/* Changed color */}
+              <p className="text-white/70 mb-4">
+                Convert daytime exterior shots into stunning twilight/dusk images.
               </p>
-              <p className="text-center mt-4 text-white font-semibold">$3.99 per photo</p>
+              <div className="flex items-center">
+                <p className="text-white text-lg font-bold">$3.99</p>
+                <span className="text-white/60 ml-1">per photo</span>
+              </div>
             </div>
 
-            {/* Service 4 - Decluttering */}
-            <div className="card hover:scale-105 transition-all duration-300">
-              <div className="mb-4">
+            {/* Service 4: Decluttering */}
+            <div className="card hover:animate-pulse-slow">
+              <div className="h-64 mb-4">
                 <BeforeAfterSlider
                   beforeImage="/assets/before-after/Decluttering_Before.JPEG"
                   afterImage="/assets/before-after/Decluttering_After.JPEG"
                   beforeLabel="Cluttered"
                   afterLabel="Clean"
-                  height={250}
+                  height={300}
                   isDecluttering={true}
                 />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-center gradient-text">Decluttering</h3>
-              <p className="text-white/80 text-center">
-                Remove distracting elements and virtually tidy spaces for cleaner, more appealing photos.
+              <h3 className="text-xl font-bold mb-2 text-purple-500">Decluttering</h3> {/* Changed color */}
+              <p className="text-white/70 mb-4">
+                Digital removal of objects, clutter, and eyesores from property photos.
               </p>
-              <p className="text-center mt-4 text-white font-semibold">$2.99 per photo</p>
+              <div className="flex items-center">
+                <p className="text-white text-lg font-bold">$2.99</p>
+                <span className="text-white/60 ml-1">per photo</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Trust Signals Section */}
       <div className="py-8 md:py-12 bg-black/30">
@@ -357,17 +425,17 @@ const HomePage: React.FC = () => {
       {/* CTA Section */}
       <div className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="card bg-gradient-to-br from-black to-black/80 border border-white/5">
+          <div className="card bg-gradient-to-br from-blue-900 to-blue-700 border border-white/5"> {/* Updated background */}
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Ready to Transform Your Property Photos?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-purple-500 mb-4">Ready to Transform Your Property Photos?</h2> {/* Changed color */}
               <p className="text-lg text-white/80 max-w-2xl mx-auto mb-8">
                 Join thousands of real estate professionals who trust HomeSnap Pro for their photo editing needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/upload" className="btn btn-primary">
+                <Link to="/upload" className="btn btn-primary ripple-effect"> {/* Added ripple class */}
                   Start Taking Photos Now
                 </Link>
-                <Link to="/tutorials" className="btn btn-outline">
+                <Link to="/tutorials" className="btn btn-outline ripple-effect"> {/* Added ripple class */}
                   See How It Works
                 </Link>
               </div>
