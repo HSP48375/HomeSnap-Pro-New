@@ -1,0 +1,41 @@
+🔹 Step 1: Improve Roadmap Layout & Flow
+Redesign the "How It Works" roadmap to have a horizontal step-by-step flow instead of the current layout.
+Each step should be connected sequentially with smooth, glowing arrows or lines to make the flow clear.
+Ensure readability—each step should be easy to scan at a glance.
+🔹 Step 2: Modernize Icons & Styling
+Replace outdated icons with modern vector-style icons that look professional and sleek.
+Apply subtle hover animations (e.g., a small glow or pulse effect) when users hover over a step.
+🔹 Step 3: Enhance Visual Appeal
+Increase contrast between the background and the steps—use cyber-tech gradients or glowing effects for depth.
+The final step (Receive Photos in <12 Hours) should be more visually prominent—make it stand out with a special effect, like a larger size or glowing border.
+🔹 Step 4: Improve Background & Transitions
+Add a slight neon glow behind each step for a futuristic, high-tech feel.
+Make the path between steps animated (if possible) to guide the user’s eye smoothly.
+🚀 Run these updates first and review the results before making further tweaks. Let’s see how Replit handles it!
+
+You said:
+they need to have what do they call it? Like that glass geomorphic effect to the boxes? That could look better
+ChatGPT said:
+Replit Prompt (Adding Glassmorphism Effect & Refinements)
+🔹 Step 5: Apply Glassmorphism for a Sleek Look
+
+Update the roadmap step boxes to use a glassmorphism effect (semi-transparent frosted glass look).
+Apply a blurred background with transparency to create depth while keeping readability.
+Add a subtle glow or neon border around each step to enhance the cyber-tech aesthetic.
+🔹 Step 6: Refine Layout & Flow
+4. Ensure all steps are evenly spaced and connected with smooth animated arrows.
+5. The final step (Receive Stunning Photos in <12 Hours) should be the most visually prominent—make it stand out.
+
+🚀 Apply these refinements and let’s review!
+
+You said:
+and make sure it's all in poppins font
+ChatGPT said:
+Replit Prompt (Final Refinements & Font Update)
+🔹 Step 7: Implement Glassmorphism & Poppins Font
+
+Apply a glassmorphism effect to the roadmap step boxes—semi-transparent, blurred background, with a soft glowing border.
+Ensure all text throughout the roadmap is in Poppins font for brand consistency.
+Adjust the spacing and alignment to make the steps flow logically and clearly, with smooth animated arrows connecting each step.
+🔹 Step 8: Highlight the Final Step
+4. The last step (Receive Stunning Photos in <12 Hours) should stand out the most—enhance its glow or use a unique effect to make it pop.
