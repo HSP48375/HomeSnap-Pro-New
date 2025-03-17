@@ -118,19 +118,13 @@ const HomePage: React.FC = () => {
           <div className="text-center">
             {/* Main Logo & Headline */}
             <div className="mb-6">
+              <p className="text-xl md:text-2xl text-white/80 mb-4">🔥 HomeSnap Pro: Your Secret Weapon</p>
               <div className="flex items-center justify-center gap-3 max-w-[100%]">
                 <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent flex-shrink-0" />
-                <h1 className="text-4xl md:text-6xl font-bold gradient-text-accent whitespace-nowrap">The Future of Real Estate Photography is Here.</h1>
+                <h1 className="text-4xl md:text-6xl font-bold gradient-text-accent whitespace-nowrap">📸 Your Smartphone. Stunning Listings. Zero Effort.</h1>
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold gradient-text-accent mt-6 text-center">And YOU Are the Pro.</h2>
+              <h2 className="text-3xl md:text-5xl font-bold gradient-text-accent mt-6 text-center">💰 Shoot like a pro, sell like a boss. No experience needed.</h2>
             </div>
-
-            {/* Subheadline with Dynamic Rotating Word */}
-            <p
-              className="mt-12 text-xl md:text-2xl text-white/80 text-center max-w-2xl mx-auto animate-fadeIn"
-            >
-              Fast. Easy. Flawless. Dominate Your Market & Become the Go-To Agent.
-            </p>
 
             <div
               className="store-buttons mt-8 animate-fadeIn"
