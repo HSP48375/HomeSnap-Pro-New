@@ -320,38 +320,21 @@ nav + div {
 /* Word Rotation Animation */
 .word-rotation-container {
   position: relative;
-  display: inline-block;
-  height: 1.5em;
-  margin-left: 0.5rem;
-  vertical-align: middle;
-  overflow: visible;
-}
-
-.word-rotation {
-  position: absolute;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
-  mix-blend-mode: lighten;
-}
-
-.word-rotation-container {
-  position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: baseline;
   margin-left: 8px;
   min-width: 80px;
-  padding: 0.5em;
+  vertical-align: baseline;
   overflow: visible;
 }
 
 .word-rotation {
   position: absolute;
-  left: 0;
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease;
-  line-height: normal;
-
+  line-height: inherit;
+  vertical-align: baseline;
   z-index: 1;
 }
 
