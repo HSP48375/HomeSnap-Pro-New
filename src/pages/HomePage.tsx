@@ -456,19 +456,17 @@ const HomePage: React.FC = () => {
               <p className="text-xl md:text-2xl text-white/80 text-center mb-12">
                 The <span className="gradient-text">future</span> of real estate photography is here—fast, easy, and stunning.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#" className="w-48">
+              <div className="store-buttons">
+                <a href="#" className="store-button">
                   <img 
                     src="/assets/app-store-badge.svg" 
-                    alt="Download on App Store" 
-                    className="w-full hover:opacity-90 transition-opacity"
+                    alt="Download on the App Store" 
                   />
                 </a>
-                <a href="#" className="w-48">
+                <a href="#" className="store-button">
                   <img 
                     src="/assets/google-play-badge.svg" 
                     alt="Get it on Google Play" 
-                    className="w-full hover:opacity-90 transition-opacity"
                   />
                 </a>
               </div>
