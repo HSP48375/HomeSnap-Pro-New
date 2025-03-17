@@ -2,37 +2,50 @@ import React from 'react';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 interface BeforeAfterSliderProps {
-  before: string;
-  after: string;
+  beforeImage: string;
+  afterImage: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+  height?: number;
 }
 
-const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ before, after }) => {
+const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ 
+  beforeImage,
+  afterImage,
+  beforeLabel = "Before",
+  afterLabel = "After",
+  height = 250
+}) => {
   return (
-    <ReactCompareSlider
-      itemOne={
-        <ReactCompareSliderImage
-          src={before}
-          alt="Before"
-          style={{ objectFit: 'contain', height: '100%', width: '100%' }}
-          onError={() => console.log('Failed to load before image:', before)}
-        />
-      }
-      itemTwo={
-        <ReactCompareSliderImage
-          src={after}
-          alt="After"
-          style={{ objectFit: 'contain', height: '100%', width: '100%' }}
-          onError={() => console.log('Failed to load after image:', after)}
-        />
-      }
-      position={50}
-      style={{
-        height: '100%',
-        width: '100%',
-        borderRadius: '0.75rem',
-        backgroundColor: '#0a0a14',
-      }}
-    />
+    <div className="relative" style={{ height: `${height}px` }}>
+      <ReactCompareSlider
+        itemOne={
+          <ReactCompareSliderImage
+            src={beforeImage}
+            alt={beforeLabel}
+            style={{ objectFit: 'cover', height: `${height}px`, width: '100%' }}
+            onError={() => console.log('Failed to load before image:', beforeImage)}
+          />
+        }
+        itemTwo={
+          <ReactCompareSliderImage
+            src={afterImage}
+            alt={afterLabel}
+            style={{ objectFit: 'cover', height: `${height}px`, width: '100%' }}
+            onError={() => console.log('Failed to load after image:', afterImage)}
+          />
+        }
+        position={50}
+        style={{
+          height: `${height}px`,
+          width: '100%',
+          borderRadius: '0.75rem',
+          backgroundColor: '#0a0a14',
+        }}
+      />
+      <div className="absolute top-4 left-4 compare-slider-label">{beforeLabel}</div>
+      <div className="absolute top-4 right-4 compare-slider-label">{afterLabel}</div>
+    </div>
   );
 };
 
