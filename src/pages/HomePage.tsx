@@ -357,25 +357,6 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Trust Signals Section */}
-      <div className="py-8 md:py-12 bg-black/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-            <div className="flex items-center justify-center">
-              <Shield className="h-6 w-6 text-white mr-2" />
-              <span className="text-white/80">Secure Payments via Stripe</span>
-            </div>
-            <div className="flex items-center justify-center">
-              <CheckCircle className="h-6 w-6 text-white mr-2" />
-              <span className="text-white/80">100% Satisfaction Guarantee</span>
-            </div>
-            <div className="flex items-center justify-center">
-              <Lock className="h-6 w-6 text-white mr-2" />
-              <span className="text-white/80">Privacy Protected</span>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="card bg-gradient-to-br from-black to-black/80 border border-white/5">
