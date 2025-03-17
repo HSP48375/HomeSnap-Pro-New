@@ -118,16 +118,13 @@ const HomePage: React.FC = () => {
           <div className="text-center">
             {/* Main Logo & Headline */}
             <div className="mb-6">
-              <p className="text-xl md:text-2xl text-white/80 mb-4">🔥 HomeSnap Pro: Your Secret Weapon</p>
-              <div className="flex items-center justify-center gap-3 max-w-[100%]">
-                <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent flex-shrink-0" />
-                <h1 className="text-4xl md:text-6xl font-bold gradient-text-accent whitespace-nowrap">📸 Your Smartphone. Stunning Listings. Zero Effort.</h1>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-bold gradient-text-accent mt-6 text-center">💰 Shoot like a pro, sell like a boss. No experience needed.</h2>
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">HomeSnap Pro: Your Secret Weapon</h1>
+              <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Shoot Like a Pro. Sell Like a Boss.</h2>
+              <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent mt-2">Using Just Your Smartphone.</h2>
             </div>
 
             <div
-              className="store-buttons mt-8 animate-fadeIn"
+              className="store-buttons mt-12 animate-fadeIn"
             >
               <a href="#" className="store-button">
                 <img src="/assets/app-store-badge.svg" alt="Download on the App Store" className="h-10" />
@@ -253,6 +250,8 @@ const HomePage: React.FC = () => {
               </div>
             </div>
 
+            {/* Horizontal Flow Steps 4-6 */}
+            
             {/* Final Highlighted Step */}
             <div className="max-w-xl mx-auto">
               {/* This section is already handled in the previous changes */}
