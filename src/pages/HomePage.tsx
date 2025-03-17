@@ -395,12 +395,20 @@ const HomePage: React.FC = () => {
                 Join thousands of real estate professionals who trust HomeSnap Pro for their photo editing needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/upload" className="btn btn-primary">
-                  Start Taking Photos Now
-                </Link>
-                <Link to="/tutorials" className="btn btn-outline">
-                  See How It Works
-                </Link>
+                <a href="#" className="w-48">
+                  <img 
+                    src="/assets/app-store-badge.svg" 
+                    alt="Download on App Store" 
+                    className="w-full hover:opacity-90 transition-opacity"
+                  />
+                </a>
+                <a href="#" className="w-48">
+                  <img 
+                    src="/assets/google-play-badge.svg" 
+                    alt="Get it on Google Play" 
+                    className="w-full hover:opacity-90 transition-opacity"
+                  />
+                </a>
               </div>
             </div>
           </div>
