@@ -122,6 +122,14 @@ const HomePage: React.FC = () => {
                 <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent" />
                 <h1 className="text-5xl md:text-7xl font-bold gradient-text-accent">HomeSnap Pro</h1>
               </div>
+              <div className="store-buttons mt-6">
+                <a href="#" className="store-button">
+                  <img src="/assets/app-store-badge.svg" alt="Download on the App Store" className="h-10" />
+                </a>
+                <a href="#" className="store-button">
+                  <img src="/assets/google-play-badge.svg" alt="Get it on Google Play" className="h-10" />
+                </a>
+              </div>
             </div>
 
             {/* Subheadline with Dynamic Rotating Word */}
