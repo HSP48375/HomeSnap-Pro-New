@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Camera, ArrowRight, CheckCircle, Zap, Image, Shield, Star, User, Lock } from 'lucide-react';
 import BeforeAfterSlider from '../components/ui/BeforeAfterSlider';
+import { motion } from 'framer-motion';
 
 const HomePage: React.FC = () => {
   const spinningWords = ["Impress", "Close", "Sell"];
@@ -95,7 +96,7 @@ const HomePage: React.FC = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden py-12 md:py-16">
         {/* Floating orbs */}
-        <div 
+        <div
           className="floating-orb floating-orb-blue w-96 h-96"
           style={{
             top: '10%',
@@ -104,7 +105,7 @@ const HomePage: React.FC = () => {
             animation: 'float 8s ease-in-out infinite'
           }}
         ></div>
-        <div 
+        <div
           className="floating-orb floating-orb-pink w-80 h-80"
           style={{
             bottom: '15%',
@@ -122,42 +123,31 @@ const HomePage: React.FC = () => {
                 <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent" />
                 <h1 className="text-5xl md:text-7xl font-bold gradient-text-accent">HomeSnap Pro</h1>
               </div>
-              <div className="store-buttons mt-6">
-                <a href="#" className="store-button">
-                  <img src="/assets/app-store-badge.svg" alt="Download on the App Store" className="h-10" />
-                </a>
-                <a href="#" className="store-button">
-                  <img src="/assets/google-play-badge.svg" alt="Get it on Google Play" className="h-10" />
-                </a>
-              </div>
             </div>
 
             {/* Subheadline with Dynamic Rotating Word */}
-            <div className="text-xl md:text-2xl text-white/80 mb-12 text-center flex items-center justify-center flex-wrap">
-              <span>You Snap, We Edit, You</span>
-              <span className="word-rotation-container">
-                {spinningWords.map((word, index) => (
-                  <span 
-                    key={word} 
-                    className={`word-rotation gradient-text-accent ${
-                      index === activeWordIndex ? 'active' : 
-                      index === prevWordIndex ? 'exit' : ''
-                    }`}
-                  >
-                    {word}
-                  </span>
-                ))}
-              </span>
-            </div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mt-8 text-xl md:text-2xl text-white/80 text-center max-w-2xl mx-auto"
+            >
+              You Snap, We Edit, You Impress
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/upload" className="btn btn-primary">
-                Start Taking Photos Now
-              </Link>
-              <Link to="/tutorials" className="btn btn-outline">
-                See How It Works
-              </Link>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="store-buttons mt-8"
+            >
+              <a href="#" className="store-button">
+                <img src="/assets/app-store-badge.svg" alt="Download on the App Store" className="h-10" />
+              </a>
+              <a href="#" className="store-button">
+                <img src="/assets/google-play-badge.svg" alt="Get it on Google Play" className="h-10" />
+              </a>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -466,15 +456,15 @@ const HomePage: React.FC = () => {
               </p>
               <div className="store-buttons">
                 <a href="#" className="store-button">
-                  <img 
-                    src="/assets/app-store-badge.svg" 
-                    alt="Download on the App Store" 
+                  <img
+                    src="/assets/app-store-badge.svg"
+                    alt="Download on the App Store"
                   />
                 </a>
                 <a href="#" className="store-button">
-                  <img 
-                    src="/assets/google-play-badge.svg" 
-                    alt="Get it on Google Play" 
+                  <img
+                    src="/assets/google-play-badge.svg"
+                    alt="Get it on Google Play"
                   />
                 </a>
               </div>
