@@ -324,14 +324,15 @@ nav + div {
   height: 1.5em;
   margin-left: 0.5rem;
   vertical-align: middle;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .word-rotation {
   position: absolute;
   opacity: 0;
   transform: translateY(20px);
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: all 0.5s ease;
+  mix-blend-mode: lighten;
 }
 
 .word-rotation-container {
@@ -340,7 +341,7 @@ nav + div {
   margin-left: 8px;
   min-width: 80px;
   padding: 0.5em;
-  isolation: isolate;
+  overflow: visible;
 }
 
 .word-rotation {
@@ -350,14 +351,18 @@ nav + div {
   transform: translateY(20px);
   transition: all 0.5s ease;
   line-height: normal;
-  filter: drop-shadow(0 0 8px rgba(255, 61, 255, 0.4));
+
   z-index: 1;
 }
 
 .word-rotation.active {
   opacity: 1;
   transform: translateY(0);
-  animation: text-glow 2s infinite;
+  text-shadow: 
+    0 0 20px rgba(255, 61, 255, 0.8),
+    0 0 40px rgba(255, 61, 255, 0.6),
+    0 0 60px rgba(255, 61, 255, 0.4),
+    0 0 80px rgba(255, 61, 255, 0.2);
 }
 
 .word-rotation.exit {
@@ -365,23 +370,7 @@ nav + div {
   transform: translateY(-20px);
 }
 
-/* Text-only glow effect for the active word */
-@keyframes text-glow {
-  0%, 100% { 
-    text-shadow: 
-      0 0 15px rgba(255, 61, 255, 0.9),
-      0 0 30px rgba(255, 61, 255, 0.7),
-      0 0 45px rgba(255, 61, 255, 0.5),
-      0 0 60px rgba(255, 61, 255, 0.3);
-  }
-  50% { 
-    text-shadow: 
-      0 0 20px rgba(0, 238, 255, 0.9),
-      0 0 35px rgba(0, 238, 255, 0.7),
-      0 0 50px rgba(0, 238, 255, 0.5),
-      0 0 65px rgba(0, 238, 255, 0.3);
-  }
-}
+
 
 @keyframes flow-animation {
   0% {
