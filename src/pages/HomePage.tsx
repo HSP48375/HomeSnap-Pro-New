@@ -118,7 +118,7 @@ const HomePage: React.FC = () => {
           <div className="text-center">
             {/* Main Logo & Headline */}
             <div className="mb-6">
-              <div className="flex items-center justify-center gap-3 -ml-8">
+              <div className="flex items-center justify-center gap-3 -ml-16">
                 <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent" />
                 <h1 className="text-5xl md:text-7xl font-bold gradient-text-accent">HomeSnap Pro</h1>
               </div>
