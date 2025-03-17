@@ -365,29 +365,23 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Hero Tagline */}
+      {/* Trust Signals Section */}
       <div className="py-8 md:py-12 bg-black/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl text-center text-white font-medium mb-8">
-            Turn Your Listings Into Buyer Magnets – No Expensive Gear Needed!
-          </h2>
-          <div className="flex justify-center gap-4">
-            <a href="#" className="w-48">
-              <img 
-                src="/assets/app-store-badge.png" 
-                alt="Download on App Store" 
-                className="w-full hover:opacity-90 transition-opacity"
-              />
-            </a>
-            <a href="#" className="w-48">
-              <img 
-                src="/assets/google-play-badge.png" 
-                alt="Get it on Google Play" 
-                className="w-full hover:opacity-90 transition-opacity"
-              />
-            </a>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            <div className="flex items-center justify-center">
+              <Shield className="h-6 w-6 text-white mr-2" />
+              <span className="text-white/80">Secure Payments via Stripe</span>
+            </div>
+            <div className="flex items-center justify-center">
+              <CheckCircle className="h-6 w-6 text-white mr-2" />
+              <span className="text-white/80">100% Satisfaction Guarantee</span>
+            </div>
+            <div className="flex items-center justify-center">
+              <Lock className="h-6 w-6 text-white mr-2" />
+              <span className="text-white/80">Privacy Protected</span>
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
