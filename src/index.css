@@ -358,7 +358,7 @@ nav + div {
 .word-rotation.active {
   opacity: 1;
   transform: translateY(0);
-  animation: pulse-glow 2s infinite;
+  animation: text-glow 2s infinite;
 }
 
 .word-rotation.exit {
@@ -366,15 +366,13 @@ nav + div {
   transform: translateY(-20px);
 }
 
-/* Add a pulsing glow effect to the active word */
-@keyframes pulse-glow {
+/* Text-only glow effect for the active word */
+@keyframes text-glow {
   0%, 100% { 
     text-shadow: 0 0 8px rgba(255, 61, 255, 0.4);
-    box-shadow: 0 0 8px rgba(255, 61, 255, 0.4);
   }
   50% { 
     text-shadow: 0 0 15px rgba(0, 238, 255, 0.6);
-    box-shadow: 0 0 15px rgba(0, 238, 255, 0.6);
   }
 }
 
