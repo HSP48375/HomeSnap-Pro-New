@@ -23,7 +23,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
           <ReactCompareSliderImage
             src={beforeImage}
             alt={beforeLabel}
-            style={{ objectFit: 'cover', height: `${height}px`, width: '100%' }}
+            style={{ objectFit: 'contain', height: `${height}px`, width: '100%' }}
             onError={() => console.log('Failed to load before image:', beforeImage)}
           />
         }
@@ -31,7 +31,7 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
           <ReactCompareSliderImage
             src={afterImage}
             alt={afterLabel}
-            style={{ objectFit: 'cover', height: `${height}px`, width: '100%' }}
+            style={{ objectFit: 'contain', height: `${height}px`, width: '100%' }}
             onError={() => console.log('Failed to load after image:', afterImage)}
           />
         }
