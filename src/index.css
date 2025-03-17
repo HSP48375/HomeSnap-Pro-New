@@ -450,11 +450,11 @@ nav + div {
     align-items: center;
     gap: 0.75rem;
   }
-  
+
   .store-button {
     height: 40px;
   }
-  
+
   .store-button img {
     height: 40px;
   }
@@ -501,4 +501,32 @@ nav + div {
     0 0 15px rgba(255, 255, 255, 0.9),
     0 0 25px rgba(255, 255, 255, 0.7),
     0 0 35px rgba(255, 255, 255, 0.5);
+}
+
+/* Add your global styles here */
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+.animate-slide-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

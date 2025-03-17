@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Camera, ArrowRight, CheckCircle, Zap, Image, Shield, Star, User, Lock } from 'lucide-react';
 import BeforeAfterSlider from '../components/ui/BeforeAfterSlider';
-import { motion } from 'framer-motion';
 
 const HomePage: React.FC = () => {
   const spinningWords = ["Impress", "Close", "Sell"];
@@ -126,20 +125,14 @@ const HomePage: React.FC = () => {
             </div>
 
             {/* Subheadline with Dynamic Rotating Word */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="mt-8 text-xl md:text-2xl text-white/80 text-center max-w-2xl mx-auto"
+            <p
+              className="mt-8 text-xl md:text-2xl text-white/80 text-center max-w-2xl mx-auto animate-fadeIn"
             >
               You Snap, We Edit, You Impress
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="store-buttons mt-8"
+            <div
+              className="store-buttons mt-8 animate-fadeIn"
             >
               <a href="#" className="store-button">
                 <img src="/assets/app-store-badge.svg" alt="Download on the App Store" className="h-10" />
@@ -147,7 +140,7 @@ const HomePage: React.FC = () => {
               <a href="#" className="store-button">
                 <img src="/assets/google-play-badge.svg" alt="Get it on Google Play" className="h-10" />
               </a>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
