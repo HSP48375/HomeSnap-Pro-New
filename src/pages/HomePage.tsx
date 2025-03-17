@@ -118,16 +118,16 @@ const HomePage: React.FC = () => {
           <div className="text-center">
             {/* Main Logo & Headline */}
             <div className="mb-6">
-              <div className="flex items-center justify-center gap-3 -ml-16">
+              <div className="flex items-center justify-center gap-3">
                 <Camera className="h-12 w-12 md:h-16 md:w-16 text-white gradient-text-accent" />
                 <h1 className="text-4xl md:text-6xl font-bold gradient-text-accent">The Future of Real Estate Photography is Here.</h1>
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold gradient-text-accent mt-4">And YOU Are the Pro.</h2>
+              <h2 className="text-3xl md:text-5xl font-bold gradient-text-accent mt-6">And YOU Are the Pro.</h2>
             </div>
 
             {/* Subheadline with Dynamic Rotating Word */}
             <p
-              className="mt-8 text-xl md:text-2xl text-white/80 text-center max-w-2xl mx-auto animate-fadeIn"
+              className="mt-12 text-xl md:text-2xl text-white/80 text-center max-w-2xl mx-auto animate-fadeIn"
             >
               Fast. Easy. Flawless. Dominate Your Market & Become the Go-To Agent.
             </p>
