@@ -336,13 +336,11 @@ nav + div {
 
 .word-rotation-container {
   position: relative;
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   margin-left: 8px;
   min-width: 80px;
-  text-align: left;
-  height: 1.2em;
-  vertical-align: baseline;
+  padding: 0.5em;
+  isolation: isolate;
 }
 
 .word-rotation {
@@ -351,8 +349,9 @@ nav + div {
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease;
-  text-align: left;
   line-height: normal;
+  filter: drop-shadow(0 0 8px rgba(255, 61, 255, 0.4));
+  z-index: 1;
 }
 
 .word-rotation.active {
