@@ -267,6 +267,66 @@ const HomePage: React.FC = () => {
               </div>
             </div>
 
+            {/* Horizontal Flow Steps 4-6 */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
+              {/* Step 4 */}
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">4</div>
+                <div className="text-center mb-3">
+                  <div className="roadmap-icon-container mb-4">
+                    <span className="text-3xl">📸</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Take Photos & Scan Floorplan</h3>
+                </div>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Follow our built-in guides for the best shots.</p>
+              </div>
+
+              {/* Arrow 3 */}
+              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
+
+              {/* Step 5 */}
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">5</div>
+                <div className="text-center mb-3">
+                  <div className="roadmap-icon-container mb-4">
+                    <span className="text-3xl">✨</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Select Add-Ons</h3>
+                </div>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Want an extra wow factor? Pick your enhancements.</p>
+              </div>
+
+              {/* Arrow 4 */}
+              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
+
+              {/* Step 6 */}
+              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
+                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">6</div>
+                <div className="text-center mb-3">
+                  <div className="roadmap-icon-container mb-4">
+                    <span className="text-3xl">✅</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Submit Your Order</h3>
+                </div>
+                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>One tap, and we'll handle the rest!</p>
+              </div>
+
+              {/* Arrow 5 */}
+              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
+
+              {/* Step 7 - Final Step */}
+              <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow overflow-visible" style={{ position: 'relative' }}>
+                <div className="absolute -top-4 -left-4 bg-gradient-to-r from-[#FF00C1] to-[#FF3DFF] text-white font-bold h-11 w-11 rounded-full flex items-center justify-center text-lg shadow-glow-pink" style={{ zIndex: 9999, position: 'absolute', pointerEvents: 'none' }}>7</div>
+                <div className="text-center mb-3">
+                  <div className="roadmap-icon-container mb-4" style={{ boxShadow: 'inset 0 0 20px rgba(255, 0, 193, 0.5)' }}>
+                    <span className="text-3xl">🚀</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white neon-text-magenta" style={{ fontFamily: 'Poppins, sans-serif' }}>Receive Stunning Photos</h3>
+                </div>
+                <p className="text-white/80 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Professionally edited in <span className="font-bold gradient-text-accent">less than 12 hours!</span></p>
+              </div>
+            </div>
+
             {/* Final Highlighted Step */}
             <div className="max-w-xl mx-auto">
               {/* This section is already handled in the previous changes */}
@@ -390,9 +450,11 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="card bg-gradient-to-br from-black to-black/80 border border-white/5">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Ready to Transform Your Property Photos?</h2>
-              <p className="text-lg text-white/80 max-w-2xl mx-auto mb-8">
-                Join thousands of real estate professionals who trust HomeSnap Pro for their photo editing needs.
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                Stand Out. Sell Faster. Snap Like a Pro!
+              </h1>
+              <p className="text-xl md:text-2xl text-white/80 text-center">
+                The <span className="gradient-text">future</span> of real estate photography is here—fast, easy, and stunning.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#" className="w-48">
