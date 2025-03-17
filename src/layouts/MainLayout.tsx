@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { 
@@ -13,7 +12,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 const MainLayout = ({ isAdmin = false }) => {
   const navLinkClass = ({ isActive }: { isActive: boolean }) => 
-    `flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
+    `flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 nav-item ${
       isActive 
         ? 'bg-white/10 text-white' 
         : 'text-white/70 hover:text-white hover:bg-white/5'
