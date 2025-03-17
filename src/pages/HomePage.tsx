@@ -375,8 +375,6 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* CTA Section */}
       <div className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="card bg-gradient-to-br from-black to-black/80 border border-white/5">
