@@ -369,10 +369,16 @@ nav + div {
 /* Text-only glow effect for the active word */
 @keyframes text-glow {
   0%, 100% { 
-    text-shadow: 0 0 8px rgba(255, 61, 255, 0.4);
+    text-shadow: 
+      0 0 10px rgba(255, 61, 255, 0.7),
+      0 0 20px rgba(255, 61, 255, 0.5),
+      0 0 30px rgba(255, 61, 255, 0.3);
   }
   50% { 
-    text-shadow: 0 0 15px rgba(0, 238, 255, 0.6);
+    text-shadow: 
+      0 0 15px rgba(0, 238, 255, 0.8),
+      0 0 25px rgba(0, 238, 255, 0.6),
+      0 0 35px rgba(0, 238, 255, 0.4);
   }
 }
 
@@ -464,7 +470,8 @@ nav + div {
 .nav-item:hover svg,
 .nav-item:hover span {
   @apply text-white;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-               0 0 20px rgba(255, 255, 255, 0.6),
-               0 0 30px rgba(255, 255, 255, 0.4);
+  text-shadow: 
+    0 0 15px rgba(255, 255, 255, 0.9),
+    0 0 25px rgba(255, 255, 255, 0.7),
+    0 0 35px rgba(255, 255, 255, 0.5);
 }
