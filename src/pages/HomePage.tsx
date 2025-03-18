@@ -93,22 +93,26 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="hero-section relative overflow-hidden py-12 md:py-16">
-        {/* Floating orbs */}
+      <div className="hero-section relative overflow-hidden py-12 md:py-16 bg-black">
+        {/* Floating orbs - contained within hero section */}
         <div
-          className="floating-orb floating-orb-purple w-96 h-96"
+          className="floating-orb floating-orb-purple"
           style={{
-            top: '10%',
-            left: '20%',
+            width: '40rem',
+            height: '40rem',
+            top: '-10%',
+            left: '-10%',
             transform: `translate(${(mousePosition.x - window.innerWidth / 2) / -30}px, ${(mousePosition.y - window.innerHeight / 2) / -30}px)`,
             animation: 'float 8s ease-in-out infinite'
           }}
         ></div>
         <div
-          className="floating-orb floating-orb-blue w-80 h-80"
+          className="floating-orb floating-orb-blue"
           style={{
-            bottom: '15%',
-            right: '15%',
+            width: '40rem',
+            height: '40rem',
+            bottom: '-20%',
+            right: '-10%',
             transform: `translate(${(mousePosition.x - window.innerWidth / 2) / -40}px, ${(mousePosition.y - window.innerHeight / 2) / -40}px)`,
             animation: 'float 10s ease-in-out infinite 1s'
           }}

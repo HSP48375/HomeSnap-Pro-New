@@ -9,10 +9,10 @@
 }
 
 body {
-  @apply bg-black text-white font-sans;
+  @apply text-white font-sans;
   margin: 0;
   min-height: 100vh;
-  background: #000;
+  background-color: #000000;
   position: relative;
   overflow-x: hidden;
 }
@@ -185,13 +185,15 @@ body {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  max-height: 80vh;
+  min-height: 80vh;
+  background-color: #000000;
 }
 
-/* Floating Orbs */
+/* Floating Orbs - Contained within hero */
 .floating-orb {
   @apply absolute rounded-full blur-3xl pointer-events-none;
   opacity: 0.15;
+  z-index: 1;
 }
 
 .floating-orb-blue {
@@ -202,16 +204,17 @@ body {
   background: radial-gradient(circle at center, rgba(157, 0, 255, 0.4), transparent 70%);
 }
 
+/* Fade-out gradient at bottom of hero */
 .hero-section::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100px;
-  background: linear-gradient(to bottom, transparent, #000);
+  height: 150px;
+  background: linear-gradient(to bottom, transparent, #000000);
   pointer-events: none;
-  z-index: 10;
+  z-index: 2;
 }
 
 @keyframes float {
