@@ -17,7 +17,11 @@ const HomePage: React.FC = () => {
                 <span 
                   key={index} 
                   className="premium-letter"
-                  style={{ willChange: 'color, text-shadow' }}
+                  style={{ 
+                    willChange: 'transform, color, text-shadow',
+                    display: 'inline-block',
+                    transform: 'translateZ(0)'
+                  }}
                 >
                   {letter}
                 </span>
