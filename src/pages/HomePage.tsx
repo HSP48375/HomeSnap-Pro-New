@@ -12,7 +12,13 @@ const HomePage: React.FC = () => {
       <div className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">HomeSnap Pro</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 flex justify-center">
+              {"HomeSnap Pro".split('').map((letter, index) => (
+                <span key={index} className="letter-hover text-gray-800">
+                  {letter}
+                </span>
+              ))}
+            </h2>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
               Shoot Like a Pro. Sell Like a Boss.
             </h1>

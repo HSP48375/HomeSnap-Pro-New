@@ -1,3 +1,16 @@
+
+.letter-hover {
+  transition: all 0.3s ease;
+}
+
+.letter-hover:hover {
+  background: linear-gradient(135deg, #00EEFF, #FF3DFF, #9D00FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transform: translateY(-2px);
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
