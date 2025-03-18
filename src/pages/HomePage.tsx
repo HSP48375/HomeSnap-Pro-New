@@ -150,7 +150,7 @@ const HomePage: React.FC = () => {
 
           <div className="mx-auto max-w-6xl">
             {/* Futuristic Roadmap Steps */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 relative">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 relative">
               {/* Step 1 - Download */}
               <div className="neo-roadmap-step">
                 <div className="step-number">01</div>
@@ -242,8 +242,9 @@ const HomePage: React.FC = () => {
                 <div className="glow-effect"></div>
               </div>
 
-              {/* Arrow 1 */}
-              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
+              </div>
+          </div>
+        </div>ounded-full"></div>
 
               {/* Step 2 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
