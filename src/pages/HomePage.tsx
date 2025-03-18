@@ -149,18 +149,97 @@ const HomePage: React.FC = () => {
           </div>
 
           <div className="mx-auto max-w-6xl">
-            {/* Horizontal Flow Steps 1-3 */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
-              {/* Step 1 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">1</div>
-                <div className="text-center mb-3">
-                  <div className="roadmap-icon-container mb-4">
-                    <span className="text-3xl">📱</span>
+            {/* Futuristic Roadmap Steps */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 relative">
+              {/* Step 1 - Download */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">01</div>
+                <div className="hologram-container">
+                  <div className="hologram-phone">
+                    <span className="icon">📱</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Download the App</h3>
                 </div>
-                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Available on iOS & Android. No special camera needed!</p>
+                <h3 className="neo-title">Download the App</h3>
+                <p className="neo-text">Access HomeSnap Pro on any device</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 2 - Account */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">02</div>
+                <div className="hologram-container">
+                  <div className="hologram-fingerprint">
+                    <span className="icon">👤</span>
+                  </div>
+                </div>
+                <h3 className="neo-title">Create Account</h3>
+                <p className="neo-text">Instant secure access</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 3 - Address */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">03</div>
+                <div className="hologram-container">
+                  <div className="hologram-map">
+                    <span className="icon">🏡</span>
+                  </div>
+                </div>
+                <h3 className="neo-title">Enter Location</h3>
+                <p className="neo-text">Pinpoint your property</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 4 - Photos */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">04</div>
+                <div className="hologram-container">
+                  <div className="hologram-camera">
+                    <span className="icon">📸</span>
+                  </div>
+                </div>
+                <h3 className="neo-title">Capture & Scan</h3>
+                <p className="neo-text">AI-powered photo assistance</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 5 - Add-ons */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">05</div>
+                <div className="hologram-container">
+                  <div className="hologram-menu">
+                    <span className="icon">✨</span>
+                  </div>
+                </div>
+                <h3 className="neo-title">Enhance</h3>
+                <p className="neo-text">Choose AI enhancements</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 6 - Submit */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">06</div>
+                <div className="hologram-container">
+                  <div className="hologram-submit">
+                    <span className="icon">✅</span>
+                  </div>
+                </div>
+                <h3 className="neo-title">Submit Order</h3>
+                <p className="neo-text">One-tap processing</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 7 - Final */}
+              <div className="neo-roadmap-step final">
+                <div className="step-number">07</div>
+                <div className="hologram-container">
+                  <div className="hologram-gallery">
+                    <span className="icon">🚀</span>
+                  </div>
+                </div>
+                <h3 className="neo-title">Receive Photos</h3>
+                <p className="neo-text">AI-enhanced in hours</p>
+                <div className="glow-effect"></div>
               </div>
 
               {/* Arrow 1 */}
