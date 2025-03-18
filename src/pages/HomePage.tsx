@@ -4,339 +4,55 @@ import { Camera, ArrowRight, CheckCircle, Zap, Image, Shield, Star, User, Lock }
 import BeforeAfterSlider from '../components/ui/BeforeAfterSlider';
 
 const HomePage: React.FC = () => {
-  const spinningWords = ["Impress", "Close", "Sell"];
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [activeWordIndex, setActiveWordIndex] = useState(0);
-  const [prevWordIndex, setPrevWordIndex] = useState(spinningWords.length - 1);
-
-  const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
-
-  const headlines = [
-    {
-      text: "We're the app your photographer doesn't want you to find out about.",
-      highlight: "photographer"
-    },
-    {
-      text: "Edits so good, we make the pros nervous.",
-      highlight: "nervous"
-    },
-    {
-      text: "Why hire a photographer when you can outshoot them with your phone?",
-      highlight: "outshoot"
-    },
-    {
-      text: "Your photographer charges $$$$$. We charge $.",
-      highlight: "$$$"
-    },
-    {
-      text: "Professional photos edits minus the overpriced 'pro'.",
-      highlight: "'pro'"
-    },
-    {
-      text: "Photographers hate us. Sellers love us.",
-      highlight: "hate"
-    },
-    {
-      text: "Why pay a pro when we make your shots look pro?",
-      highlight: "pro"
-    },
-    {
-      text: "Expensive cameras are out. AI-powered editing is in.",
-      highlight: "AI-powered"
-    },
-    {
-      text: "The only editing app that actually makes you money.",
-      highlight: "money"
-    },
-    {
-      text: "Your secret weapon for stunning listing photos.",
-      highlight: "secret weapon"
-    }
-  ];
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    const intervalRef = setInterval(() => {
-      setPrevWordIndex(activeWordIndex);
-      setActiveWordIndex((prev) => (prev + 1) % spinningWords.length);
-    }, 3000);
-
-    const headlineIntervalRef = setInterval(() => {
-      setCurrentHeadlineIndex((prev) => (prev + 1) % headlines.length);
-    }, 5000);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      clearInterval(intervalRef);
-      clearInterval(headlineIntervalRef);
-    };
-  }, [activeWordIndex, spinningWords.length, headlines.length]);
-
-  const renderHeadlineWithHighlight = (text: string, highlight: string) => {
-    if (!text.includes(highlight)) return text;
-
-    const parts = text.split(highlight);
-    return (
-      <>
-        {parts[0]}
-        <span className="gradient-text-accent font-bold">{highlight}</span>
-        {parts[1]}
-      </>
-    );
-  };
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="hero-section relative overflow-hidden py-12 md:py-16 bg-black">
-        {/* Floating orbs - contained within hero section */}
-        <div
-          className="floating-orb floating-orb-purple"
-          style={{
-            width: '40rem',
-            height: '40rem',
-            top: '-10%',
-            left: '-10%',
-            transform: `translate(${(mousePosition.x - window.innerWidth / 2) / -30}px, ${(mousePosition.y - window.innerHeight / 2) / -30}px)`,
-            animation: 'float 8s ease-in-out infinite'
-          }}
-        ></div>
-        <div
-          className="floating-orb floating-orb-blue"
-          style={{
-            width: '40rem',
-            height: '40rem',
-            bottom: '-20%',
-            right: '-10%',
-            transform: `translate(${(mousePosition.x - window.innerWidth / 2) / -40}px, ${(mousePosition.y - window.innerHeight / 2) / -40}px)`,
-            animation: 'float 10s ease-in-out infinite 1s'
-          }}
-        ></div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            {/* Main Logo & Headline */}
-            <div className="mb-6">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">HomeSnap Pro: Your Secret Weapon</h1>
-              <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Shoot Like a Pro. Sell Like a Boss.</h2>
-              <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent mt-2">Using Just Your Smartphone.</h2>
-            </div>
-
-            <div
-              className="store-buttons mt-12 animate-fadeIn"
-            >
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
+              Shoot Like a Pro. Sell Like a Boss.
+            </h1>
+            <p className="text-xl md:text-2xl mb-8">
+              Using Just Your Smartphone.
+            </p>
+            <div className="flex justify-center gap-4">
               <a href="#" className="store-button">
-                <img src="/assets/app-store-badge.svg" alt="Download on the App Store" className="h-10" />
+                <img src="/assets/app-store-badge.svg" alt="Download on the App Store" />
               </a>
               <a href="#" className="store-button">
-                <img src="/assets/google-play-badge.svg" alt="Get it on Google Play" className="h-10" />
+                <img src="/assets/google-play-badge.svg" alt="Get it on Google Play" />
               </a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* How It Works / Roadmap */}
+      {/* How It Works Section */}
       <div className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 gradient-text text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>How It Works</h2>
-          </div>
-
-          <div className="mx-auto max-w-6xl">
-            {/* Futuristic Roadmap Steps */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 relative">
-              {/* Step 1 - Download */}
-              <div className="neo-roadmap-step">
-                <div className="step-number">01</div>
-                <div className="hologram-container">
-                  <div className="hologram-phone">
-                    <span className="icon">📱</span>
-                  </div>
-                </div>
-                <h3 className="neo-title">Download the App</h3>
-                <p className="neo-text">Access HomeSnap Pro on any device</p>
-                <div className="glow-effect"></div>
+          <div className="text-center">
+            <h2 className="text-3xl md:text-5xl font-bold mb-12 gradient-text">How It Works</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Step 1 */}
+              <div className="roadmap-step">
+                <h3 className="text-xl font-bold mb-4">Download the App</h3>
+                <p>Get started with HomeSnap Pro on your mobile device</p>
               </div>
 
-              {/* Step 2 - Account */}
-              <div className="neo-roadmap-step">
-                <div className="step-number">02</div>
-                <div className="hologram-container">
-                  <div className="hologram-fingerprint">
-                    <span className="icon">👤</span>
-                  </div>
-                </div>
-                <h3 className="neo-title">Create Account</h3>
-                <p className="neo-text">Instant secure access</p>
-                <div className="glow-effect"></div>
-              </div>
-
-              {/* Step 3 - Address */}
-              <div className="neo-roadmap-step">
-                <div className="step-number">03</div>
-                <div className="hologram-container">
-                  <div className="hologram-map">
-                    <span className="icon">🏡</span>
-                  </div>
-                </div>
-                <h3 className="neo-title">Enter Location</h3>
-                <p className="neo-text">Pinpoint your property</p>
-                <div className="glow-effect"></div>
-              </div>
-
-              {/* Step 4 - Photos */}
-              <div className="neo-roadmap-step">
-                <div className="step-number">04</div>
-                <div className="hologram-container">
-                  <div className="hologram-camera">
-                    <span className="icon">📸</span>
-                  </div>
-                </div>
-                <h3 className="neo-title">Capture & Scan</h3>
-                <p className="neo-text">AI-powered photo assistance</p>
-                <div className="glow-effect"></div>
-              </div>
-
-              {/* Step 5 - Add-ons */}
-              <div className="neo-roadmap-step">
-                <div className="step-number">05</div>
-                <div className="hologram-container">
-                  <div className="hologram-menu">
-                    <span className="icon">✨</span>
-                  </div>
-                </div>
-                <h3 className="neo-title">Enhance</h3>
-                <p className="neo-text">Choose AI enhancements</p>
-                <div className="glow-effect"></div>
-              </div>
-
-              {/* Step 6 - Submit */}
-              <div className="neo-roadmap-step">
-                <div className="step-number">06</div>
-                <div className="hologram-container">
-                  <div className="hologram-submit">
-                    <span className="icon">✅</span>
-                  </div>
-                </div>
-                <h3 className="neo-title">Submit Order</h3>
-                <p className="neo-text">One-tap processing</p>
-                <div className="glow-effect"></div>
-              </div>
-
-              {/* Step 7 - Final */}
-              <div className="neo-roadmap-step final">
-                <div className="step-number">07</div>
-                <div className="hologram-container">
-                  <div className="hologram-gallery">
-                    <span className="icon">🚀</span>
-                  </div>
-                </div>
-                <h3 className="neo-title">Receive Photos</h3>
-                <p className="neo-text">AI-enhanced in hours</p>
-                <div className="glow-effect"></div>
-              </div>
-
-              </div>
-              
               {/* Step 2 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">2</div>
-                <div className="text-center mb-3">
-                  <div className="roadmap-icon-container mb-4">
-                    <span className="text-3xl">👤</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Create Your Free Account</h3>
-                </div>
-                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Sign up in seconds. No subscription required!</p>
+              <div className="roadmap-step">
+                <h3 className="text-xl font-bold mb-4">Take Photos</h3>
+                <p>Capture your property photos using our guided camera system</p>
               </div>
-
-              {/* Arrow 2 */}
-              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
 
               {/* Step 3 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">3</div>
-                <div className="text-center mb-3">
-                  <div className="roadmap-icon-container mb-4">
-                    <span className="text-3xl">🏡</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Enter Property Address</h3>
-                </div>
-                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Just type in the listing details when you're ready to shoot.</p>
+              <div className="roadmap-step">
+                <h3 className="text-xl font-bold mb-4">Get Pro Results</h3>
+                <p>Receive professionally edited photos within 24 hours</p>
               </div>
-            </div>
-
-            {/* Horizontal Flow Steps 4-6 */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12 relative">
-              {/* Step 4 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">4</div>
-                <div className="text-center mb-3">
-                  <div className="roadmap-icon-container mb-4">
-                    <span className="text-3xl">📸</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Take Photos & Scan Floorplan</h3>
-                </div>
-                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Follow our built-in guides for the best shots.</p>
-              </div>
-
-              {/* Arrow 3 */}
-              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
-
-              {/* Step 5 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">5</div>
-                <div className="text-center mb-3">
-                  <div className="roadmap-icon-container mb-4">
-                    <span className="text-3xl">✨</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Select Add-Ons</h3>
-                </div>
-                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Want an extra wow factor? Pick your enhancements.</p>
-              </div>
-
-              {/* Arrow 4 */}
-              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
-
-              {/* Step 6 */}
-              <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
-                <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">6</div>
-                <div className="text-center mb-3">
-                  <div className="roadmap-icon-container mb-4">
-                    <span className="text-3xl">✅</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>Submit Your Order</h3>
-                </div>
-                <p className="text-white/70 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>One tap, and we'll handle the rest!</p>
-              </div>
-
-              {/* Arrow 5 */}
-              <div className="hidden md:block w-16 roadmap-arrow rounded-full"></div>
-
-              {/* Step 7 - Final Step */}
-              <div className="roadmap-final-step rounded-xl p-7 w-full md:w-1/3 cursor-pointer relative animate-pulse-slow overflow-visible" style={{ position: 'relative' }}>
-                <div className="absolute -top-4 -left-4 bg-gradient-to-r from-[#FF00C1] to-[#FF3DFF] text-white font-bold h-11 w-11 rounded-full flex items-center justify-center text-lg shadow-glow-pink" style={{ zIndex: 9999, position: 'absolute', pointerEvents: 'none' }}>7</div>
-                <div className="text-center mb-3">
-                  <div className="roadmap-icon-container mb-4" style={{ boxShadow: 'inset 0 0 20px rgba(255, 0, 193, 0.5)' }}>
-                    <span className="text-3xl">🚀</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white neon-text-magenta" style={{ fontFamily: 'Poppins, sans-serif' }}>Receive Stunning Photos</h3>
-                </div>
-                <p className="text-white/80 text-center" style={{ fontFamily: 'Poppins, sans-serif' }}>Professionally edited in <span className="font-bold gradient-text-accent">less than 12 hours!</span></p>
-              </div>
-            </div>
-
-            {/* Horizontal Flow Steps 4-6 */}
-            
-            {/* Final Highlighted Step */}
-            <div className="max-w-xl mx-auto">
-              {/* This section is already handled in the previous changes */}
             </div>
           </div>
         </div>
