@@ -243,9 +243,7 @@ const HomePage: React.FC = () => {
               </div>
 
               </div>
-          </div>
-        </div>ounded-full"></div>
-
+              
               {/* Step 2 */}
               <div className="roadmap-step rounded-xl p-6 w-full md:w-1/3 cursor-pointer relative overflow-visible">
                 <div className="absolute -top-3 -left-3 bg-primary text-black font-bold h-10 w-10 rounded-full flex items-center justify-center text-sm z-[999]">2</div>
