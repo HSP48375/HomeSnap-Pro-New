@@ -35,15 +35,15 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-12 gradient-text">How It Works</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7 gap-4">
               {/* Step 1 */}
               <div className="neo-roadmap-step">
                 <div className="step-number">1</div>
                 <div className="hologram-container">
                   <div className="icon">📱</div>
                 </div>
-                <h3 className="neo-title">Download the App</h3>
-                <p className="neo-text">Get started with HomeSnap Pro on your mobile device</p>
+                <h3 className="neo-title gradient-text">Download the App</h3>
+                <p className="neo-text">Get started with HomeSnap Pro</p>
                 <div className="glow-effect"></div>
               </div>
 
@@ -51,21 +51,65 @@ const HomePage: React.FC = () => {
               <div className="neo-roadmap-step">
                 <div className="step-number">2</div>
                 <div className="hologram-container">
-                  <div className="icon">📸</div>
+                  <div className="icon">👤</div>
                 </div>
-                <h3 className="neo-title">Take Photos</h3>
-                <p className="neo-text">Capture your property photos using our guided camera system</p>
+                <h3 className="neo-title gradient-text">Create Account</h3>
+                <p className="neo-text">Quick and easy signup</p>
                 <div className="glow-effect"></div>
               </div>
 
               {/* Step 3 */}
-              <div className="neo-roadmap-step final">
+              <div className="neo-roadmap-step">
                 <div className="step-number">3</div>
+                <div className="hologram-container">
+                  <div className="icon">📍</div>
+                </div>
+                <h3 className="neo-title gradient-text">Enter Address</h3>
+                <p className="neo-text">Specify property location</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">4</div>
+                <div className="hologram-container">
+                  <div className="icon">📸</div>
+                </div>
+                <h3 className="neo-title gradient-text">Take Photos</h3>
+                <p className="neo-text">Use our guided camera system</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 5 */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">5</div>
+                <div className="hologram-container">
+                  <div className="icon">⚡</div>
+                </div>
+                <h3 className="neo-title gradient-text">Select Add-Ons</h3>
+                <p className="neo-text">Choose enhancement options</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 6 */}
+              <div className="neo-roadmap-step">
+                <div className="step-number">6</div>
+                <div className="hologram-container">
+                  <div className="icon">📤</div>
+                </div>
+                <h3 className="neo-title gradient-text">Submit Order</h3>
+                <p className="neo-text">Confirm your selections</p>
+                <div className="glow-effect"></div>
+              </div>
+
+              {/* Step 7 */}
+              <div className="neo-roadmap-step final">
+                <div className="step-number">7</div>
                 <div className="hologram-container">
                   <div className="icon">✨</div>
                 </div>
-                <h3 className="neo-title">Get Pro Results</h3>
-                <p className="neo-text">Receive professionally edited photos within 24 hours</p>
+                <h3 className="neo-title gradient-text">Get Pro Results</h3>
+                <p className="neo-text">Receive edited photos in 24h</p>
                 <div className="glow-effect"></div>
               </div>
             </div>
