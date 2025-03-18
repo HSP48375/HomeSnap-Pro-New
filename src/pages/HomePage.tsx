@@ -13,9 +13,13 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 flex justify-center">
-              {"HomeSnap Pro".split('').map((letter, index) => (
-                <span key={index} className="letter-hover text-gray-800">
-                  {letter}
+              {"HomeSnap Pro".split(' ').map((word, wordIndex) => (
+                <span key={wordIndex} className="flex mx-1">
+                  {word.split('').map((letter, letterIndex) => (
+                    <span key={letterIndex} className="neon-letter">
+                      {letter}
+                    </span>
+                  ))}
                 </span>
               ))}
             </h2>

@@ -1,14 +1,38 @@
 
-.letter-hover {
-  transition: all 0.3s ease;
+.neon-letter {
+  position: relative;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
 }
 
-.letter-hover:hover {
-  background: linear-gradient(135deg, #00EEFF, #FF3DFF, #9D00FF);
-  -webkit-background-clip: text;
-  background-clip: text;
+.neon-letter:hover {
   color: transparent;
-  transform: translateY(-2px);
+  -webkit-text-stroke: 0;
+  animation: neonPulse 2s ease-in-out infinite;
+  text-shadow: 
+    0 0 5px rgba(0, 238, 255, 0.8),
+    0 0 10px rgba(255, 61, 255, 0.8),
+    0 0 20px rgba(157, 0, 255, 0.8),
+    0 0 40px rgba(0, 238, 255, 0.6);
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 5px rgba(0, 238, 255, 0.8),
+      0 0 10px rgba(255, 61, 255, 0.8),
+      0 0 20px rgba(157, 0, 255, 0.8),
+      0 0 40px rgba(0, 238, 255, 0.6);
+  }
+  50% {
+    text-shadow: 
+      0 0 10px rgba(0, 238, 255, 0.9),
+      0 0 20px rgba(255, 61, 255, 0.9),
+      0 0 30px rgba(157, 0, 255, 0.9),
+      0 0 50px rgba(0, 238, 255, 0.7);
+  }
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
