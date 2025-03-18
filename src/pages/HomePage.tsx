@@ -93,10 +93,10 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative overflow-hidden py-12 md:py-16">
+      <div className="hero-section relative overflow-hidden py-12 md:py-16">
         {/* Floating orbs */}
         <div
-          className="floating-orb floating-orb-blue w-96 h-96"
+          className="floating-orb floating-orb-purple w-96 h-96"
           style={{
             top: '10%',
             left: '20%',
@@ -105,7 +105,7 @@ const HomePage: React.FC = () => {
           }}
         ></div>
         <div
-          className="floating-orb floating-orb-pink w-80 h-80"
+          className="floating-orb floating-orb-blue w-80 h-80"
           style={{
             bottom: '15%',
             right: '15%',
