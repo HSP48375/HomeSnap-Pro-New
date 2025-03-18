@@ -1,25 +1,24 @@
-
 .premium-letter {
   position: relative;
   margin: 0 4px;
   padding: 0 2px;
   color: transparent;
   background: none;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  -webkit-text-stroke: 2px #333333;
   transition: all 0.3s ease;
   cursor: default;
-  font-size: 7rem;
-  letter-spacing: 2px;
+  font-size: 6rem;
+  letter-spacing: 3px;
   display: inline-block;
-  font-family: 'Arial', sans-serif;
-  font-weight: 300;
 }
 
 .premium-letter:hover {
   color: transparent;
-  -webkit-text-stroke: 1px rgba(0, 238, 255, 0.8);
-  filter: drop-shadow(0 0 3px rgba(0, 238, 255, 0.6));
-  transform: translateY(-1px);
+  -webkit-text-stroke: 2px #00EEFF;
+  text-shadow: 
+    0 0 10px rgba(0, 238, 255, 0.8),
+    0 0 20px rgba(0, 238, 255, 0.4);
+  transform: translateY(-2px);
 }
 
 @keyframes neonPulse {
