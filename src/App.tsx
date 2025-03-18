@@ -1,12 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Icon from 'react-native-vector-icons/Feather';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Toast from 'react-native-toast-message';
-
-// Screens
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import DashboardScreen from './screens/DashboardScreen';
 import UploadScreen from './screens/UploadScreen';
@@ -16,67 +9,21 @@ import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-
-const MainTabs = () => (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-
-        switch (route.name) {
-          case 'Home':
-            iconName = 'home';
-            break;
-          case 'Upload':
-            iconName = 'upload';
-            break;
-          case 'Orders':
-            iconName = 'file-text';
-            break;
-          case 'Profile':
-            iconName = 'user';
-            break;
-          default:
-            iconName = 'circle';
-        }
-
-        return <Icon name={iconName} size={size} color={color} />;
-      },
-      tabBarActiveTintColor: '#00EEFF',
-      tabBarInactiveTintColor: 'gray',
-      tabBarStyle: {
-        backgroundColor: '#0A0A14',
-        borderTopColor: 'rgba(255, 255, 255, 0.1)',
-      },
-    })}
-  >
-    <Tab.Screen name="Home" component={HomeScreen} />
-    <Tab.Screen name="Upload" component={UploadScreen} />
-    <Tab.Screen name="Orders" component={OrdersScreen} />
-    <Tab.Screen name="Profile" component={ProfileScreen} />
-  </Tab.Navigator>
-);
-
 const App = () => {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: '#000000' },
-          }}
-        >
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="MainTabs" component={MainTabs} />
-          <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
-        </Stack.Navigator>
-        <Toast />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <Router>
+      <div className="min-h-screen bg-gray-900 text-white">
+        <Routes>
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/register" element={<RegisterScreen />} />
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/upload" element={<UploadScreen />} />
+          <Route path="/orders" element={<OrdersScreen />} />
+          <Route path="/orders/:id" element={<OrderDetailsScreen />} />
+          <Route path="/profile" element={<ProfileScreen />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
