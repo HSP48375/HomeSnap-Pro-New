@@ -1,31 +1,25 @@
 
 .premium-letter {
   position: relative;
-  margin: 0 3px;
+  margin: 0 4px;
   padding: 0 2px;
   color: transparent;
   background: none;
-  -webkit-text-stroke: 1.5px #333333;
+  -webkit-text-stroke: 2px #333333;
   transition: all 0.3s ease;
   cursor: default;
-  font-size: 4rem;
-  letter-spacing: 2px;
+  font-size: 6rem;
+  letter-spacing: 3px;
   display: inline-block;
 }
 
 .premium-letter:hover {
-  background-image: linear-gradient(
-    135deg,
-    #007AFF,
-    #FF9500,
-    #FF2D55,
-    #AF52DE
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-stroke: 0;
-  transform: translateY(-1px);
-  filter: none;
+  -webkit-text-stroke: 2px;
+  -webkit-text-stroke-color: #00EEFF;
+  text-shadow: 
+    0 0 10px rgba(0, 238, 255, 0.8),
+    0 0 20px rgba(0, 238, 255, 0.4);
+  transform: translateY(-2px);
 }
 
 @keyframes neonPulse {
