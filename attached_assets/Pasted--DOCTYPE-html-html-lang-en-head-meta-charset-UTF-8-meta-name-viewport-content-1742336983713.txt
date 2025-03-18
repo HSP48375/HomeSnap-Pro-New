@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoHDR - Exact Implementation</title>
+    <style>
+        body {
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            font-family: "aktiv-grotesk", sans-serif;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* Matches the specific wrapper from AutoHDR.com */
+        .autohdr-animation-wrapper {
+            position: relative;
+            width: 100%;
+            z-index: 10;
+            overflow: hidden;
+        }
+        
+        .logo-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Default logo style - extremely thin, barely visible gray */
+        .logo path {
+            fill: none;
+            stroke: rgba(100, 100, 100, 0.3);
+            stroke-width: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-title {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 36px;
+            letter-spacing: 3px;
+            font-weight: 300;
+        }
+        
+        .description {
+            margin-top: 15px;
+            font-size: 16px;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+        
+        /* The subtle border around the animation wrapper */
+        .autohdr-animation-wrapper:after {
+            content: " ";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border: 0.7px solid #050505;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="autohdr-animation-wrapper">
+            <div class="logo-container" id="logo-container">
+                <!-- Logo SVG with exact letter shapes from your screenshot -->
+                <svg class="logo" viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg" id="logo-svg">
+                    <!-- A - Note the straight lines from the screenshot -->
+                    <path id="A1" d="M50,40 L50,160" />
+                    <path id="A2" d="M90,40 L90,160" />
+                    <path id="A3" d="M50,100 L90,100" />
+                    
+                    <!-- U - curved bottom U shape -->
+                    <path id="U1" d="M120,40 L120,130 C120,150 150,160 170,160 C190,160 220,150 220,130 L220,40" />
+                    
+                    <!-- T - simple T shape from your screenshot -->
+                    <path id="T1" d="M250,40 L350,40" />
+                    <path id="T2" d="M300,40 L300,160" />
+                    
+                    <!-- O - perfect oval O from your screenshot -->
+                    <path id="O1" d="M420,100 C420,65 390,40 370,40 C350,40 320,65 320,100 C320,135 350,160 370,160 C390,160 420,135 420,100" />
+                    
+                    <!-- H - standard H shape matching your screenshot exactly -->
+                    <path id="H1" d="M450,40 L450,160" />
+                    <path id="H2" d="M450,100 L500,100" />
+                    <path id="H3" d="M500,40 L500,160" />
+                    
+                    <!-- D - straight side with curved right side, matching your screenshot -->
+                    <path id="D1" d="M530,40 L530,160" />
+                    <path id="D2" d="M530,40 L580,40 C620,40 640,65 640,100 C640,135 620,160 580,160 L530,160" />
+                    
+                    <!-- R - matching the shape from your screenshot exactly -->
+                    <path id="R1" d="M670,40 L670,160" />
+                    <path id="R2" d="M670,40 L720,40 C750,40 765,55 765,75 C765,95 750,110 720,110 L670,110" />
+                    <path id="R3" d="M710,110 L765,160" />
+                </svg>
+            </div>
+        </div>
+        
+        <div class="logo-title">AUTOHDR</div>
+        <div class="description">Move your mouse across the logo to see the glow effect</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoContainer = document.getElementById('logo-container');
+            const logoSvg = document.getElementById('logo-svg');
+            const paths = Array.from(logoSvg.querySelectorAll('path'));
+            
+            // Create a set of points to check on each path
+            const pathPoints = paths.map(path => {
+                const length = path.getTotalLength();
+                const points = [];
+                // Sample point for every 5px of path length - very high resolution sampling
+                const numPoints = Math.max(10, Math.ceil(length / 5));
+                
+                for (let i = 0; i < numPoints; i++) {
+                    const point = path.getPointAtLength(i * length / (numPoints - 1));
+                    points.push({ x: point.x, y: point.y });
+                }
+                
+                return {
+                    element: path,
+                    points: points,
+                    length: length
+                };
+            });
+            
+            // Get the distance from mouse to the closest point on a path
+            function getDistanceToPath(pathData, mouseX, mouseY) {
+                // Convert mouse position to SVG coordinates
+                const svgPoint = logoSvg.createSVGPoint();
+                svgPoint.x = mouseX;
+                svgPoint.y = mouseY;
+                
+                // Get mouse position in SVG coordinates
+                const CTM = logoSvg.getScreenCTM().inverse();
+                const transformedPoint = svgPoint.matrixTransform(CTM);
+                
+                // Find the minimum distance to any point on the path
+                return Math.min(...pathData.points.map(point => {
+                    const dx = transformedPoint.x - point.x;
+                    const dy = transformedPoint.y - point.y;
+                    return Math.sqrt(dx * dx + dy * dy);
+                }));
+            }
+            
+            // Get color for the glow effect based on both position and distance
+            function getGlowColor(x, y, intensity) {
+                // Normalize coordinates
+                const width = logoContainer.clientWidth;
+                const height = logoContainer.clientHeight;
+                const normX = x / width;
+                const normY = y / height;
+                
+                // These colors match what's seen in the actual website
+                const colors = [
+                    {r: 180, g: 130, b: 255},  // Purple
+                    {r: 80, g: 180, b: 255},   // Blue
+                    {r: 255, g: 140, b: 80}    // Orange
+                ];
+                
+                // Position-based color weights
+                const weights = [
+                    0.5 + Math.sin(normX * Math.PI) * 0.5,
+                    0.5 + Math.cos(normY * Math.PI * 2) * 0.5,
+                    0.5 + Math.sin((normX + normY) * Math.PI) * 0.5
+                ];
+                
+                const totalWeight = weights.reduce((a, b) => a + b, 0);
+                
+                // Weighted average of colors
+                const r = Math.round(colors.reduce((sum, color, i) => sum + color.r * weights[i], 0) / totalWeight);
+                const g = Math.round(colors.reduce((sum, color, i) => sum + color.g * weights[i], 0) / totalWeight);
+                const b = Math.round(colors.reduce((sum, color, i) => sum + color.b * weights[i], 0) / totalWeight);
+                
+                return `rgb(${r}, ${g}, ${b})`;
+            }
+            
+            // Apply the glow effect - mimicking the extremely diffused glow from AutoHDR
+            function applyGlowEffect(pathData, distance, color) {
+                // Very large detection radius
+                const maxDistance = 150;
+                
+                if (distance < maxDistance) {
+                    // Very smooth falloff curve
+                    const intensity = Math.pow(1 - (distance / maxDistance), 1.5);
+                    
+                    // Very minimal stroke width change
+                    pathData.element.style.stroke = color;
+                    pathData.element.style.strokeWidth = (1 + intensity * 0.5) + 'px';
+                    
+                    // Ultra high shadow blur values for maximum diffusion
+                    const shadowSize = Math.round(15 + intensity * 25);
+                    
+                    // Multiple layered shadows for authentic diffusion matching the site
+                    pathData.element.style.filter = `
+                        drop-shadow(0 0 ${shadowSize}px ${color})
+                        drop-shadow(0 0 ${Math.round(shadowSize/3)}px ${color})
+                    `;
+                    
+                    // Subtle opacity change 
+                    pathData.element.style.opacity = 0.9 + (intensity * 0.1);
+                } else {
+                    // Reset to default
+                    pathData.element.style.stroke = 'rgba(100, 100, 100, 0.3)';
+                    pathData.element.style.strokeWidth = '1px';
+                    pathData.element.style.filter = 'none';
+                    pathData.element.style.opacity = 1;
+                }
+            }
+            
+            // Track mouse
+            let mouseX = 0, mouseY = 0;
+            
+            // Update on mousemove with the smoothest possible tracking
+            logoContainer.addEventListener('mousemove', function(e) {
+                const rect = logoContainer.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+                
+                // Apply to all paths
+                pathPoints.forEach(pathData => {
+                    const distance = getDistanceToPath(pathData, mouseX, mouseY);
+                    const color = getGlowColor(mouseX, mouseY, 1 - Math.min(1, distance / 150));
+                    applyGlowEffect(pathData, distance, color);
+                });
+            });
+            
+            // Reset on mouse leave
+            logoContainer.addEventListener('mouseleave', function() {
+                paths.forEach(path => {
+                    path.style.stroke = 'rgba(100, 100, 100, 0.3)';
+                    path.style.strokeWidth = '1px';
+                    path.style.filter = 'none';
+                    path.style.opacity = 1;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
