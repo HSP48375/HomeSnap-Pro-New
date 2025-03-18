@@ -118,7 +118,7 @@ const HomePage: React.FC = () => {
           <div className="text-center">
             {/* Main Logo & Headline */}
             <div className="mb-6">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">HomeSnap Pro: Your Secret Weapon</h1>
+              <InteractiveLogoText />
               <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Shoot Like a Pro. Sell Like a Boss.</h2>
               <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent mt-2">Using Just Your Smartphone.</h2>
             </div>
