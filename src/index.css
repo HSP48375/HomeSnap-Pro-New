@@ -127,6 +127,16 @@ path {
 .letter-hover {
   fill: url(#letterGradient);
   filter: url(#glow);
+  stroke: transparent;
+  stroke-width: 0;
+  transition: all 0.3s ease;
+}
+
+path {
+  stroke: white;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 }

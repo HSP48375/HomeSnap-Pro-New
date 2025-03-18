@@ -39,7 +39,8 @@ const InteractiveLogoText: React.FC = () => {
     <svg
       ref={svgRef}
       viewBox="0 0 800 100"
-      className="w-full max-w-3xl"
+      className="w-full max-w-3xl mb-8"
+      style={{ stroke: 'white', strokeWidth: '2' }}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
