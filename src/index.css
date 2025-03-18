@@ -4,27 +4,28 @@
   margin: 0 2px;
   padding: 0 1px;
   color: transparent;
-  -webkit-text-stroke: 1.5px #333333;
-  transition: all 0.35s ease-in-out;
+  background: none;
+  -webkit-text-stroke: 1px #333333;
+  transition: all 0.3s ease;
   cursor: default;
   font-size: 2.5rem;
   letter-spacing: 1px;
+  display: inline-block;
 }
 
 .premium-letter:hover {
   background-image: linear-gradient(
     135deg,
-    #FF3B2F,
-    #FF2D55,
-    #AF52DE,
-    #5856D6,
     #007AFF,
-    #32ADE6,
-    #FF9500
+    #FF9500,
+    #FF2D55,
+    #AF52DE
   );
+  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-stroke: 0;
-  filter: drop-shadow(0 0 4px rgba(157, 0, 255, 0.3));
-  transform: translateY(-1px) translateZ(0);
+  transform: translateY(-1px);
+  filter: none;
 }
 
 @keyframes neonPulse {
