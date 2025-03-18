@@ -15,6 +15,22 @@ body {
   background-color: #000000;
   position: relative;
   overflow-x: hidden;
+  isolation: isolate;
+}
+
+/* Remove background variations and ensure uniform black */
+body > div,
+section,
+main,
+.dark-bg-container,
+.hero-section {
+  background-color: #000000 !important;
+}
+
+/* Reset any background patterns or overlays */
+.bg-hex-grid,
+.bg-cyber-dots {
+  background-image: none !important;
 }
 
 /* Image Comparison Slider */
