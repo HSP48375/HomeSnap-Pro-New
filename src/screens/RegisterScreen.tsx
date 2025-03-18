@@ -1,263 +1,68 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/Feather';
-import { colors } from '../theme/colors';
-import { useAuthStore } from '../stores/authStore';
-import Toast from 'react-native-toast-message';
+import { Link } from 'react-router-dom';
+import { User } from 'lucide-react';
 
-const RegisterScreen = ({ navigation }) => {
-  const [fullName, setFullName] = useState('');
+const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { signUp } = useAuthStore();
 
-  const handleRegister = async () => {
-    if (!fullName || !email || !password || !confirmPassword) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please fill in all fields',
-      });
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Passwords do not match',
-      });
-      return;
-    }
-
-    if (password.length < 6) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Password must be at least 6 characters',
-      });
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const { error } = await signUp(email, password, fullName);
-      if (error) throw error;
-
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Account created successfully',
-      });
-      navigation.replace('MainTabs');
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: error.message || 'Failed to create account',
-      });
-    } finally {
-      setLoading(false);
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Add registration logic here
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardView}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.header}>
-            <Icon name="camera" size={48} color={colors.primary} />
-            <Text style={styles.title}>Create Account</Text>
-            <Text style={styles.subtitle}>
-              Join HomeSnap Pro to start transforming your property photos
-            </Text>
-          </View>
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-white">Create your account</h2>
+        </div>
 
-          <View style={styles.form}>
-            <View style={styles.inputContainer}>
-              <Icon name="user" size={20} color={colors.text} style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Full Name"
-                placeholderTextColor="rgba(255, 255, 255, 0.5)"
-                value={fullName}
-                onChangeText={setFullName}
-              />
-            </View>
-
-            <View style={styles.inputContainer}>
-              <Icon name="mail" size={20} color={colors.text} style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="rgba(255, 255, 255, 0.5)"
-                keyboardType="email-address"
-                autoCapitalize="none"
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="sr-only">Email address</label>
+              <input
+                id="email"
+                type="email"
                 value={email}
-                onChangeText={setEmail}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-800 text-white"
+                placeholder="Email address"
+                required
               />
-            </View>
-
-            <View style={styles.inputContainer}>
-              <Icon name="lock" size={20} color={colors.text} style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="rgba(255, 255, 255, 0.5)"
-                secureTextEntry
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">Password</label>
+              <input
+                id="password"
+                type="password"
                 value={password}
-                onChangeText={setPassword}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-800 text-white"
+                placeholder="Password"
+                required
               />
-            </View>
+            </div>
+          </div>
 
-            <View style={styles.inputContainer}>
-              <Icon name="lock" size={20} color={colors.text} style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Confirm Password"
-                placeholderTextColor="rgba(255, 255, 255, 0.5)"
-                secureTextEntry
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-              />
-            </View>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
+          >
+            Sign up
+          </button>
+        </form>
 
-            <TouchableOpacity
-              style={[styles.button, loading && styles.buttonDisabled]}
-              onPress={handleRegister}
-              disabled={loading}
-            >
-              {loading ? (
-                <View style={styles.loadingContainer}>
-                  <Icon name="loader" size={20} color="#000" />
-                  <Text style={styles.buttonText}>Creating account...</Text>
-                </View>
-              ) : (
-                <View style={styles.buttonContent}>
-                  <Icon name="user-plus" size={20} color="#000" />
-                  <Text style={styles.buttonText}>Create Account</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Already have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.footerLink}>Sign in</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        <div className="text-center text-gray-400">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-500 hover:text-blue-400">
+            Sign in
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  keyboardView: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 20,
-    justifyContent: 'center',
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: colors.text,
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.8)',
-    textAlign: 'center',
-  },
-  form: {
-    width: '100%',
-    marginBottom: 20,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.darkLight,
-    borderRadius: 12,
-    marginBottom: 16,
-    paddingHorizontal: 16,
-    height: 56,
-  },
-  inputIcon: {
-    marginRight: 12,
-  },
-  input: {
-    flex: 1,
-    color: colors.text,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-    height: 56,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
-  buttonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  loadingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 8,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  footerText: {
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: 14,
-  },
-  footerLink: {
-    color: colors.primary,
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-});
 
 export default RegisterScreen;
