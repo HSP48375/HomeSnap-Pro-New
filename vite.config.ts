@@ -7,11 +7,6 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  resolve: {
-    alias: {
-      'react-native': 'react-native-web',
-    },
-  },
   server: {
     headers: {
       // Configure CSP headers for development

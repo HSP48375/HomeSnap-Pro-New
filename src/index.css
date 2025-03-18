@@ -117,28 +117,6 @@ body {
   position: absolute !important;
   box-shadow: 0 0 15px rgba(255, 0, 193, 0.5);
   transform: translateY(-2px) translateX(-2px) scale(1.1);
-
-/* Interactive Logo Text */
-path {
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.letter-hover {
-  fill: url(#letterGradient);
-  filter: url(#glow);
-  stroke: transparent;
-  stroke-width: 0;
-  transition: all 0.3s ease;
-}
-
-path {
-  stroke: white;
-  stroke-width: 2;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
 }
 
 @keyframes flow-animation {
