@@ -12,9 +12,6 @@ export const DarkBackground: React.FC<DarkBackgroundProps> = ({ children }) => {
       <div className="gradient-orb gradient-orb-purple"></div>
       <div className="gradient-orb gradient-orb-blue"></div>
       
-      {/* Geometric pattern overlay */}
-      <div className="geometric-pattern"></div>
-      
       {/* Content */}
       <div className="relative z-10">
         {children}
