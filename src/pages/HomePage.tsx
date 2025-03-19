@@ -226,8 +226,9 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="card bg-gradient-to-br from-black to-black/80 border border-white/5">
             <div className="text-center">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white text-center whitespace-nowrap" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                The <span className="gradient-text">Future</span> of Real Estate Photography is Here. And You're the <span className="gradient-text">Pro</span>.
+              <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white text-center">
+                The <span className="gradient-text">Future</span> of Real Estate Photography is Here.<br />
+                And You're the <span className="gradient-text">Pro</span>.
               </h1>
               <div className="store-buttons">
                 <a href="#" className="store-button">
