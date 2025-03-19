@@ -226,12 +226,9 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="card bg-gradient-to-br from-black to-black/80 border border-white/5">
             <div className="text-center">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text text-center whitespace-nowrap" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                Stand Out. Sell Faster. Snap Like a Pro!
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white text-center whitespace-nowrap" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                The <span className="gradient-text">Future</span> of Real Estate Photography is Here. And You're the <span className="gradient-text">Pro</span>.
               </h1>
-              <p className="text-xl md:text-2xl text-white/80 text-center mb-12">
-                The <span className="gradient-text">future</span> of real estate photography is here—fast, easy, and stunning.
-              </p>
               <div className="store-buttons">
                 <a href="#" className="store-button">
                   <img
