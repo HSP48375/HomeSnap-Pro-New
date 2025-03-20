@@ -34,6 +34,20 @@ import AuthGuard from './components/ui/AuthGuard';
 function App() {
   const { user, setUser } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  
+  // Debug component
+  const DebugMarker = () => (
+    <View style={{ 
+      position: 'absolute', 
+      top: 50, 
+      right: 20, 
+      backgroundColor: 'red', 
+      padding: 10,
+      zIndex: 9999 
+    }}>
+      <Text style={{color: 'white'}}>Debug Marker</Text>
+    </View>
+  );
 
   useEffect(() => {
     // Check for active session on load

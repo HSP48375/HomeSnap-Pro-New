@@ -8,7 +8,7 @@ const openai = new OpenAIApi(configuration);
 export async function getChatbotResponse(userMessage) {
   try {
     const response = await openai.createChatCompletion({
-      model: "gpt-4-turbo", // Changed from "gpt-4.5-turbo" to "gpt-4-turbo"
+      model: "gpt-3.5-turbo", // Changed from "gpt-4.5-turbo" to "gpt-4-turbo"
       messages: [
         {
           role: "system",
