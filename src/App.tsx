@@ -79,59 +79,60 @@ function App() {
   }
 
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="tutorials" element={<TutorialsPage />} />
-      </Route>
+    <>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="tutorials" element={<TutorialsPage />} />
+        </Route>
 
-      {/* Auth routes */}
-      <Route path="/" element={<AuthLayout />}>
-        <Route 
-          path="login" 
-          element={
-            <AuthGuard requireAuth={false}>
-              <LoginPage />
-            </AuthGuard>
-          } 
-        />
-        <Route 
-          path="register" 
-          element={
-            <AuthGuard requireAuth={false}>
-              <RegisterPage />
-            </AuthGuard>
-          } 
-        />
-      </Route>
+        {/* Auth routes */}
+        <Route path="/" element={<AuthLayout />}>
+          <Route 
+            path="login" 
+            element={
+              <AuthGuard requireAuth={false}>
+                <LoginPage />
+              </AuthGuard>
+            } 
+          />
+          <Route 
+            path="register" 
+            element={
+              <AuthGuard requireAuth={false}>
+                <RegisterPage />
+              </AuthGuard>
+            } 
+          />
+        </Route>
 
-      {/* Protected routes */}
-      <Route path="/" element={<AuthGuard requireAuth={true}><MainLayout /></AuthGuard>}>
-        <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="upload" element={<UploadPage />} />
-        <Route path="orders" element={<OrdersPage />} />
-        <Route path="orders/:orderId" element={<OrderDetailPage />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="profile/notifications" element={<NotificationSettingsPage />} />
-        <Route path="checkout" element={<CheckoutPage />} />
-        <Route path="payment-success" element={<PaymentSuccessPage />} />
-        <Route path="payment-failure" element={<PaymentFailurePage />} />
-        <Route path="floorplan" element={<FloorplanPage />} />
-        <Route path="floorplans" element={<FloorplanOrdersPage />} />
-        <Route path="test-notifications" element={<TestNotificationPage />} />
-      </Route>
+        {/* Protected routes */}
+        <Route path="/" element={<AuthGuard requireAuth={true}><MainLayout /></AuthGuard>}>
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="upload" element={<UploadPage />} />
+          <Route path="orders" element={<OrdersPage />} />
+          <Route path="orders/:orderId" element={<OrderDetailPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="profile/notifications" element={<NotificationSettingsPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+          <Route path="payment-success" element={<PaymentSuccessPage />} />
+          <Route path="payment-failure" element={<PaymentFailurePage />} />
+          <Route path="floorplan" element={<FloorplanPage />} />
+          <Route path="floorplans" element={<FloorplanOrdersPage />} />
+          <Route path="test-notifications" element={<TestNotificationPage />} />
+        </Route>
 
-      {/* Admin routes */}
-      <Route path="/admin" element={<AuthGuard requireAuth={true}><MainLayout isAdmin /></AuthGuard>}>
-        <Route index element={<AdminDashboardPage />} />
-      </Route>
+        {/* Admin routes */}
+        <Route path="/admin" element={<AuthGuard requireAuth={true}><MainLayout isAdmin /></AuthGuard>}>
+          <Route index element={<AdminDashboardPage />} />
+        </Route>
 
-      {/* 404 */}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-    <ChatInterface />
-  </>
+        {/* 404 */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+      <ChatInterface />
+    </>
   );
 }
 const TestComponent = () => (
