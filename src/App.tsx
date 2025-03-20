@@ -30,7 +30,7 @@ import TestNotificationPage from './pages/TestNotificationPage';
 // Components
 import LoadingScreen from './components/ui/LoadingScreen';
 import AuthGuard from './components/ui/AuthGuard';
-
+import ChatInterface from './components/ChatInterface';
 function App() {
   const { user, setUser } = useAuthStore();
   const [loading, setLoading] = useState(true);
@@ -130,7 +130,20 @@ function App() {
       {/* 404 */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
+    <ChatInterface />
   );
 }
-
+const TestComponent = () => (
+  <View style={{
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    right: 20,
+    backgroundColor: 'red',
+    padding: 20,
+    zIndex: 10000,
+  }}>
+    <Text style={{color: 'white', fontSize: 20}}>TEST COMPONENT</Text>
+  </View>
+);
 export default App;
