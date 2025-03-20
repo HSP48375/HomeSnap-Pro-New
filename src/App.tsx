@@ -35,20 +35,6 @@ function App() {
   const { user, setUser } = useAuthStore();
   const [loading, setLoading] = useState(true);
 
-  // Debug component
-  const DebugMarker = () => (
-    <View style={{ 
-      position: 'absolute', 
-      top: 50, 
-      right: 20, 
-      backgroundColor: 'red', 
-      padding: 10,
-      zIndex: 9999 
-    }}>
-      <Text style={{color: 'white'}}>Debug Marker</Text>
-    </View>
-  );
-
   useEffect(() => {
     // Check for active session on load
     const checkSession = async () => {
@@ -135,17 +121,4 @@ function App() {
     </>
   );
 }
-const TestComponent = () => (
-  <View style={{
-    position: 'absolute',
-    top: 50,
-    left: 20,
-    right: 20,
-    backgroundColor: 'red',
-    padding: 20,
-    zIndex: 10000,
-  }}>
-    <Text style={{color: 'white', fontSize: 20}}>TEST COMPONENT</Text>
-  </View>
-);
 export default App;
