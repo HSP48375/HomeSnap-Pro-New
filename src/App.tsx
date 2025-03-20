@@ -30,11 +30,11 @@ import TestNotificationPage from './pages/TestNotificationPage';
 // Components
 import LoadingScreen from './components/ui/LoadingScreen';
 import AuthGuard from './components/ui/AuthGuard';
-import ChatInterface from './components/ChatInterface.js';
+import ChatInterface from './components/ChatInterface.jsx';
 function App() {
   const { user, setUser } = useAuthStore();
   const [loading, setLoading] = useState(true);
-  
+
   // Debug component
   const DebugMarker = () => (
     <View style={{ 
