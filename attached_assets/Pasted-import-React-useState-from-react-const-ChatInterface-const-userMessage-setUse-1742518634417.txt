@@ -1,0 +1,114 @@
+import React, { useState } from 'react';
+
+const ChatInterface = () => {
+  const [userMessage, setUserMessage] = useState('');
+  const [chatResponse, setChatResponse] = useState('');
+
+  const handleSendMessage = async () => {
+    if (userMessage.trim() === '') return;
+    // Placeholder response
+    setChatResponse('This is a test response. The AI integration will be added soon.');
+  };
+
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: '20px',
+      right: '20px',
+      width: '340px',
+      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(20, 20, 40, 0.8) 100%)',
+      backdropFilter: 'blur(20px)',
+      borderRadius: '20px',
+      padding: '20px',
+      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
+      zIndex: 9999,
+      fontFamily: 'Outfit, sans-serif'
+    }}>
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        marginBottom: '16px' 
+      }}>
+        <div style={{
+          width: '36px',
+          height: '36px',
+          borderRadius: '12px',
+          background: 'linear-gradient(135deg, #a855f7 0%, #3b82f6 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: '12px',
+          boxShadow: '0 4px 8px rgba(168, 85, 247, 0.3)'
+        }}>
+          <span style={{ color: 'white', fontSize: '16px', fontWeight: '600' }}>AI</span>
+        </div>
+        <h3 style={{ 
+          color: 'white', 
+          margin: 0,
+          fontWeight: '500',
+          fontSize: '18px'
+        }}>HomeSnap Assistant</h3>
+      </div>
+      
+      <div style={{
+        color: 'rgba(255, 255, 255, 0.9)',
+        minHeight: '60px',
+        marginBottom: '16px',
+        fontSize: '15px',
+        lineHeight: '1.5'
+      }}>
+        {chatResponse || "How can I help with your real estate photography needs today?"}
+      </div>
+      
+      <div style={{ position: 'relative' }}>
+        <input
+          type="text"
+          value={userMessage}
+          onChange={(e) => setUserMessage(e.target.value)}
+          placeholder="Type your question..."
+          style={{
+            width: '100%',
+            padding: '12px 16px',
+            paddingRight: '60px',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            color: 'white',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '12px',
+            fontSize: '14px',
+            outline: 'none',
+            boxSizing: 'border-box'
+          }}
+        />
+        <button
+          onClick={handleSendMessage}
+          style={{
+            position: 'absolute',
+            right: '8px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            backgroundColor: '#a855f7',
+            color: 'white',
+            padding: '8px',
+            width: '36px',
+            height: '36px',
+            border: 'none',
+            borderRadius: '10px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 5px rgba(168, 85, 247, 0.3)'
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 2L11 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ChatInterface;
