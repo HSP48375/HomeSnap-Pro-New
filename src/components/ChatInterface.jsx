@@ -1,14 +1,40 @@
 
 import React, { useState } from 'react';
+import getChatbotResponse from '../Chatbot';
 
 const ChatInterface = () => {
   const [userMessage, setUserMessage] = useState('');
   const [chatResponse, setChatResponse] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSendMessage = async () => {
     if (userMessage.trim() === '') return;
-    // Placeholder response
-    setChatResponse('This is a test response. The AI integration will be added soon.');
+    
+    try {
+      setIsLoading(true);
+      const userQuestion = userMessage;
+      setUserMessage(''); // Clear input field
+      
+      // Display user message immediately
+      setChatResponse(`You: ${userQuestion}\n\nJarvis is thinking...`);
+      
+      // Get response from OpenAI
+      const response = await getChatbotResponse(userQuestion);
+      
+      // Update with AI response
+      setChatResponse(response);
+    } catch (error) {
+      console.error('Error in handleSendMessage:', error);
+      setChatResponse('Sorry, I encountered an error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
   };
 
   return (
@@ -67,15 +93,16 @@ const ChatInterface = () => {
           type="text"
           value={userMessage}
           onChange={(e) => setUserMessage(e.target.value)}
-          placeholder="Type your question..."
+          onKeyPress={handleKeyPress}
+          placeholder="Type your message..."
           style={{
             width: '100%',
-            padding: '12px 16px',
-            paddingRight: '60px',
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
-            color: 'white',
+            padding: '12px',
+            paddingRight: '45px',
+            background: 'rgba(255, 255, 255, 0.05)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
             borderRadius: '12px',
+            color: 'white',
             fontSize: '14px',
             outline: 'none',
             boxSizing: 'border-box'
@@ -83,29 +110,23 @@ const ChatInterface = () => {
         />
         <button
           onClick={handleSendMessage}
+          disabled={isLoading}
           style={{
             position: 'absolute',
             right: '8px',
             top: '50%',
             transform: 'translateY(-50%)',
-            backgroundColor: '#a855f7',
-            color: 'white',
-            padding: '8px',
-            width: '36px',
-            height: '36px',
+            background: 'linear-gradient(135deg, #a855f7 0%, #3b82f6 100%)',
             border: 'none',
-            borderRadius: '10px',
+            borderRadius: '8px',
+            padding: '6px 12px',
+            color: 'white',
             cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 2px 5px rgba(168, 85, 247, 0.3)'
+            fontSize: '14px',
+            opacity: isLoading ? '0.7' : '1'
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 2L11 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          Send
         </button>
       </div>
     </div>
