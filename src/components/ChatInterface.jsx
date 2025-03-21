@@ -13,17 +13,18 @@ const ChatInterface = () => {
 
   return (
     <div style={{
-      position: 'absolute',
-      bottom: 20,
-      right: 20,
-      width: 300,
+      position: 'fixed',
+      bottom: '20px',
+      right: '20px',
+      width: '300px',
       backgroundColor: '#0A0A14',
-      borderRadius: 10,
-      padding: 16,
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+      borderRadius: '10px',
+      padding: '16px',
+      boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)',
+      border: '1px solid #00EEFF',
       zIndex: 9999
     }}>
-      <h3 style={{ color: 'white', margin: '0 0 10px' }}>HomeSnap Assistant</h3>
+      <h3 style={{ color: '#00EEFF', margin: '0 0 10px' }}>HomeSnap Assistant</h3>
       <div style={{
         color: 'white',
         minHeight: '60px',
