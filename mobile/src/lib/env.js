@@ -1,0 +1,3 @@
+
+// src/lib/env.js
+export const OPENAI_API_KEY = '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';
