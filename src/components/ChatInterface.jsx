@@ -49,7 +49,7 @@ const ChatInterface = () => {
           margin: 0,
           fontWeight: '500',
           fontSize: '18px'
-        }}>HomeSnap Assistant</h3>
+        }}>Jarvis</h3>
       </div>
       
       <div style={{
@@ -59,7 +59,7 @@ const ChatInterface = () => {
         fontSize: '15px',
         lineHeight: '1.5'
       }}>
-        {chatResponse || "How can I help with your real estate photography needs today?"}
+        {chatResponse || "Hello! I'm Jarvis, how can I assist you with your real estate photography needs today?"}
       </div>
       
       <div style={{ position: 'relative' }}>
