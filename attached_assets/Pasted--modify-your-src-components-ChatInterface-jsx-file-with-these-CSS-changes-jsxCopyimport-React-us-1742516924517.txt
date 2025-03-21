@@ -1,0 +1,75 @@
+ modify your src/components/ChatInterface.jsx file with these CSS changes:
+jsxCopyimport React, { useState } from 'react';
+
+const ChatInterface = () => {
+  const [userMessage, setUserMessage] = useState('');
+  const [chatResponse, setChatResponse] = useState('');
+
+  const handleSendMessage = async () => {
+    if (userMessage.trim() === '') return;
+    // Temporary placeholder response
+    setChatResponse('This is a test response. The actual AI integration will be added later.');
+  };
+
+  return (
+    <div style={{
+      position: 'fixed', // Change from 'absolute' to 'fixed'
+      bottom: '20px',
+      right: '20px',
+      width: '300px',
+      backgroundColor: '#0A0A14',
+      borderRadius: '10px',
+      padding: '16px',
+      boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)', // Add a cyan glow
+      border: '1px solid #00EEFF', // Add a cyan border
+      zIndex: 9999
+    }}>
+      <h3 style={{ color: '#00EEFF', margin: '0 0 10px' }}>HomeSnap Assistant</h3>
+      <div style={{
+        color: 'white',
+        minHeight: '60px',
+        marginBottom: '10px'
+      }}>
+        {chatResponse || "Ask me anything!"}
+      </div>
+      <input
+        type="text"
+        value={userMessage}
+        onChange={(e) => setUserMessage(e.target.value)}
+        placeholder="Type your question..."
+        style={{
+          width: '100%',
+          padding: '8px',
+          marginBottom: '8px',
+          backgroundColor: '#1A1A24',
+          color: 'white',
+          border: '1px solid #444',
+          borderRadius: '5px'
+        }}
+      />
+      <button
+        onClick={handleSendMessage}
+        style={{
+          backgroundColor: '#00EEFF',
+          color: 'black',
+          padding: '8px 16px',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          float: 'right'
+        }}
+      >
+        Send
+      </button>
+    </div>
+  );
+};
+
+export default ChatInterface;
+The key changes are:
+
+Changed position: 'absolute' to position: 'fixed' - This ensures it's fixed relative to the viewport, not the document
+Added a cyan glow with boxShadow and a cyan border
+Changed the header color to match your site's cyan accent color (#00EEFF)
+
+These changes will make the chatbot always visible at the bottom right of the screen regardless of scrolling, and it will visually stand out more with the cyan accents that match your site's design.
