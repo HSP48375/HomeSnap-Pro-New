@@ -1,0 +1,100 @@
+Great! I can see the chatbot is looking good visually. Now let's connect it to the OpenAI API so it can actually respond to queries.
+To complete this, we need to make a few changes:
+
+Create or modify the Chatbot.js file to use your OpenAI API key
+Update ChatInterface.jsx to call this function
+
+Here's what you should ask Replit assistant to do:
+"Please update my Chatbot integration with these two steps:
+
+First, create or modify src/Chatbot.js with this code (replace any existing content):
+
+javascriptCopy// API key should be stored in environment variables for security
+const OPENAI_API_KEY = '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';
+
+export async function getChatbotResponse(userMessage) {
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are Jarvis, an AI assistant for HomeSnap Pro, answering customer questions about real estate photography. Keep responses concise and helpful. Focus on photography tips, editing techniques, and how to use the HomeSnap Pro app for real estate photography.'
+          },
+          { role: 'user', content: userMessage }
+        ],
+        temperature: 0.7,
+        max_tokens: 150
+      })
+    });
+
+    const data = await response.json();
+    console.log('API Response:', data);
+    
+    if (data.choices && data.choices.length > 0) {
+      return data.choices[0].message.content;
+    } else {
+      console.error('Unexpected API response structure:', data);
+      return 'I encountered an issue processing your request. Please try again.';
+    }
+  } catch (error) {
+    console.error('Error fetching chatbot response:', error);
+    return 'Sorry, I\'m having trouble connecting right now. Please try again later.';
+  }
+}
+
+export default getChatbotResponse;
+
+Then, update src/components/ChatInterface.jsx to use this function (keep all the styling but update the functionality):
+
+javascriptCopyimport React, { useState } from 'react';
+import getChatbotResponse from '../Chatbot';
+
+const ChatInterface = () => {
+  const [userMessage, setUserMessage] = useState('');
+  const [chatResponse, setChatResponse] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSendMessage = async () => {
+    if (userMessage.trim() === '') return;
+    
+    try {
+      setIsLoading(true);
+      const userQuestion = userMessage;
+      setUserMessage(''); // Clear input field
+      
+      // Display user message immediately
+      setChatResponse(`You: ${userQuestion}\n\nJarvis is thinking...`);
+      
+      // Get response from OpenAI
+      const response = await getChatbotResponse(userQuestion);
+      
+      // Update with AI response
+      setChatResponse(response);
+    } catch (error) {
+      console.error('Error in handleSendMessage:', error);
+      setChatResponse('Sorry, I encountered an error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle Enter key press
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  // Keep all your existing styling but update this part of the JSX
+  // ...existing code...
+}
+
+export default ChatInterface;
+Please replace the appropriate sections while keeping the styling we've created.
