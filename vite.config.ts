@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 3000,
-    strictPort: true,
+    port: 8080,
+    strictPort: false, // Try alternative port if 8080 is in use
     hmr: {
       clientPort: 443,
       host: '0.0.0.0',
