@@ -1,600 +1,518 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   TouchableOpacity, 
-  Image, 
+  Image,
   Switch,
-  Modal,
-  ScrollView,
-  Dimensions,
   Alert,
+  ActivityIndicator,
   Platform
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Camera } from 'expo-camera';
-import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { Accelerometer } from 'expo-sensors';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
-import * as Sensors from 'expo-sensors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const { width, height } = Dimensions.get('window');
+import * as ImageManipulator from 'expo-image-manipulator';
+import { StatusBar } from 'expo-status-bar';
+import { Ionicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const CameraScreen = () => {
-  // Camera permissions and references
-  const [hasPermission, setHasPermission] = useState(null);
-  const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
-  const cameraRef = useRef(null);
-  
-  // Camera settings
-  const [isWideAngle, setIsWideAngle] = useState(true); // Wide angle ON by default
-  const [isBurstMode, setIsBurstMode] = useState(true); // Burst mode ON by default
-  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
-  const [isGridVisible, setIsGridVisible] = useState(true);
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [exposureValue, setExposureValue] = useState(0);
-  
-  // Device sensors for level indicators
-  const [orientation, setOrientation] = useState({ x: 0, y: 0, z: 0 });
-  const [isLevelHorizontal, setIsLevelHorizontal] = useState(false);
-  const [isLevelVertical, setIsLevelVertical] = useState(false);
-  
-  // Photo processing
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+  const [zoom, setZoom] = useState(0);
+  const [autoFocus, setAutoFocus] = useState(Camera.Constants.AutoFocus.on);
+  const [whiteBalance, setWhiteBalance] = useState(Camera.Constants.WhiteBalance.auto);
+  const [burstMode, setBurstMode] = useState(false);
+  const [gridVisible, setGridVisible] = useState(true);
+  const [playSound, setPlaySound] = useState(true);
   const [processingPhoto, setProcessingPhoto] = useState(false);
-  const [uploadQueue, setUploadQueue] = useState([]);
-  
-  // First-time user tooltips
-  const [showWideAngleTooltip, setShowWideAngleTooltip] = useState(false);
-  const [showBurstModeTooltip, setShowBurstModeTooltip] = useState(false);
-  
-  // Camera settings modal
-  const [settingsModalVisible, setSettingsModalVisible] = useState(false);
+  const [photoQueue, setPhotoQueue] = useState<string[]>([]);
+  const [accelerometerData, setAccelerometerData] = useState({ x: 0, y: 0, z: 0 });
+  const [subscription, setSubscription] = useState<any>(null);
 
-  // Get camera permissions and check for first-time user
+  const cameraRef = useRef<Camera>(null);
+  const navigation = useNavigation();
+
+  // Request camera and media library permissions
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      const mediaLibraryStatus = await MediaLibrary.requestPermissionsAsync();
-      setHasPermission(status === 'granted' && mediaLibraryStatus.status === 'granted');
-      
-      // Check if first time user for tooltips
-      const hasSeenWideAngleTooltip = await AsyncStorage.getItem('hasSeenWideAngleTooltip');
-      const hasSeenBurstModeTooltip = await AsyncStorage.getItem('hasSeenBurstModeTooltip');
-      
-      if (!hasSeenWideAngleTooltip) {
-        setShowWideAngleTooltip(true);
-        AsyncStorage.setItem('hasSeenWideAngleTooltip', 'true');
-      }
-      
-      if (!hasSeenBurstModeTooltip) {
-        setShowBurstModeTooltip(true);
-        AsyncStorage.setItem('hasSeenBurstModeTooltip', 'true');
+      const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
+      const { status: mediaStatus } = await MediaLibrary.requestPermissionsAsync();
+      setHasPermission(cameraStatus === 'granted' && mediaStatus === 'granted');
+
+      if (cameraStatus !== 'granted' || mediaStatus !== 'granted') {
+        Alert.alert('Permission required', 
+          'Camera and media library access are required to use this feature');
       }
     })();
+
+    // Start accelerometer for level indicators
+    _subscribe();
+
+    return () => {
+      _unsubscribe();
+    };
   }, []);
-  
-  // Setup device orientation sensors
-  useEffect(() => {
-    const subscription = Sensors.Accelerometer.addListener(accelerometerData => {
-      setOrientation(accelerometerData);
-      
-      // Calculate if phone is level
-      const tolerance = 0.1;
-      setIsLevelHorizontal(Math.abs(accelerometerData.y) < tolerance);
-      setIsLevelVertical(Math.abs(accelerometerData.x) < tolerance);
-    });
-    
-    return () => subscription.remove();
-  }, []);
-  
-  // Take photos (regular or burst mode)
+
+  const _subscribe = () => {
+    setSubscription(
+      Accelerometer.addListener(accelerometerData => {
+        setAccelerometerData(accelerometerData);
+      })
+    );
+    Accelerometer.setUpdateInterval(100); // Update every 100ms
+  };
+
+  const _unsubscribe = () => {
+    subscription && subscription.remove();
+    setSubscription(null);
+  };
+
+  // Helper to determine if device is level
+  const isDeviceLevel = () => {
+    const tolerance = 0.1;
+    return (
+      Math.abs(accelerometerData.x) < tolerance && 
+      Math.abs(accelerometerData.y) < tolerance
+    );
+  };
+
+  // Take a photo
   const takePicture = async () => {
     if (cameraRef.current && !processingPhoto) {
       setProcessingPhoto(true);
-      
+
       try {
-        // If burst mode is enabled, take 3 pictures with different exposures
-        if (isBurstMode) {
-          const exposureSettings = [-1, 0, 1]; // Under, normal, over exposed
-          const photoPromises = [];
-          
-          // Take 3 photos with different exposure values
-          for (const exposure of exposureSettings) {
-            if (cameraRef.current) {
-              // Set temporary exposure for this photo
-              await cameraRef.current.setExposureOffset(exposureValue + exposure);
-              
-              // Wait a moment for exposure to take effect
-              await new Promise(resolve => setTimeout(resolve, 200));
-              
-              // Take the photo
-              const photo = await cameraRef.current.takePictureAsync({
-                quality: 1,
-                base64: false,
-                skipProcessing: false,
-                exif: true,
-              });
-              
-              photoPromises.push(photo);
+        if (burstMode) {
+          // For burst mode, take 3 photos with different exposures
+          const exposures = [-1, 0, 1]; // Underexposed, normal, overexposed
+          const burstPromises = exposures.map(async (exposure) => {
+            const photo = await cameraRef.current?.takePictureAsync({
+              quality: 1,
+              base64: false,
+              exif: true,
+              skipProcessing: false,
+            });
+
+            if (photo) {
+              // Apply exposure adjustment
+              const manipResult = await ImageManipulator.manipulateAsync(
+                photo.uri,
+                [{ brightness: exposure * 0.5 }],
+                { compress: 0.9, format: ImageManipulator.SaveFormat.JPEG }
+              );
+
+              await saveToGallery(manipResult.uri);
+              return manipResult.uri;
             }
+            return null;
+          });
+
+          const results = await Promise.all(burstPromises);
+          const validResults = results.filter(result => result !== null) as string[];
+          if (validResults.length > 0) {
+            addToUploadQueue(validResults);
           }
-          
-          // Reset exposure to user setting
-          if (cameraRef.current) {
-            await cameraRef.current.setExposureOffset(exposureValue);
-          }
-          
-          // Process all photos
-          const photos = await Promise.all(photoPromises);
-          
-          // Save photos to media library
-          for (const photo of photos) {
-            await MediaLibrary.saveToLibraryAsync(photo.uri);
-            // Add to upload queue
-            setUploadQueue(prevQueue => [...prevQueue, photo.uri]);
-          }
-          
-          Alert.alert("Burst Mode", "Captured 3 exposure-bracketed photos");
-        } 
-        // Regular photo mode
-        else {
-          const photo = await cameraRef.current.takePictureAsync({
+        } else {
+          // Normal single photo mode
+          const photo = await cameraRef.current?.takePictureAsync({
             quality: 1,
             base64: false,
-            skipProcessing: false,
             exif: true,
+            skipProcessing: false,
           });
-          
-          // Save to media library
-          await MediaLibrary.saveToLibraryAsync(photo.uri);
-          
-          // Add to upload queue
-          setUploadQueue(prevQueue => [...prevQueue, photo.uri]);
-          
-          Alert.alert("Photo Captured", "Photo saved to gallery");
+
+          if (photo) {
+            await saveToGallery(photo.uri);
+            addToUploadQueue([photo.uri]);
+          }
         }
       } catch (error) {
-        console.error("Error taking picture:", error);
-        Alert.alert("Error", "Failed to capture photo");
+        console.error('Error taking picture:', error);
+        Alert.alert('Error', 'Failed to capture photo');
       } finally {
         setProcessingPhoto(false);
       }
     }
   };
-  
-  // Toggle camera settings
-  const toggleWideAngle = () => {
-    setIsWideAngle(!isWideAngle);
+
+  // Save photo to device gallery
+  const saveToGallery = async (uri: string) => {
+    try {
+      await MediaLibrary.saveToLibraryAsync(uri);
+    } catch (error) {
+      console.error('Error saving to gallery:', error);
+    }
   };
-  
-  const toggleBurstMode = () => {
-    setIsBurstMode(!isBurstMode);
+
+  // Add photos to upload queue for when online
+  const addToUploadQueue = (uris: string[]) => {
+    setPhotoQueue(prev => [...prev, ...uris]);
+
+    // In a real app, you'd have a service to check connectivity
+    // and upload when online
+    console.log('Added to upload queue:', uris);
   };
-  
+
+  // Toggle camera type (front/back)
+  const toggleCameraType = () => {
+    setType(
+      type === Camera.Constants.Type.back
+        ? Camera.Constants.Type.front
+        : Camera.Constants.Type.back
+    );
+  };
+
+  // Toggle flash mode
   const toggleFlash = () => {
-    setFlashMode(
-      flashMode === Camera.Constants.FlashMode.off
+    setFlash(
+      flash === Camera.Constants.FlashMode.off
         ? Camera.Constants.FlashMode.on
         : Camera.Constants.FlashMode.off
     );
   };
-  
+
+  // Toggle focus mode
+  const toggleFocus = () => {
+    setAutoFocus(
+      autoFocus === Camera.Constants.AutoFocus.on
+        ? Camera.Constants.AutoFocus.off
+        : Camera.Constants.AutoFocus.on
+    );
+  };
+
+  // Toggle grid overlay
   const toggleGrid = () => {
-    setIsGridVisible(!isGridVisible);
+    setGridVisible(prev => !prev);
   };
-  
-  const toggleSound = () => {
-    setSoundEnabled(!soundEnabled);
+
+  // Adjust zoom level
+  const handleZoomChange = (value: number) => {
+    setZoom(Math.max(0, Math.min(1, value)));
   };
-  
-  const adjustExposure = (value) => {
-    setExposureValue(Math.max(-1, Math.min(1, exposureValue + value)));
+
+  //Function to get wide angle ratio -  replace with your actual logic
+  const getWideAngleRatio = () => {
+    // Example: Simulate a 1.5x wide-angle effect
+    return 1.5;
   };
-  
-  // UI for tooltips
-  const renderWideAngleTooltip = () => {
-    if (!showWideAngleTooltip) return null;
-    
+
+  // Render the level indicators
+  const renderLevelIndicators = () => {
+    const isLevel = isDeviceLevel();
+    const levelX = Math.abs(accelerometerData.x) < 0.1;
+    const levelY = Math.abs(accelerometerData.y) < 0.1;
+
     return (
-      <Modal
-        transparent={true}
-        visible={showWideAngleTooltip}
-        animationType="fade"
-      >
-        <View style={styles.tooltipContainer}>
-          <View style={styles.tooltip}>
-            <Text style={styles.tooltipTitle}>Wide-Angle Mode</Text>
-            <Text style={styles.tooltipText}>
-              All professional real estate photographers use wide-angle lenses to capture more of the space.
-              This feature is enabled by default for the best real estate photos.
-            </Text>
-            <TouchableOpacity 
-              style={styles.tooltipButton}
-              onPress={() => setShowWideAngleTooltip(false)}
-            >
-              <Text style={styles.tooltipButtonText}>Got it!</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    );
-  };
-  
-  const renderBurstModeTooltip = () => {
-    if (!showBurstModeTooltip) return null;
-    
-    return (
-      <Modal
-        transparent={true}
-        visible={showBurstModeTooltip}
-        animationType="fade"
-      >
-        <View style={styles.tooltipContainer}>
-          <View style={styles.tooltip}>
-            <Text style={styles.tooltipTitle}>Burst Mode (AEB)</Text>
-            <Text style={styles.tooltipText}>
-              Burst Mode captures 3 photos with different exposures (under, correct, and over-exposed).
-              This gives you perfect detail in both bright and dark areas of a property.
-            </Text>
-            <TouchableOpacity 
-              style={styles.tooltipButton}
-              onPress={() => setShowBurstModeTooltip(false)}
-            >
-              <Text style={styles.tooltipButtonText}>Got it!</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    );
-  };
-  
-  // Settings modal
-  const renderSettingsModal = () => {
-    return (
-      <Modal
-        transparent={true}
-        visible={settingsModalVisible}
-        animationType="slide"
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.settingsModal}>
-            <Text style={styles.settingsTitle}>Camera Settings</Text>
-            
-            <ScrollView>
-              {/* Wide Angle Mode */}
-              <View style={styles.settingRow}>
-                <View style={styles.settingTextContainer}>
-                  <Text style={styles.settingLabel}>Wide-Angle Mode</Text>
-                  <Text style={styles.settingDescription}>
-                    Use device wide-angle lens (recommended)
-                  </Text>
-                </View>
-                <Switch
-                  value={isWideAngle}
-                  onValueChange={toggleWideAngle}
-                  trackColor={{ false: "#767577", true: "#00EEFF" }}
-                  thumbColor={isWideAngle ? "#FFFFFF" : "#f4f3f4"}
-                />
-              </View>
-              
-              {/* Burst Mode / AEB */}
-              <View style={styles.settingRow}>
-                <View style={styles.settingTextContainer}>
-                  <Text style={styles.settingLabel}>Burst Mode (AEB)</Text>
-                  <Text style={styles.settingDescription}>
-                    Capture 3 exposures per photo
-                  </Text>
-                </View>
-                <Switch
-                  value={isBurstMode}
-                  onValueChange={toggleBurstMode}
-                  trackColor={{ false: "#767577", true: "#00EEFF" }}
-                  thumbColor={isBurstMode ? "#FFFFFF" : "#f4f3f4"}
-                />
-              </View>
-              
-              {/* Grid Overlay */}
-              <View style={styles.settingRow}>
-                <View style={styles.settingTextContainer}>
-                  <Text style={styles.settingLabel}>Grid Overlay</Text>
-                  <Text style={styles.settingDescription}>
-                    Show rule of thirds guidelines
-                  </Text>
-                </View>
-                <Switch
-                  value={isGridVisible}
-                  onValueChange={toggleGrid}
-                  trackColor={{ false: "#767577", true: "#00EEFF" }}
-                  thumbColor={isGridVisible ? "#FFFFFF" : "#f4f3f4"}
-                />
-              </View>
-              
-              {/* Camera Sound */}
-              <View style={styles.settingRow}>
-                <View style={styles.settingTextContainer}>
-                  <Text style={styles.settingLabel}>Camera Sound</Text>
-                  <Text style={styles.settingDescription}>
-                    Play sound when taking photos
-                  </Text>
-                </View>
-                <Switch
-                  value={soundEnabled}
-                  onValueChange={toggleSound}
-                  trackColor={{ false: "#767577", true: "#00EEFF" }}
-                  thumbColor={soundEnabled ? "#FFFFFF" : "#f4f3f4"}
-                />
-              </View>
-            </ScrollView>
-            
-            <TouchableOpacity 
-              style={styles.closeButton}
-              onPress={() => setSettingsModalVisible(false)}
-            >
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    );
-  };
-  
-  // Grid overlay component
-  const renderGrid = () => {
-    if (!isGridVisible) return null;
-    
-    return (
-      <View style={styles.gridContainer}>
-        {/* Horizontal lines */}
-        <View style={[styles.gridLine, styles.horizontalLine, { top: height / 3 }]} />
-        <View style={[styles.gridLine, styles.horizontalLine, { top: (height / 3) * 2 }]} />
-        
-        {/* Vertical lines */}
-        <View style={[styles.gridLine, styles.verticalLine, { left: width / 3 }]} />
-        <View style={[styles.gridLine, styles.verticalLine, { left: (width / 3) * 2 }]} />
+      <View style={styles.levelContainer}>
+        <View style={[
+          styles.levelIndicator, 
+          styles.horizontalLevel,
+          levelX ? styles.levelAligned : null
+        ]} />
+        <View style={[
+          styles.levelIndicator,
+          styles.verticalLevel,
+          levelY ? styles.levelAligned : null
+        ]} />
       </View>
     );
   };
-  
-  // Level indicators
-  const renderLevelIndicators = () => {
+
+  // Render the grid overlay (rule of thirds)
+  const renderGrid = () => {
+    if (!gridVisible) return null;
+
     return (
-      <View style={styles.levelContainer}>
-        {/* Horizontal level */}
-        <View style={styles.levelIndicator}>
-          <View style={[
-            styles.levelBar,
-            { backgroundColor: isLevelHorizontal ? '#00EEFF' : 'white' }
-          ]}>
-            <View style={[
-              styles.levelBubble,
-              { 
-                left: `${50 + (orientation.y * 50)}%`,
-                backgroundColor: isLevelHorizontal ? '#00EEFF' : 'white'
-              }
-            ]} />
-          </View>
-        </View>
-        
-        {/* Vertical level */}
-        <View style={styles.verticalLevelIndicator}>
-          <View style={[
-            styles.verticalLevelBar,
-            { backgroundColor: isLevelVertical ? '#00EEFF' : 'white' }
-          ]}>
-            <View style={[
-              styles.levelBubble,
-              { 
-                top: `${50 + (orientation.x * 50)}%`,
-                backgroundColor: isLevelVertical ? '#00EEFF' : 'white'
-              }
-            ]} />
-          </View>
-        </View>
+      <View style={styles.gridContainer}>
+        {/* Horizontal lines */}
+        <View style={[styles.gridLine, styles.horizontalLine, { top: '33%' }]} />
+        <View style={[styles.gridLine, styles.horizontalLine, { top: '66%' }]} />
+
+        {/* Vertical lines */}
+        <View style={[styles.gridLine, styles.verticalLine, { left: '33%' }]} />
+        <View style={[styles.gridLine, styles.verticalLine, { left: '66%' }]} />
       </View>
     );
   };
 
   if (hasPermission === null) {
-    return <View style={styles.container}><Text style={styles.text}>Requesting camera permissions...</Text></View>;
+    return <View style={styles.container}><ActivityIndicator size="large" color="#00EEFF" /></View>;
   }
-  
+
   if (hasPermission === false) {
-    return <View style={styles.container}><Text style={styles.text}>No access to camera. Please enable camera permissions.</Text></View>;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>No access to camera or media library</Text>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.buttonText}>Go Back</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Camera View */}
+    <View style={styles.container}>
+      <StatusBar style="light" />
+
       <Camera
         ref={cameraRef}
         style={styles.camera}
-        type={cameraType}
-        flashMode={flashMode}
-        ratio="16:9"
-        zoom={isWideAngle ? 0.5 : 1} // Simulate wide-angle with zoom out
+        type={type}
+        flashMode={flash}
+        zoom={zoom * getWideAngleRatio()} // Apply wide-angle effect
+        autoFocus={autoFocus}
+        whiteBalance={whiteBalance}
       >
-        {/* Camera UI Overlay */}
-        <View style={styles.cameraControls}>
-          {/* Top Bar */}
-          <View style={styles.topBar}>
+        {renderGrid()}
+        {renderLevelIndicators()}
+
+        {/* Camera controls top toolbar */}
+        <View style={styles.topControls}>
+          <TouchableOpacity 
+            style={styles.controlButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+
+          <View style={styles.cameraOptionsContainer}>
             <TouchableOpacity 
-              style={styles.iconButton}
-              onPress={() => setSettingsModalVisible(true)}
-            >
-              <Ionicons name="settings-outline" size={24} color="white" />
-            </TouchableOpacity>
-            
-            <View style={styles.cameraInfo}>
-              {isWideAngle && (
-                <View style={styles.cameraFeatureTag}>
-                  <Text style={styles.featureTagText}>WIDE</Text>
-                </View>
-              )}
-              
-              {isBurstMode && (
-                <View style={styles.cameraFeatureTag}>
-                  <Text style={styles.featureTagText}>AEB</Text>
-                </View>
-              )}
-            </View>
-            
-            <TouchableOpacity 
-              style={styles.iconButton}
+              style={styles.controlButton}
               onPress={toggleFlash}
             >
               <Ionicons 
-                name={flashMode === Camera.Constants.FlashMode.off ? "flash-off" : "flash"} 
+                name={flash === Camera.Constants.FlashMode.on ? "flash" : "flash-off"} 
+                size={24} 
+                color="white" 
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.controlButton}
+              onPress={toggleGrid}
+            >
+              <MaterialIcons 
+                name="grid-on" 
+                size={24} 
+                color={gridVisible ? "#00EEFF" : "white"} 
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.controlButton}
+              onPress={toggleFocus}
+            >
+              <MaterialIcons 
+                name={autoFocus === Camera.Constants.AutoFocus.on ? "center-focus-strong" : "center-focus-weak"} 
                 size={24} 
                 color="white" 
               />
             </TouchableOpacity>
           </View>
-          
-          {/* Grid Overlay */}
-          {renderGrid()}
-          
-          {/* Level Indicators */}
-          {renderLevelIndicators()}
-          
-          {/* Bottom Bar */}
-          <View style={styles.bottomBar}>
-            <TouchableOpacity 
-              style={styles.iconButton}
-              onPress={() => setCameraType(
-                cameraType === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              )}
+        </View>
+
+        {/* Bottom camera controls */}
+        <View style={styles.bottomControls}>
+          <View style={styles.settingsContainer}>
+            <View style={styles.settingRow}>
+              <Text style={styles.settingLabel}>AEB (Burst)</Text>
+              <Switch
+                value={burstMode}
+                onValueChange={setBurstMode}
+                trackColor={{ false: '#767577', true: '#00EEFF' }}
+                thumbColor={burstMode ? '#f4f3f4' : '#f4f3f4'}
+              />
+            </View>
+
+            <View style={styles.settingRow}>
+              <Text style={styles.settingLabel}>Sound</Text>
+              <Switch
+                value={playSound}
+                onValueChange={setPlaySound}
+                trackColor={{ false: '#767577', true: '#00EEFF' }}
+                thumbColor={playSound ? '#f4f3f4' : '#f4f3f4'}
+              />
+            </View>
+
+            <View style={styles.settingRow}>
+              <Text style={styles.settingLabel}>Zoom</Text>
+              <View style={styles.zoomButtons}>
+                <TouchableOpacity 
+                  style={styles.zoomButton}
+                  onPress={() => handleZoomChange(zoom - 0.1)}
+                >
+                  <Text style={styles.zoomButtonText}>-</Text>
+                </TouchableOpacity>
+
+                <Text style={styles.zoomValue}>{(zoom * 100).toFixed(0)}%</Text>
+
+                <TouchableOpacity 
+                  style={styles.zoomButton}
+                  onPress={() => handleZoomChange(zoom + 0.1)}
+                >
+                  <Text style={styles.zoomButtonText}>+</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.captureContainer}>
+            <TouchableOpacity
+              style={styles.galleryButton}
+              onPress={() => navigation.navigate('Gallery' as never)}
             >
-              <Ionicons name="camera-reverse-outline" size={28} color="white" />
+              <Ionicons name="images" size={28} color="white" />
             </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={[styles.captureButton, processingPhoto && styles.captureButtonDisabled]}
+
+            <TouchableOpacity
+              style={[
+                styles.captureButton,
+                processingPhoto ? styles.captureButtonDisabled : null
+              ]}
               onPress={takePicture}
               disabled={processingPhoto}
             >
               {processingPhoto ? (
-                <View style={styles.processingIndicator} />
-              ) : null}
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <View style={styles.captureButtonInner} />
+              )}
             </TouchableOpacity>
-            
-            <TouchableOpacity 
-              style={styles.iconButton}
-              onPress={() => console.log('View gallery')}
+
+            <TouchableOpacity
+              style={styles.flipButton}
+              onPress={toggleCameraType}
             >
-              <Ionicons name="images-outline" size={28} color="white" />
-            </TouchableOpacity>
-          </View>
-          
-          {/* Exposure Controls */}
-          <View style={styles.exposureControls}>
-            <TouchableOpacity onPress={() => adjustExposure(-0.1)}>
-              <Ionicons name="remove-circle-outline" size={28} color="white" />
-            </TouchableOpacity>
-            
-            <View style={styles.exposureIndicator}>
-              <Text style={styles.exposureText}>{exposureValue.toFixed(1)}</Text>
-            </View>
-            
-            <TouchableOpacity onPress={() => adjustExposure(0.1)}>
-              <Ionicons name="add-circle-outline" size={28} color="white" />
+              <Ionicons name="camera-reverse" size={28} color="white" />
             </TouchableOpacity>
           </View>
         </View>
       </Camera>
-      
-      {/* Tooltips */}
-      {renderWideAngleTooltip()}
-      {renderBurstModeTooltip()}
-      
-      {/* Settings Modal */}
-      {renderSettingsModal()}
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
-  },
-  text: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    textAlign: 'center',
-    marginTop: 20,
+    backgroundColor: '#000',
   },
   camera: {
     flex: 1,
   },
-  cameraControls: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    justifyContent: 'space-between',
-    padding: 20,
-  },
-  topBar: {
+  topControls: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    paddingTop: 10,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 50 : 30,
   },
-  cameraInfo: {
+  cameraOptionsContainer: {
     flexDirection: 'row',
   },
-  cameraFeatureTag: {
-    backgroundColor: 'rgba(0, 238, 255, 0.8)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    marginHorizontal: 4,
+  bottomControls: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingBottom: Platform.OS === 'ios' ? 30 : 20,
   },
-  featureTagText: {
-    color: '#000000',
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-  bottomBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    paddingBottom: 20,
-  },
-  iconButton: {
+  controlButton: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  captureContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
   },
   captureButton: {
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#00EEFF',
     borderWidth: 5,
-    borderColor: 'rgba(255, 255, 255, 0.8)',
+    borderColor: 'white',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal: 30,
   },
   captureButtonDisabled: {
-    backgroundColor: 'rgba(0, 238, 255, 0.5)',
+    borderColor: 'rgba(255,255,255,0.5)',
   },
-  processingIndicator: {
+  captureButtonInner: {
+    width: 54,
+    height: 54,
+    borderRadius: 27,
+    backgroundColor: 'white',
+  },
+  flipButton: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    borderWidth: 3,
-    borderColor: 'white',
-    borderTopColor: 'transparent',
-    transform: [{ rotate: '45deg' }],
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  galleryButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  settingsContainer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    borderRadius: 15,
+    padding: 15,
+  },
+  settingRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  settingLabel: {
+    color: 'white',
+    fontSize: 16,
+  },
+  zoomButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  zoomButton: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  zoomButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  zoomValue: {
+    color: 'white',
+    width: 50,
+    textAlign: 'center',
   },
   gridContainer: {
     position: 'absolute',
@@ -605,7 +523,7 @@ const styles = StyleSheet.create({
   },
   gridLine: {
     position: 'absolute',
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: 'rgba(255,255,255,0.4)',
   },
   horizontalLine: {
     left: 0,
@@ -619,151 +537,48 @@ const styles = StyleSheet.create({
   },
   levelContainer: {
     position: 'absolute',
-    left: 20,
-    right: 20,
-    top: 70,
+    top: '50%',
+    left: '50%',
+    width: 200,
+    height: 200,
+    marginLeft: -100,
+    marginTop: -100,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   levelIndicator: {
-    height: 30,
-    justifyContent: 'center',
-    marginBottom: 10,
-  },
-  levelBar: {
-    height: 6,
-    width: '100%',
-    backgroundColor: 'white',
-    borderRadius: 3,
-    position: 'relative',
-  },
-  verticalLevelIndicator: {
+    backgroundColor: 'rgba(255,255,255,0.6)',
     position: 'absolute',
-    left: 10,
-    top: 40,
-    bottom: 40,
-    width: 30,
-    justifyContent: 'center',
   },
-  verticalLevelBar: {
-    width: 6,
-    height: '100%',
-    backgroundColor: 'white',
-    borderRadius: 3,
-    position: 'relative',
+  horizontalLevel: {
+    width: 100,
+    height: 2,
   },
-  levelBubble: {
-    position: 'absolute',
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: 'white',
-    transform: [{ translateX: -6 }, { translateY: -6 }],
+  verticalLevel: {
+    width: 2,
+    height: 100,
   },
-  exposureControls: {
-    position: 'absolute',
-    right: 20,
-    top: '50%',
-    transform: [{ translateY: -50 }],
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 20,
-    padding: 10,
+  levelAligned: {
+    backgroundColor: '#00EEFF',
   },
-  exposureIndicator: {
-    paddingVertical: 8,
-  },
-  exposureText: {
+  errorText: {
     color: 'white',
-    fontWeight: 'bold',
-  },
-  tooltipContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
-  tooltip: {
-    backgroundColor: '#121212',
-    borderRadius: 10,
-    padding: 20,
-    width: '80%',
-    maxWidth: 400,
-    borderWidth: 1,
-    borderColor: '#00EEFF',
-  },
-  tooltipTitle: {
-    color: '#00EEFF',
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  tooltipText: {
-    color: 'white',
-    fontSize: 16,
-    marginBottom: 20,
-    lineHeight: 24,
-  },
-  tooltipButton: {
-    backgroundColor: '#00EEFF',
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  tooltipButtonText: {
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
-  settingsModal: {
-    backgroundColor: '#121212',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 20,
-    maxHeight: '80%',
-  },
-  settingsTitle: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
     textAlign: 'center',
+    margin: 20,
   },
-  settingRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  settingTextContainer: {
-    flex: 1,
-    marginRight: 10,
-  },
-  settingLabel: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  settingDescription: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
-  },
-  closeButton: {
+  button: {
     backgroundColor: '#00EEFF',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25,
     marginTop: 20,
+    alignSelf: 'center',
   },
-  closeButtonText: {
-    color: 'black',
-    fontWeight: 'bold',
+  buttonText: {
+    color: '#000',
     fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
