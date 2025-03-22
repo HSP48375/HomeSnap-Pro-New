@@ -8,7 +8,8 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     hmr: {
-      clientPort: 443
+      clientPort: 443,
+      host: '0.0.0.0',
     }
   }
 });
