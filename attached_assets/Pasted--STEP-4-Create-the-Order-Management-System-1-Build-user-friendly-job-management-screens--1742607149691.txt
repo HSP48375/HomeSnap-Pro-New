@@ -1,0 +1,57 @@
+### STEP 4: Create the Order Management System
+
+1. Build user-friendly job management screens:
+   - Simplified job creation screen with:
+     * Clear "New Listing" or "New Property" button prominently displayed
+     * Google Places API integration for easy address entry
+     * Option to name jobs by address or custom nickname (e.g., "Beach House Listing")
+     * Location detection to pre-fill current address with "Use My Location" button
+     * Simple job folder creation with non-technical language
+
+   - Property listing dashboard with:
+     * Visual grid of active and completed properties
+     * Clear status labels designed for non-technical users
+     * Simple sorting options (Recent, Status, Alphabetical)
+     * Quick action buttons (View, Edit, Share)
+
+   - Property details screen featuring:
+     * Property information in realtor-friendly format
+     * Before/After photo viewer with intuitive controls
+     * Easy sharing options for MLS, social media, and clients
+     * Download options in formats ready for listings
+
+2. Implement realtor-focused checkout flow:
+   - Photo selection interface designed for non-photographers:
+     * Thumbnail gallery view with simple selection
+     * Room categorization suggestions
+     * Photography tips integrated into the selection process
+     * Clear pricing ($1.50 per photo) with running total
+
+   - Professional add-on services:
+     * Virtual Staging with before/after examples relevant to listings
+     * Twilight Conversion with explanation of higher engagement rates
+     * Decluttering with simple explanations of benefits for listings
+     * Landscaping improvement with listing-focused benefits
+
+   - AI Listing Description generator tailored for listings:
+     * Seamlessly triggered by property address
+     * Realtor-friendly style options (Luxury, Family-friendly, First-time Buyer, etc.)
+     * Statistics on how good descriptions improve listing performance
+     * MLS-ready formatting options
+     * $15 pricing with clear ROI messaging
+
+   - Straightforward checkout experience:
+     * Clean, itemized breakdown of services
+     * Promo code field with instant application
+     * Payment options familiar to realtors/property owners
+     * Secure Stripe integration with saved payment methods
+     * Clear delivery timeline expectations
+
+3. Implement listing-focused notification system:
+   - Realtor-friendly status updates:
+     * "Your listing photos are being professionally edited"
+     * "Your Beach House photos are ready to view!"
+     * "Your professional edits are complete"
+     * "Your listing description is complete"
+   - Options to forward notifications to clients
+   - Calendar integration for listing timeline
