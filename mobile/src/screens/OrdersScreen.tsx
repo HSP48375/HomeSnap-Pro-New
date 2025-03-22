@@ -1,135 +1,186 @@
-
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  FlatList, 
-  TouchableOpacity, 
-  Image,
-  StatusBar
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, SafeAreaView, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-// Sample data for orders
-const SAMPLE_ORDERS = [
+// Sample property data
+const sampleProperties = [
   {
-    id: '1',
-    address: '123 Main St, Los Angeles, CA',
-    type: 'Professional Photos',
-    status: 'Completed',
-    date: '2023-09-15',
-    thumbnail: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?ixlib=rb-4.0.3',
-    price: '$149.99'
+    id: 1,
+    address: '1234 Oceanview Dr, Miami, FL',
+    nickname: 'Beach House Listing',
+    status: 'Active',
+    photos: 24,
+    lastUpdated: '2025-03-19T14:30:00',
+    thumbnail: null // Replace with actual images in production
   },
   {
-    id: '2',
-    address: '456 Oak Ave, San Francisco, CA',
-    type: 'Virtual Staging',
+    id: 2,
+    address: '567 Mountain View Rd, Denver, CO',
+    nickname: 'Mountain Retreat',
+    status: 'Complete',
+    photos: 18,
+    lastUpdated: '2025-03-15T10:15:00',
+    thumbnail: null
+  },
+  {
+    id: 3,
+    address: '890 Sunset Blvd, Los Angeles, CA',
+    nickname: 'LA Luxury Condo',
     status: 'Processing',
-    date: '2023-09-20',
-    thumbnail: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3',
-    price: '$99.99'
-  },
-  {
-    id: '3',
-    address: '789 Pine Blvd, Seattle, WA',
-    type: 'Floorplan',
-    status: 'Pending',
-    date: '2023-09-25',
-    thumbnail: 'https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3',
-    price: '$79.99'
+    photos: 32,
+    lastUpdated: '2025-03-18T09:45:00',
+    thumbnail: null
   }
 ];
 
 const OrdersScreen = () => {
-  const [activeTab, setActiveTab] = useState('All');
-  const tabs = ['All', 'Pending', 'Processing', 'Completed'];
-  
-  const filteredOrders = activeTab === 'All' 
-    ? SAMPLE_ORDERS 
-    : SAMPLE_ORDERS.filter(order => order.status === activeTab);
-  
-  const renderStatusBadge = (status: string) => {
-    let backgroundColor;
+  const [viewMode, setViewMode] = useState('grid');
+  const navigation = useNavigation();
+
+  const getStatusStyle = (status) => {
     switch (status) {
-      case 'Completed':
-        backgroundColor = '#4CAF50';
-        break;
+      case 'Active':
+        return styles.statusActive;
+      case 'Complete':
+        return styles.statusComplete;
       case 'Processing':
-        backgroundColor = '#2196F3';
-        break;
-      case 'Pending':
-        backgroundColor = '#FF9800';
-        break;
+        return styles.statusProcessing;
       default:
-        backgroundColor = '#9E9E9E';
+        return styles.statusDefault;
     }
-    
-    return (
-      <View style={[styles.badge, { backgroundColor }]}>
-        <Text style={styles.badgeText}>{status}</Text>
-      </View>
-    );
   };
-  
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.orderItem}>
-      <Image 
-        source={{ uri: item.thumbnail }} 
-        style={styles.thumbnail}
-      />
-      <View style={styles.orderDetails}>
-        <Text style={styles.orderAddress} numberOfLines={1}>{item.address}</Text>
-        <Text style={styles.orderType}>{item.type}</Text>
-        <View style={styles.orderFooter}>
-          <Text style={styles.orderDate}>{item.date}</Text>
-          <Text style={styles.orderPrice}>{item.price}</Text>
-        </View>
-      </View>
-      {renderStatusBadge(item.status)}
-    </TouchableOpacity>
-  );
-  
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      
-      <View style={styles.header}>
-        <Text style={styles.title}>Orders</Text>
-        <TouchableOpacity style={styles.filterButton}>
-          <Ionicons name="filter" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
-      
-      <View style={styles.tabContainer}>
-        {tabs.map(tab => (
-          <TouchableOpacity
-            key={tab}
-            style={[styles.tab, activeTab === tab && styles.activeTab]}
-            onPress={() => setActiveTab(tab)}
-          >
-            <Text style={[styles.tabText, activeTab === tab && styles.activeTabText]}>
-              {tab}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      
-      <FlatList
-        data={filteredOrders}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={() => (
-          <View style={styles.emptyContainer}>
-            <Ionicons name="document-text-outline" size={80} color="#333" />
-            <Text style={styles.emptyText}>No orders found</Text>
+
+  const getStatusTextStyle = (status) => {
+    switch (status) {
+      case 'Active':
+        return styles.statusTextActive;
+      case 'Complete':
+        return styles.statusTextComplete;
+      case 'Processing':
+        return styles.statusTextProcessing;
+      default:
+        return styles.statusTextDefault;
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
+  const navigateToPropertyDetail = (id) => {
+    navigation.navigate('PropertyDetail', { id });
+  };
+
+  const navigateToNewListing = () => {
+    navigation.navigate('NewListing');
+  };
+
+  const renderGridItem = ({ item }) => (
+    <TouchableOpacity 
+      style={styles.gridItem}
+      onPress={() => navigateToPropertyDetail(item.id)}
+    >
+      <View style={styles.gridThumbnail}>
+        {item.thumbnail ? (
+          <Image source={{ uri: item.thumbnail }} style={styles.thumbnailImage} />
+        ) : (
+          <View style={styles.thumbnailPlaceholder}>
+            <Ionicons name="home-outline" size={40} color="#888" />
           </View>
         )}
+        <View style={[styles.statusBadge, getStatusStyle(item.status)]}>
+          <Text style={[styles.statusText, getStatusTextStyle(item.status)]}>{item.status}</Text>
+        </View>
+      </View>
+      <View style={styles.gridContent}>
+        <Text style={styles.propertyTitle} numberOfLines={1}>{item.nickname}</Text>
+        <Text style={styles.propertyAddress} numberOfLines={1}>
+          <Ionicons name="location-outline" size={14} color="#888" /> {item.address}
+        </Text>
+        <View style={styles.gridFooter}>
+          <Text style={styles.gridFooterText}>
+            <Ionicons name="calendar-outline" size={14} color="#888" /> {formatDate(item.lastUpdated)}
+          </Text>
+          <Text style={styles.gridFooterText}>{item.photos} photos</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
+  const renderListItem = ({ item }) => (
+    <TouchableOpacity 
+      style={styles.listItem}
+      onPress={() => navigateToPropertyDetail(item.id)}
+    >
+      <View style={styles.listThumbnail}>
+        {item.thumbnail ? (
+          <Image source={{ uri: item.thumbnail }} style={styles.listThumbnailImage} />
+        ) : (
+          <View style={styles.listThumbnailPlaceholder}>
+            <Ionicons name="home-outline" size={24} color="#888" />
+          </View>
+        )}
+      </View>
+      <View style={styles.listContent}>
+        <Text style={styles.propertyTitle} numberOfLines={1}>{item.nickname}</Text>
+        <Text style={styles.propertyAddress} numberOfLines={1}>{item.address}</Text>
+      </View>
+      <View style={styles.listRight}>
+        <View style={[styles.listStatusBadge, getStatusStyle(item.status)]}>
+          <Text style={[styles.statusText, getStatusTextStyle(item.status)]}>{item.status}</Text>
+        </View>
+        <Text style={styles.listDate}>{formatDate(item.lastUpdated)}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+
+      <View style={styles.header}>
+        <Text style={styles.title}>Property Listings</Text>
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={navigateToNewListing}
+        >
+          <Ionicons name="add" size={22} color="#fff" />
+          <Text style={styles.addButtonText}>New Property</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBar}>
+          <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
+          <Text style={styles.searchPlaceholder}>Search by address or nickname</Text>
+        </View>
+        <View style={styles.viewToggle}>
+          <TouchableOpacity 
+            style={[styles.toggleButton, viewMode === 'grid' && styles.toggleButtonActive]}
+            onPress={() => setViewMode('grid')}
+          >
+            <Ionicons name="grid-outline" size={20} color={viewMode === 'grid' ? '#00EEFF' : '#fff'} />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.toggleButton, viewMode === 'list' && styles.toggleButtonActive]}
+            onPress={() => setViewMode('list')}
+          >
+            <Ionicons name="list-outline" size={20} color={viewMode === 'list' ? '#00EEFF' : '#fff'} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <FlatList
+        data={sampleProperties}
+        renderItem={viewMode === 'grid' ? renderGridItem : renderListItem}
+        keyExtractor={item => item.id.toString()}
+        numColumns={viewMode === 'grid' ? 2 : 1}
+        key={viewMode} // This forces a re-render when viewMode changes
+        contentContainerStyle={styles.listContainer}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -142,110 +193,190 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 60,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
   },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
     color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
-  filterButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-  },
-  tabContainer: {
+  addButton: {
     flexDirection: 'row',
-    marginBottom: 15,
-    paddingHorizontal: 15,
-  },
-  tab: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginRight: 8,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  activeTab: {
+    alignItems: 'center',
     backgroundColor: '#00EEFF',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
   },
-  tabText: {
-    color: '#CCCCCC',
-    fontWeight: '600',
+  addButtonText: {
+    color: '#0A0A14',
+    fontWeight: 'bold',
+    marginLeft: 4,
   },
-  activeTabText: {
-    color: '#000000',
+  searchContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    alignItems: 'center',
+  },
+  searchBar: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1A1A24',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginRight: 8,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchPlaceholder: {
+    color: '#888',
+  },
+  viewToggle: {
+    flexDirection: 'row',
+    backgroundColor: '#1A1A24',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  toggleButton: {
+    padding: 10,
+  },
+  toggleButtonActive: {
+    backgroundColor: '#1F1F2C',
   },
   listContainer: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    padding: 8,
   },
-  orderItem: {
+  gridItem: {
+    flex: 1,
+    margin: 8,
+    backgroundColor: '#1A1A24',
+    borderRadius: 12,
+    overflow: 'hidden',
+    maxWidth: '47%',
+  },
+  gridThumbnail: {
+    height: 120,
+    backgroundColor: '#0F0F1A',
+    position: 'relative',
+  },
+  thumbnailImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  thumbnailPlaceholder: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  statusBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 16,
+  },
+  statusActive: {
+    backgroundColor: 'rgba(0, 122, 255, 0.2)',
+  },
+  statusComplete: {
+    backgroundColor: 'rgba(52, 199, 89, 0.2)',
+  },
+  statusProcessing: {
+    backgroundColor: 'rgba(255, 204, 0, 0.2)',
+  },
+  statusDefault: {
+    backgroundColor: 'rgba(142, 142, 147, 0.2)',
+  },
+  statusText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  statusTextActive: {
+    color: '#007AFF',
+  },
+  statusTextComplete: {
+    color: '#34C759',
+  },
+  statusTextProcessing: {
+    color: '#FFCC00',
+  },
+  statusTextDefault: {
+    color: '#8E8E93',
+  },
+  gridContent: {
+    padding: 12,
+  },
+  propertyTitle: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  propertyAddress: {
+    color: '#888',
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  gridFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  gridFooterText: {
+    color: '#888',
+    fontSize: 12,
+  },
+  listItem: {
     flexDirection: 'row',
     backgroundColor: '#1A1A24',
     borderRadius: 12,
-    marginBottom: 16,
-    padding: 15,
+    padding: 12,
+    marginVertical: 6,
+    marginHorizontal: 8,
     alignItems: 'center',
   },
-  thumbnail: {
-    width: 60,
-    height: 60,
+  listThumbnail: {
+    width: 50,
+    height: 50,
     borderRadius: 8,
-    marginRight: 15,
+    backgroundColor: '#0F0F1A',
+    marginRight: 12,
+    overflow: 'hidden',
   },
-  orderDetails: {
+  listThumbnailImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  listThumbnailPlaceholder: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listContent: {
     flex: 1,
   },
-  orderAddress: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 16,
+  listRight: {
+    alignItems: 'flex-end',
+  },
+  listStatusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 16,
     marginBottom: 4,
   },
-  orderType: {
-    color: '#AAAAAA',
-    fontSize: 14,
-    marginBottom: 6,
-  },
-  orderFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  orderDate: {
-    color: '#888888',
+  listDate: {
+    color: '#888',
     fontSize: 12,
-  },
-  orderPrice: {
-    color: '#00EEFF',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  badge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginLeft: 10,
-  },
-  badgeText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 50,
-  },
-  emptyText: {
-    color: '#666',
-    fontSize: 16,
-    marginTop: 10,
   },
 });
 

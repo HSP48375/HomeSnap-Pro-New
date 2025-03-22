@@ -20,6 +20,14 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+// Import our new pages
+import OrdersPage from "./src/pages/OrdersPage";
+import NewListingPage from "./src/pages/NewListingPage";
+import PhotoSelectionPage from "./src/pages/PhotoSelectionPage";
+import PhotoAddonsPage from "./src/pages/PhotoAddonsPage";
+import CheckoutPage from "./src/pages/CheckoutPage";
+import PropertyDetailsPage from "./src/pages/PropertyDetailsPage";
+
 const MainTabs = () => (
   <>
     <Tab.Navigator
@@ -56,7 +64,7 @@ const MainTabs = () => (
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Upload" component={UploadScreen} />
-      <Tab.Screen name="Orders" component={OrdersScreen} />
+      <Tab.Screen name="Orders" component={OrdersPage} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
 
@@ -79,6 +87,12 @@ const App = () => {
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="MainTabs" component={MainTabs} />
           <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
+          <Stack.Screen name="orders" component={OrdersPage} />
+          <Stack.Screen name="new-listing" component={NewListingPage} />
+          <Stack.Screen name="photo-selection" component={PhotoSelectionPage} />
+          <Stack.Screen name="photo-addons" component={PhotoAddonsPage} />
+          <Stack.Screen name="checkout" component={CheckoutPage} />
+          <Stack.Screen name="property/:id" component={PropertyDetailsPage} />
         </Stack.Navigator>
         <Toast />
       </NavigationContainer>
