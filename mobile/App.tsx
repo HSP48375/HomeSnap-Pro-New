@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -10,6 +9,8 @@ import ChatInterface from './src/components/ChatInterface';
 import FloatingChatButton from './src/components/FloatingChatButton';
 import { colors } from './src/theme/AppTheme';
 import { View, StyleSheet } from 'react-native';
+import OfflineManager from './src/components/OfflineManager'; // Placeholder
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -67,9 +68,16 @@ const App = () => {
           }}
         >
           <StatusBar barStyle="light-content" backgroundColor={colors.background} />
-          {isAuthenticated ? <TabNavigator /> : <AuthStackNavigator />}
+          {isAuthenticated ? (
+            <>
+              <TabNavigator />
+              <FloatingChatButton />
+              <OfflineManager /> {/* Added OfflineManager */}
+            </>
+          ) : (
+            <AuthStackNavigator />
+          )}
         </NavigationContainer>
-        {isAuthenticated && <FloatingChatButton />}
         <ChatInterface />
       </View>
     </SafeAreaProvider>

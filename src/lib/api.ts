@@ -1,4 +1,3 @@
-
 // API functions for data fetching and management
 
 interface Order {
@@ -68,7 +67,7 @@ export const createOrder = async (orderData: Omit<Order, 'id' | 'status'>): Prom
       id: `${mockOrders.length + 1}`,
       status: 'scheduled'
     };
-    
+
     setTimeout(() => resolve(newOrder), 1000);
   });
 };
@@ -83,12 +82,12 @@ export const updateOrderStatus = async (id: string, status: string): Promise<Ord
         resolve(undefined);
         return;
       }
-      
+
       const updatedOrder = {
         ...mockOrders[orderIndex],
         status
       };
-      
+
       resolve(updatedOrder);
     }, 500);
   });
@@ -107,7 +106,7 @@ export const signIn = async (email, password) => {
     email,
     password,
   });
-  
+
   if (error) throw error;
   return data;
 };
@@ -120,7 +119,7 @@ export const signUp = async (email, password, userData) => {
       data: userData,
     },
   });
-  
+
   if (error) throw error;
   return data;
 };
@@ -137,7 +136,7 @@ export const getOrders = async (userId) => {
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-    
+
   if (error) throw error;
   return data;
 };
@@ -148,7 +147,7 @@ export const getOrderById = async (orderId) => {
     .select('*')
     .eq('id', orderId)
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -159,7 +158,7 @@ export const createOrder = async (orderData) => {
     .insert(orderData)
     .select()
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -171,7 +170,7 @@ export const updateOrder = async (orderId, updates) => {
     .eq('id', orderId)
     .select()
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -183,7 +182,7 @@ export const getProperties = async (userId) => {
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-    
+
   if (error) throw error;
   return data;
 };
@@ -194,7 +193,7 @@ export const getPropertyById = async (propertyId) => {
     .select('*')
     .eq('id', propertyId)
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -205,7 +204,7 @@ export const createProperty = async (propertyData) => {
     .insert(propertyData)
     .select()
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -217,7 +216,7 @@ export const updateProperty = async (propertyId, updates) => {
     .eq('id', propertyId)
     .select()
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -229,7 +228,7 @@ export const getFloorplans = async (userId) => {
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-    
+
   if (error) throw error;
   return data;
 };
@@ -240,7 +239,7 @@ export const getFloorplanById = async (floorplanId) => {
     .select('*, floorplan_rooms(*)')
     .eq('id', floorplanId)
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -251,7 +250,7 @@ export const createFloorplan = async (floorplanData) => {
     .insert(floorplanData)
     .select()
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -263,7 +262,7 @@ export const updateFloorplan = async (floorplanId, updates) => {
     .eq('id', floorplanId)
     .select()
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -274,7 +273,7 @@ export const saveFloorplanRoom = async (roomData) => {
     .insert(roomData)
     .select()
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -286,7 +285,7 @@ export const updateFloorplanRoom = async (roomId, updates) => {
     .eq('id', roomId)
     .select()
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -296,7 +295,7 @@ export const deleteFloorplanRoom = async (roomId) => {
     .from('floorplan_rooms')
     .delete()
     .eq('id', roomId);
-    
+
   if (error) throw error;
   return true;
 };
@@ -304,23 +303,23 @@ export const deleteFloorplanRoom = async (roomId) => {
 // Calculate floorplan pricing based on selected options
 export const calculateFloorplanPrice = (options) => {
   let basePrice = 50; // Standard 2D floorplan
-  
+
   if (options.is3D) {
     basePrice += 35; // Add 3D visualization
   }
-  
+
   if (options.isHighRes) {
     basePrice += 15; // Add high-resolution output
   }
-  
+
   if (options.isPriority) {
     basePrice += 25; // Add priority processing
   }
-  
+
   if (options.customBranding) {
     basePrice += 10; // Add custom branding
   }
-  
+
   return basePrice;
 };
 
@@ -329,17 +328,17 @@ export const uploadFloorplanMedia = async (userId, file) => {
   const fileExt = file.name.split('.').pop();
   const fileName = `${userId}-${Date.now()}.${fileExt}`;
   const filePath = `floorplans/${fileName}`;
-  
+
   const { error } = await supabase.storage
     .from('media')
     .upload(filePath, file);
-    
+
   if (error) throw error;
-  
+
   const { data } = supabase.storage
     .from('media')
     .getPublicUrl(filePath);
-    
+
   return {
     filePath,
     publicUrl: data.publicUrl
@@ -356,7 +355,7 @@ export const createFloorplanOrder = async (orderData) => {
     file_url: orderData.fileUrl,
     file_path: orderData.filePath
   });
-  
+
   // Then create the order
   const order = await createOrder({
     user_id: orderData.userId,
@@ -368,9 +367,65 @@ export const createFloorplanOrder = async (orderData) => {
       options: orderData.options
     }
   });
-  
+
   return {
     floorplan,
     order
   };
 };
+
+// Add offline sync API methods
+const BASE_URL = 'YOUR_API_BASE_URL'; // Replace with your actual base URL
+const getToken = () => {
+  // Implement token retrieval logic here.  This is a placeholder.
+  return 'YOUR_AUTH_TOKEN';
+};
+
+const api = {
+  // Add other API endpoints as needed
+
+  // Offline sync endpoints
+  uploadPhoto: async (formData) => {
+    const response = await fetch(`${BASE_URL}/api/photos/upload`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error uploading photo: ${response.statusText}`);
+    }
+
+    return response.json();
+  },
+
+  uploadFloorplan: async (floorplanData) => {
+    const response = await fetch(`${BASE_URL}/api/floorplans`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify(floorplanData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error uploading floorplan: ${response.statusText}`);
+    }
+
+    return response.json();
+  },
+
+  // Placeholder for other offline sync functions:  These are crucial and MUST be implemented.
+  syncOrders: async () => { /* Implementation for syncing orders */ return [] },
+  syncFloorplans: async () => { /* Implementation for syncing floorplans */ return [] },
+  getQueuedItems: async () => { /* Implementation for retrieving queued items */ return [] },
+  removeFromQueue: async (itemId) => { /* Implementation for removing item from queue */ return true },
+  checkNetworkStatus: async () => { /*Implementation for checking network status*/ return true }
+
+
+};
+
+export { api };
