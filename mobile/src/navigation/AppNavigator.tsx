@@ -18,6 +18,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import FloorplansScreen from '../screens/FloorplansScreen';
+import ChatbotScreen from '../screens/ChatbotScreen'; // Added import for ChatbotScreen
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -150,6 +151,7 @@ export const MainStackNavigator = () => {
       <MainStack.Screen name="Tabs" component={TabNavigator} />
       <MainStack.Screen name="PropertyDetail" component={PropertyDetailScreen} />
       <MainStack.Screen name="Floorplans" component={FloorplansScreen} />
+      <MainStack.Screen name="Chatbot" component={ChatbotScreen} /> {/* Added ChatbotScreen to the navigator */}
     </MainStack.Navigator>
   );
 };

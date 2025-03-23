@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import { TabNavigator, AuthStackNavigator } from './src/navigation/AppNavigator';
 import ChatInterface from './src/components/ChatInterface';
+import FloatingChatButton from './src/components/FloatingChatButton';
 import { colors } from './src/theme/AppTheme';
 import { View, StyleSheet } from 'react-native';
 
@@ -68,6 +69,7 @@ const App = () => {
           <StatusBar barStyle="light-content" backgroundColor={colors.background} />
           {isAuthenticated ? <TabNavigator /> : <AuthStackNavigator />}
         </NavigationContainer>
+        {isAuthenticated && <FloatingChatButton />}
         <ChatInterface />
       </View>
     </SafeAreaProvider>
