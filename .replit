@@ -49,4 +49,13 @@ localPort = 9001
 externalPort = 4200
 
 [workflows]
-runButton = "Run"
+runButton = "Run Server"
+
+[[workflows.workflow]]
+name = "Run Server"
+author = 37564996
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./start-server.sh"
