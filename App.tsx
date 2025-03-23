@@ -16,6 +16,8 @@ import OrderDetailsScreen from "./src/screens/OrderDetailsScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
+import FloorplanScreen from "./mobile/src/screens/FloorplanScreen";
+import FloorplanEditorScreen from "./mobile/src/screens/FloorplanEditorScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,6 +29,8 @@ import PhotoSelectionPage from "./src/pages/PhotoSelectionPage";
 import PhotoAddonsPage from "./src/pages/PhotoAddonsPage";
 import CheckoutPage from "./src/pages/CheckoutPage";
 import PropertyDetailsPage from "./src/pages/PropertyDetailsPage";
+import FloorplanPage from "./src/pages/FloorplanPage";
+import FloorplanDetailsPage from "./src/pages/FloorplanDetailsPage";
 
 const MainTabs = () => (
   <>
@@ -48,6 +52,9 @@ const MainTabs = () => (
             case "Profile":
               iconName = "user";
               break;
+            case "Floorplans":
+              iconName = "layout";
+              break;
             default:
               iconName = "circle";
           }
@@ -65,6 +72,7 @@ const MainTabs = () => (
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Upload" component={UploadScreen} />
       <Tab.Screen name="Orders" component={OrdersPage} />
+      <Tab.Screen name="Floorplans" component={FloorplanPage} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
 
@@ -93,6 +101,12 @@ const App = () => {
           <Stack.Screen name="photo-addons" component={PhotoAddonsPage} />
           <Stack.Screen name="checkout" component={CheckoutPage} />
           <Stack.Screen name="property/:id" component={PropertyDetailsPage} />
+          
+          {/* Floorplan Routes */}
+          <Stack.Screen name="floorplans" component={FloorplanPage} />
+          <Stack.Screen name="floorplan/:id" component={FloorplanDetailsPage} />
+          <Stack.Screen name="floorplan-scan" component={FloorplanScreen} />
+          <Stack.Screen name="floorplan-editor" component={FloorplanEditorScreen} />
         </Stack.Navigator>
         <Toast />
       </NavigationContainer>
