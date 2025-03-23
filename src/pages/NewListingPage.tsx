@@ -196,3 +196,99 @@ const NewListingPage = () => {
 };
 
 export default NewListingPage;
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const NewListingPage = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex items-center mb-6">
+        <button 
+          onClick={() => navigate('/orders')}
+          className="flex items-center text-gray-400 hover:text-white"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
+          </svg>
+          Back to Orders
+        </button>
+      </div>
+
+      <h1 className="text-2xl font-bold mb-2">Create New Order</h1>
+      <p className="text-gray-400 mb-6">Begin your professional photography order</p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div className="bg-gray-800 rounded-lg p-6">
+          <h2 className="text-lg font-medium mb-4">Why Professional Photography?</h2>
+          <ul className="space-y-3">
+            <li className="flex">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Properties with professional photos sell up to <strong>32% faster</strong></span>
+            </li>
+            <li className="flex">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Professional photos can increase the perceived value by up to <strong>20%</strong></span>
+            </li>
+            <li className="flex">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>First impressions matter - <strong>85% of buyers</strong> say photos are the most important factor when viewing homes online</span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="bg-gray-800 rounded-lg p-6">
+          <h2 className="text-lg font-medium mb-4">Our Process</h2>
+          <ol className="space-y-4">
+            <li className="flex">
+              <div className="bg-primary text-black h-6 w-6 rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">1</div>
+              <div>
+                <h3 className="font-medium">Select your package</h3>
+                <p className="text-sm text-gray-400">Choose from our Basic, Premium, or Luxury packages</p>
+              </div>
+            </li>
+            <li className="flex">
+              <div className="bg-primary text-black h-6 w-6 rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">2</div>
+              <div>
+                <h3 className="font-medium">Schedule your photoshoot</h3>
+                <p className="text-sm text-gray-400">Choose a convenient date and time</p>
+              </div>
+            </li>
+            <li className="flex">
+              <div className="bg-primary text-black h-6 w-6 rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">3</div>
+              <div>
+                <h3 className="font-medium">Prepare your property</h3>
+                <p className="text-sm text-gray-400">We'll provide a preparation checklist</p>
+              </div>
+            </li>
+            <li className="flex">
+              <div className="bg-primary text-black h-6 w-6 rounded-full flex items-center justify-center font-bold mr-3 flex-shrink-0">4</div>
+              <div>
+                <h3 className="font-medium">Review and download photos</h3>
+                <p className="text-sm text-gray-400">Get your professionally edited photos</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div className="flex justify-center">
+        <button 
+          onClick={() => navigate('/photo-selection')}
+          className="bg-gradient-to-r from-primary to-secondary px-8 py-4 rounded-lg text-white font-medium text-lg"
+        >
+          Get Started
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default NewListingPage;

@@ -1,257 +1,246 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Check, X, CreditCard, Tag, Calendar, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
-import { toast } from 'react-hot-toast';
-import { useOrderStore } from '../stores/orderStore';
-import { useAuthStore } from '../stores/authStore';
-import StripeWrapper from '../components/ui/StripeWrapper';
-import PaymentForm from '../components/ui/PaymentForm';
 
-const CheckoutPage: React.FC = () => {
-  const { currentOrder, calculatePrice, submitOrder } = useOrderStore();
-  const { user } = useAuthStore();
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { createOrder } from '../lib/api';
+
+const CheckoutPage = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const { selectedPackage, selectedAddons, total } = location.state || {};
   const [loading, setLoading] = useState(false);
-  const [discountCode, setDiscountCode] = useState('');
-  const [discountApplied, setDiscountApplied] = useState(false);
-  const [discountAmount, setDiscountAmount] = useState(0);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [paymentId, setPaymentId] = useState<string | null>(null);
-  const [promoCode, setPromoCode] = useState('');
-  const [promoApplied, setPromoApplied] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('creditCard');
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    scheduledDate: '',
+    notes: ''
+  });
 
-  useEffect(() => {
-    // Redirect if no order in progress
-    if (!currentOrder || currentOrder.photos.length === 0) {
-      toast.error('No active order found');
-      navigate('/upload');
-    }
-  }, [currentOrder, navigate]);
-
-  const handleApplyDiscount = () => {
-    if (!discountCode) {
-      toast.error('Please enter a discount code');
-      return;
-    }
-
-    // This is just a mock implementation
-    // In a real app, you would validate the code against a database
-    if (discountCode.toUpperCase() === 'WELCOME10') {
-      setDiscountApplied(true);
-      setDiscountAmount(calculatePrice() * 0.1); // 10% discount
-      toast.success('Discount applied: 10% off');
-    } else {
-      toast.error('Invalid discount code');
-    }
-  };
-
-  // Sample order details from the second CheckoutPage component
-  const orderDetails = {
-    photoEditing: {
-      count: 15,
-      pricePerItem: 1.5,
-      total: 22.5
-    },
-    virtualStaging: {
-      count: 2,
-      pricePerItem: 25,
-      total: 50
-    },
-    twilightConversion: {
-      count: 1,
-      pricePerItem: 15,
-      total: 15
-    },
-    aiDescription: {
-      count: 1,
-      pricePerItem: 15,
-      total: 15
-    },
-    discount: promoApplied ? 10 : 0
-  };
-
-  const subtotal = Object.values(orderDetails)
-    .filter(item => typeof item === 'object')
-    .reduce((sum, item) => sum + item.total, 0);
-
-  const total = subtotal - orderDetails.discount;
-
-  const handleApplyPromo = () => {
-    if (promoCode.toLowerCase() === 'welcome10') {
-      setPromoApplied(true);
-    }
-  };
-
-  const handleSubmitOrder = () => {
-    setIsProcessing(true);
-
-    // Simulate order processing
-    setTimeout(() => {
-      navigate('/orders');
-    }, 2000);
-  };
-
-  if (!currentOrder) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary mb-4"></div>
-          <p className="text-white/70">Loading checkout...</p>
-        </div>
-      </div>
-    );
+  // If no package was selected, redirect back
+  if (!selectedPackage) {
+    navigate('/photo-selection');
+    return null;
   }
 
-  const totalPrice = calculatePrice();
-  const finalPrice = discountApplied ? totalPrice - discountAmount : totalPrice;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Combine all selected services
+      const services = [selectedPackage.name, ...(selectedAddons || []).map(addon => addon.name)];
+      
+      // Create new order
+      const order = await createOrder({
+        propertyAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zipCode}`,
+        date: formData.scheduledDate,
+        price: total,
+        services,
+        customerInfo: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone
+        },
+        notes: formData.notes
+      });
+      
+      // Navigate to confirmation/success page (we can add this later)
+      navigate('/orders', { state: { orderSuccess: true, orderId: order.id } });
+    } catch (error) {
+      console.error("Error creating order:", error);
+      // Handle error (could add error state and display message)
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center">
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex items-center mb-6">
         <button 
-          onClick={() => navigate('/upload')} 
-          className="mr-4 p-2 rounded-full bg-dark-light hover:bg-primary/20 text-white/70 hover:text-primary transition-colors"
+          onClick={() => navigate(-1)}
+          className="flex items-center text-gray-400 hover:text-white"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
+          </svg>
+          Back
         </button>
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold neon-text">Checkout</h1>
-          <p className="text-white/70 mt-2">
-            Complete your order to start the editing process.
-          </p>
-        </div>
       </div>
 
+      <h1 className="text-2xl font-bold mb-6">Checkout</h1>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Order Summary */}
-        <div className="lg:col-span-1">
-          <div className="card sticky top-24">
-            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-            
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between">
-                <span className="text-white/70">Photos</span>
-                <span>{currentOrder.photos.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/70">Standard Editing</span>
-                <span>${(8.99 * currentOrder.photos.length).toFixed(2)}</span>
-              </div>
-              {currentOrder.services.virtualStaging && (
-                <div className="flex justify-between">
-                  <span className="text-white/70">Virtual Staging</span>
-                  <span>${(15.99 * currentOrder.photos.length).toFixed(2)}</span>
-                </div>
-              )}
-              {currentOrder.services.twilightConversion && (
-                <div className="flex justify-between">
-                  <span className="text-white/70">Twilight Conversion</span>
-                  <span>${(10.99 * currentOrder.photos.length).toFixed(2)}</span>
-                </div>
-              )}
-              {currentOrder.services.decluttering && (
-                <div className="flex justify-between">
-                  <span className="text-white/70">Decluttering</span>
-                  <span>${(12.99 * currentOrder.photos.length).toFixed(2)}</span>
-                </div>
-              )}
-              {currentOrder.photos.length >= 10 && (
-                <div className="flex justify-between text-neon-green">
-                  <span>Volume Discount</span>
-                  <span>
-                    {currentOrder.photos.length >= 20 ? '15% OFF' : '10% OFF'}
-                  </span>
-                </div>
-              )}
-              {discountApplied && (
-                <div className="flex justify-between text-neon-purple">
-                  <span>Promo Code Discount</span>
-                  <span>-${discountAmount.toFixed(2)}</span>
-                </div>
-              )}
-            </div>
-            
-            {/* Discount Code */}
-            <div className="mb-4">
-              <div className="flex space-x-2">
-                <div className="relative flex-grow">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Tag className="h-5 w-5 text-white/50" />
-                  </div>
+        <div className="lg:col-span-2">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h2 className="text-lg font-medium mb-4">Contact Information</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm mb-1">Full Name *</label>
                   <input
                     type="text"
-                    placeholder="Discount code"
-                    value={discountCode}
-                    onChange={(e) => setDiscountCode(e.target.value)}
-                    className="input pl-10 w-full"
-                    disabled={discountApplied}
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
-                <button
-                  onClick={handleApplyDiscount}
-                  disabled={discountApplied}
-                  className={`btn ${discountApplied ? 'btn-outline cursor-not-allowed' : 'btn-primary'}`}
-                >
-                  {discountApplied ? (
-                    <span className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2" />
-                      Applied
-                    </span>
-                  ) : (
-                    'Apply'
-                  )}
-                </button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm mb-1">Email *</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1">Phone *</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            
-            <div className="border-t border-white/10 pt-4 mt-4">
-              <div className="flex justify-between font-bold text-lg">
-                <span>Total</span>
-                <span>${finalPrice.toFixed(2)}</span>
-              </div>
-              <div className="text-white/50 text-sm text-right">
-                Delivery within 12-16 hours
+
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h2 className="text-lg font-medium mb-4">Property Information</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm mb-1">Address *</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm mb-1">City *</label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1">State *</label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1">ZIP Code *</label>
+                    <input
+                      type="text"
+                      name="zipCode"
+                      value={formData.zipCode}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Scheduled Date *</label>
+                  <input
+                    type="date"
+                    name="scheduledDate"
+                    value={formData.scheduledDate}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Additional Notes</label>
+                  <textarea
+                    name="notes"
+                    value={formData.notes}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full bg-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Special instructions, access information, etc."
+                  />
+                </div>
               </div>
             </div>
-          </div>
+
+            <div className="flex justify-end">
+              <button 
+                type="submit"
+                disabled={loading}
+                className={`
+                  px-6 py-3 rounded-lg text-white font-medium
+                  ${loading
+                    ? 'bg-gray-700 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-primary to-secondary'}
+                `}
+              >
+                {loading ? 'Processing...' : 'Complete Order'}
+              </button>
+            </div>
+          </form>
         </div>
 
-        {/* Payment Form */}
-        <div className="lg:col-span-2">
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-6">Payment Information</h2>
-            
-            {paymentSuccess ? (
-              <div className="text-center py-8">
-                <div className="h-16 w-16 bg-neon-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="h-8 w-8 text-neon-green" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Payment Successful!</h3>
-                <p className="text-white/70 mb-6">
-                  Your payment has been processed successfully. Your order is now being prepared.
-                </p>
-                <p className="text-white/50 text-sm mb-4">
-                  Payment ID: {paymentId}
-                </p>
-                <button
-                  onClick={() => navigate('/dashboard')}
-                  className="btn btn-primary"
-                >
-                  Go to Dashboard
-                </button>
+        <div>
+          <div className="bg-gray-800 rounded-lg p-6 sticky top-6">
+            <h2 className="text-lg font-medium mb-4">Order Summary</h2>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span>{selectedPackage.name}</span>
+                <span>${selectedPackage.price.toFixed(2)}</span>
               </div>
-            ) : (
-              <StripeWrapper>
-                <PaymentForm 
-                  amount={finalPrice} 
-                  onPaymentSuccess={handlePaymentSuccess}
-                  onPaymentError={handlePaymentError}
-                />
-              </StripeWrapper>
-            )}
+              
+              {selectedAddons && selectedAddons.map((addon) => (
+                <div key={addon.id} className="flex justify-between">
+                  <span>{addon.name}</span>
+                  <span>${addon.price.toFixed(2)}</span>
+                </div>
+              ))}
+              
+              <div className="pt-3 border-t border-gray-700">
+                <div className="flex justify-between font-bold">
+                  <span>Total</span>
+                  <span>${total.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
