@@ -1,364 +1,455 @@
 
-import React, { useState } from 'react';
-import { ArrowLeft, MapPin, Download, Share2, Edit2, Trash2, Image, Check, Copy, MessageSquare, Home } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-// Sample property data
-const sampleProperty = {
-  id: 1,
-  address: '1234 Oceanview Dr, Miami, FL',
-  nickname: 'Beach House Listing',
-  status: 'Complete',
-  price: '$875,000',
-  bedrooms: 3,
-  bathrooms: 2.5,
-  squareFeet: 2100,
-  description: 'This stunning beachfront property offers panoramic ocean views and luxurious finishes throughout. Perfect for entertaining with an open floor plan and chef\'s kitchen. The primary suite features a spa-like bathroom and private balcony overlooking the water.',
-  photos: [
-    { id: 1, url: '/assets/sample1.jpg', category: 'Exterior', edited: true },
-    { id: 2, url: '/assets/sample2.jpg', category: 'Living Room', edited: true },
-    { id: 3, url: '/assets/sample3.jpg', category: 'Kitchen', edited: true },
-    { id: 4, url: '/assets/sample4.jpg', category: 'Master Bedroom', edited: true },
-    { id: 5, url: '/assets/sample5.jpg', category: 'Bathroom', edited: true },
-    { id: 6, url: '/assets/sample6.jpg', category: 'Backyard', edited: true },
-  ],
-  dateCreated: '2025-03-15T14:30:00',
-  dateCompleted: '2025-03-16T10:45:00'
-};
+import React, { useState, useEffect } from 'react';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ScrollView, 
+  Image, 
+  TouchableOpacity 
+} from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Feather';
+import { getPropertyDetails } from '../lib/api';
 
 const PropertyDetailsPage = () => {
+  const route = useRoute();
+  const { id } = route.params;
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('photos');
-  const [selectedPhoto, setSelectedPhoto] = useState(sampleProperty.photos[0]);
-  const [showShareOptions, setShowShareOptions] = useState(false);
-  
-  const navigate = useNavigate();
-  const { id } = useParams();
-  
-  const getStatusClass = (status) => {
-    switch (status) {
-      case 'Active':
-        return 'bg-blue-500/20 text-blue-500';
-      case 'Complete':
-        return 'bg-green-500/20 text-green-500';
-      case 'Processing':
-        return 'bg-yellow-500/20 text-yellow-500';
-      default:
-        return 'bg-gray-500/20 text-gray-500';
-    }
-  };
-  
-  const handleDownload = () => {
-    // In a real app, this would download the selected photo
-    console.log('Downloading photo:', selectedPhoto.id);
-  };
-  
-  const handleShare = () => {
-    setShowShareOptions(!showShareOptions);
-  };
-  
-  const handleCopyLink = () => {
-    // In a real app, this would copy a link to the clipboard
-    console.log('Copying link for photo:', selectedPhoto.id);
-    setShowShareOptions(false);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const fetchPropertyDetails = async () => {
+      try {
+        const propertyData = await getPropertyDetails(id);
+        setProperty(propertyData);
+      } catch (error) {
+        console.error('Error fetching property details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPropertyDetails();
+  }, [id]);
+
+  const handleOrderPhotos = () => {
+    navigation.navigate('new-listing', { propertyId: id });
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Loading property details...</Text>
+      </View>
+    );
+  }
+
+  if (!property) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Property not found</Text>
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.backButtonText}>Go Back</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <button 
-        onClick={() => navigate('/orders')}
-        className="flex items-center text-gray-400 hover:text-white mb-6"
-      >
-        <ArrowLeft className="w-5 h-5 mr-2" />
-        Back to Properties
-      </button>
-      
-      <div className="bg-dark-lighter rounded-xl p-6 mb-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl font-bold mb-1">{sampleProperty.nickname}</h1>
-            <p className="text-gray-400 flex items-center">
-              <MapPin className="w-4 h-4 mr-1" />
-              {sampleProperty.address}
-            </p>
-          </div>
+    <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.header}>
+          <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name="arrow-left" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
           
-          <div className={`px-4 py-1 rounded-full text-sm ${getStatusClass(sampleProperty.status)} mt-4 md:mt-0`}>
-            {sampleProperty.status}
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-dark rounded-lg p-4 flex items-center">
-            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-3">
-              <Home className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-400">Price</div>
-              <div className="font-semibold">{sampleProperty.price}</div>
-            </div>
-          </div>
+          <View style={styles.headerActions}>
+            <TouchableOpacity style={styles.iconButton}>
+              <Icon name="heart" size={24} color="#FFFFFF" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton}>
+              <Icon name="share-2" size={24} color="#FFFFFF" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <Image 
+          source={{ uri: property.mainImage }} 
+          style={styles.mainImage}
+          resizeMode="cover"
+        />
+
+        <View style={styles.detailsContainer}>
+          <Text style={styles.price}>${property.price.toLocaleString()}</Text>
+          <Text style={styles.address}>{property.address}</Text>
           
-          <div className="bg-dark rounded-lg p-4 flex items-center">
-            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-3">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
-                <path d="M3 22V8L12 2L21 8V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M15 22V16C15 15.4696 14.7893 14.9609 14.4142 14.5858C14.0391 14.2107 13.5304 14 13 14H11C10.4696 14 9.96086 14.2107 9.58579 14.5858C9.21071 14.9609 9 15.4696 9 16V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div>
-              <div className="text-sm text-gray-400">Bed/Bath</div>
-              <div className="font-semibold">{sampleProperty.bedrooms} bd / {sampleProperty.bathrooms} ba</div>
-            </div>
-          </div>
+          <View style={styles.statsRow}>
+            <View style={styles.statItem}>
+              <Icon name="home" size={20} color="#00EEFF" />
+              <Text style={styles.statText}>{property.bedrooms} Beds</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Icon name="droplet" size={20} color="#00EEFF" />
+              <Text style={styles.statText}>{property.bathrooms} Baths</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Icon name="square" size={20} color="#00EEFF" />
+              <Text style={styles.statText}>{property.squareFeet.toLocaleString()} sqft</Text>
+            </View>
+          </View>
           
-          <div className="bg-dark rounded-lg p-4 flex items-center">
-            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-3">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
-                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                <path d="M3 9H21" stroke="currentColor" strokeWidth="2" />
-                <path d="M9 21L9 9" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </div>
-            <div>
-              <div className="text-sm text-gray-400">Square Feet</div>
-              <div className="font-semibold">{sampleProperty.squareFeet.toLocaleString()} sqft</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Tabs */}
-      <div className="flex border-b border-gray-700 mb-6">
-        <button
-          className={`px-6 py-3 font-medium ${activeTab === 'photos' ? 'text-primary border-b-2 border-primary' : 'text-gray-400'}`}
-          onClick={() => setActiveTab('photos')}
-        >
-          Photos
-        </button>
-        <button
-          className={`px-6 py-3 font-medium ${activeTab === 'description' ? 'text-primary border-b-2 border-primary' : 'text-gray-400'}`}
-          onClick={() => setActiveTab('description')}
-        >
-          Description
-        </button>
-        <button
-          className={`px-6 py-3 font-medium ${activeTab === 'details' ? 'text-primary border-b-2 border-primary' : 'text-gray-400'}`}
-          onClick={() => setActiveTab('details')}
-        >
-          Details
-        </button>
-      </div>
-      
-      {activeTab === 'photos' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Photo Display */}
-          <div className="lg:col-span-2">
-            <div className="bg-dark-lighter rounded-xl overflow-hidden">
-              <div className="relative h-96">
-                <img 
-                  src={selectedPhoto.url} 
-                  alt={selectedPhoto.category}
-                  className="w-full h-full object-cover"
+          <View style={styles.tabsContainer}>
+            <TouchableOpacity 
+              style={[styles.tab, activeTab === 'photos' && styles.activeTab]}
+              onPress={() => setActiveTab('photos')}
+            >
+              <Text style={[styles.tabText, activeTab === 'photos' && styles.activeTabText]}>
+                Photos
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.tab, activeTab === 'details' && styles.activeTab]}
+              onPress={() => setActiveTab('details')}
+            >
+              <Text style={[styles.tabText, activeTab === 'details' && styles.activeTabText]}>
+                Details
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.tab, activeTab === 'map' && styles.activeTab]}
+              onPress={() => setActiveTab('map')}
+            >
+              <Text style={[styles.tabText, activeTab === 'map' && styles.activeTabText]}>
+                Map
+              </Text>
+            </TouchableOpacity>
+          </View>
+          
+          {activeTab === 'photos' && (
+            <View style={styles.photoGrid}>
+              {property.images.map((image, index) => (
+                <Image 
+                  key={index}
+                  source={{ uri: image }} 
+                  style={styles.thumbnailImage}
+                  resizeMode="cover"
                 />
-                
-                {/* Editing Badge */}
-                {selectedPhoto.edited && (
-                  <div className="absolute top-4 left-4 bg-green-600/80 text-white px-3 py-1 rounded-full text-sm flex items-center">
-                    <Check className="w-4 h-4 mr-1" />
-                    Professionally Edited
-                  </div>
-                )}
-                
-                {/* Actions */}
-                <div className="absolute bottom-4 right-4 flex space-x-2">
-                  <button
-                    className="w-10 h-10 rounded-full bg-black/70 flex items-center justify-center hover:bg-primary transition-colors"
-                    onClick={handleDownload}
+              ))}
+              
+              {property.images.length === 0 && (
+                <View style={styles.noPhotosContainer}>
+                  <Text style={styles.noPhotosText}>No professional photos available</Text>
+                  <TouchableOpacity 
+                    style={styles.orderPhotosButton}
+                    onPress={handleOrderPhotos}
                   >
-                    <Download className="w-5 h-5" />
-                  </button>
-                  
-                  <div className="relative">
-                    <button
-                      className="w-10 h-10 rounded-full bg-black/70 flex items-center justify-center hover:bg-primary transition-colors"
-                      onClick={handleShare}
-                    >
-                      <Share2 className="w-5 h-5" />
-                    </button>
-                    
-                    {showShareOptions && (
-                      <div className="absolute right-0 bottom-12 bg-dark-light rounded-lg shadow-lg p-2 w-48">
-                        <button
-                          className="flex items-center w-full px-3 py-2 hover:bg-dark rounded-lg"
-                          onClick={handleCopyLink}
-                        >
-                          <Copy className="w-4 h-4 mr-2" />
-                          <span>Copy Link</span>
-                        </button>
-                        <button
-                          className="flex items-center w-full px-3 py-2 hover:bg-dark rounded-lg"
-                        >
-                          <MessageSquare className="w-4 h-4 mr-2" />
-                          <span>Share to MLS</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-4">
-                <h3 className="font-semibold text-lg">{selectedPhoto.category || 'Untitled'}</h3>
-              </div>
-            </div>
-          </div>
+                    <Text style={styles.orderPhotosButtonText}>Order Professional Photos</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          )}
           
-          {/* Thumbnails */}
-          <div>
-            <div className="bg-dark-lighter rounded-xl p-4">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold">All Photos</h3>
-                <span className="text-gray-400 text-sm">{sampleProperty.photos.length} photos</span>
-              </div>
+          {activeTab === 'details' && (
+            <View style={styles.propertyDetails}>
+              <Text style={styles.sectionTitle}>Property Details</Text>
               
-              <div className="grid grid-cols-2 gap-3">
-                {sampleProperty.photos.map(photo => (
-                  <div 
-                    key={photo.id}
-                    className={`relative rounded-lg overflow-hidden cursor-pointer transition-all ${
-                      selectedPhoto.id === photo.id ? 'ring-2 ring-primary' : 'opacity-70 hover:opacity-100'
-                    }`}
-                    onClick={() => setSelectedPhoto(photo)}
-                  >
-                    <img 
-                      src={photo.url} 
-                      alt={photo.category}
-                      className="w-full aspect-square object-cover"
-                    />
-                    {photo.category && (
-                      <div className="absolute bottom-1 left-1 right-1 bg-black/70 text-white text-xs px-2 py-1 rounded truncate">
-                        {photo.category}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Property Type</Text>
+                <Text style={styles.detailValue}>{property.propertyType}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Year Built</Text>
+                <Text style={styles.detailValue}>{property.yearBuilt}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Lot Size</Text>
+                <Text style={styles.detailValue}>{property.lotSize} acres</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Garage</Text>
+                <Text style={styles.detailValue}>{property.garage} car</Text>
+              </View>
               
-              <div className="mt-6 flex flex-col space-y-3">
-                <button className="w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-lg flex items-center justify-center">
-                  <Download className="w-4 h-4 mr-2" />
-                  Download All Photos
-                </button>
-                
-                <button className="w-full bg-dark hover:bg-dark-light text-white py-2 rounded-lg flex items-center justify-center">
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share Gallery
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+              <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Description</Text>
+              <Text style={styles.description}>{property.description}</Text>
+            </View>
+          )}
+          
+          {activeTab === 'map' && (
+            <View style={styles.mapContainer}>
+              <Text style={styles.mapPlaceholder}>Map view coming soon</Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
       
-      {activeTab === 'description' && (
-        <div className="bg-dark-lighter rounded-xl p-6">
-          <div className="flex justify-between items-start mb-4">
-            <h2 className="text-xl font-bold">Property Description</h2>
-            <button className="text-primary hover:text-primary/80">
-              <Edit2 className="w-5 h-5" />
-            </button>
-          </div>
-          
-          <p className="text-gray-300 leading-relaxed mb-6">{sampleProperty.description}</p>
-          
-          <div className="flex flex-wrap gap-3">
-            <button className="bg-dark hover:bg-dark-light text-white px-4 py-2 rounded-lg flex items-center">
-              <Copy className="w-4 h-4 mr-2" />
-              Copy to Clipboard
-            </button>
-            
-            <button className="bg-dark hover:bg-dark-light text-white px-4 py-2 rounded-lg flex items-center">
-              <Download className="w-4 h-4 mr-2" />
-              Download as Text
-            </button>
-          </div>
-        </div>
-      )}
-      
-      {activeTab === 'details' && (
-        <div className="bg-dark-lighter rounded-xl p-6">
-          <h2 className="text-xl font-bold mb-6">Property Details</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-gray-400 text-sm">Property ID</h3>
-                  <p className="font-medium">{sampleProperty.id}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-gray-400 text-sm">Address</h3>
-                  <p className="font-medium">{sampleProperty.address}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-gray-400 text-sm">Price</h3>
-                  <p className="font-medium">{sampleProperty.price}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-gray-400 text-sm">Bedrooms</h3>
-                  <p className="font-medium">{sampleProperty.bedrooms}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-gray-400 text-sm">Bathrooms</h3>
-                  <p className="font-medium">{sampleProperty.bathrooms}</p>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-gray-400 text-sm">Square Feet</h3>
-                  <p className="font-medium">{sampleProperty.squareFeet}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-gray-400 text-sm">Status</h3>
-                  <p className={`font-medium ${getStatusClass(sampleProperty.status)}`}>{sampleProperty.status}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-gray-400 text-sm">Date Created</h3>
-                  <p className="font-medium">{new Date(sampleProperty.dateCreated).toLocaleDateString()}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-gray-400 text-sm">Date Completed</h3>
-                  <p className="font-medium">{new Date(sampleProperty.dateCompleted).toLocaleDateString()}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-gray-400 text-sm">Total Photos</h3>
-                  <p className="font-medium">{sampleProperty.photos.length}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-700 pt-6 mt-6">
-            <button className="bg-red-600/20 text-red-400 hover:bg-red-600/30 px-4 py-2 rounded-lg flex items-center">
-              <Trash2 className="w-4 h-4 mr-2" />
-              Delete Property
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.contactButton}>
+          <Icon name="phone" size={20} color="#0A0A14" style={styles.buttonIcon} />
+          <Text style={styles.contactButtonText}>Contact Agent</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={styles.orderButton}
+          onPress={handleOrderPhotos}
+        >
+          <Icon name="camera" size={20} color="#FFFFFF" style={styles.buttonIcon} />
+          <Text style={styles.orderButtonText}>Order Photos</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#0A0A14',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0A0A14',
+  },
+  loadingText: {
+    color: '#AAAAAA',
+    fontSize: 16,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0A0A14',
+    padding: 20,
+  },
+  errorText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerActions: {
+    flexDirection: 'row',
+  },
+  iconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  mainImage: {
+    width: '100%',
+    height: 300,
+  },
+  detailsContainer: {
+    backgroundColor: '#0A0A14',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    marginTop: -20,
+    padding: 20,
+  },
+  price: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  address: {
+    fontSize: 16,
+    color: '#AAAAAA',
+    marginBottom: 16,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  statItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  statText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    marginLeft: 4,
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#2A2A40',
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#00EEFF',
+  },
+  tabText: {
+    fontSize: 14,
+    color: '#AAAAAA',
+  },
+  activeTabText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  photoGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  thumbnailImage: {
+    width: '48%',
+    height: 120,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  noPhotosContainer: {
+    width: '100%',
+    padding: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#2A2A40',
+    borderRadius: 8,
+    borderStyle: 'dashed',
+  },
+  noPhotosText: {
+    color: '#AAAAAA',
+    fontSize: 16,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  orderPhotosButton: {
+    backgroundColor: '#2A2A40',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  orderPhotosButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+  },
+  propertyDetails: {
+    marginTop: 8,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 16,
+  },
+  detailRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#2A2A40',
+  },
+  detailLabel: {
+    fontSize: 14,
+    color: '#AAAAAA',
+  },
+  detailValue: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    fontWeight: '500',
+  },
+  description: {
+    fontSize: 14,
+    lineHeight: 22,
+    color: '#FFFFFF',
+    marginTop: 8,
+  },
+  mapContainer: {
+    height: 250,
+    backgroundColor: '#1A1A2E',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  mapPlaceholder: {
+    color: '#AAAAAA',
+    fontSize: 16,
+  },
+  footer: {
+    flexDirection: 'row',
+    padding: 16,
+    backgroundColor: '#1A1A2E',
+  },
+  contactButton: {
+    flex: 1,
+    backgroundColor: '#00EEFF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 14,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  contactButtonText: {
+    color: '#0A0A14',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  orderButton: {
+    flex: 1,
+    backgroundColor: '#2A2A40',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 14,
+    borderRadius: 8,
+    marginLeft: 8,
+  },
+  orderButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  buttonIcon: {
+    marginRight: 8,
+  },
+  backButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+});
 
 export default PropertyDetailsPage;
