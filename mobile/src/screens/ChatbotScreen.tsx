@@ -25,7 +25,7 @@ const ChatbotScreen = () => {
   const [messages, setMessages] = useState([
     { 
       id: '1', 
-      text: "Hello! I'm Jarvis, your HomeSnap Pro assistant. How can I help you with real estate photography today?", 
+      text: "Hi there! I'm PIP, your Property Image Pal! 📸 I'm here to support you on your amazing real estate photography journey! Have questions or need help with anything in the app? Just ask me!", 
       sender: 'bot' 
     }
   ]);

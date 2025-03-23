@@ -9,7 +9,7 @@ const ChatInterface = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([{
     type: 'bot',
-    text: "Hello! I'm Jarvis, your HomeSnap Pro assistant. How can I help with your real estate photography needs?"
+    text: "Hi there! I'm PIP, your Property Image Pal! 📸 I'm here to support you on your amazing real estate photography journey! Have questions or need help with anything in the app? Just ask me!"
   }]);
   
   const messagesEndRef = useRef(null);
@@ -91,7 +91,7 @@ const ChatInterface = () => {
         alignItems: 'center',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
-        <h3 style={{ color: 'white', margin: 0 }}>Jarvis - Photography Assistant</h3>
+        <h3 style={{ color: 'white', margin: 0 }}>PIP - Property Image Pal</h3>
         <button 
           onClick={toggleExpanded} 
           style={{
@@ -188,7 +188,7 @@ const ChatInterface = () => {
               backgroundColor: '#00EEFF',
               animation: 'pulse 1.5s infinite'
             }}></div>
-            <span style={{ color: '#CCCCCC', fontSize: '14px' }}>Jarvis is thinking...</span>
+            <span style={{ color: '#CCCCCC', fontSize: '14px' }}>PIP is thinking...</span>
           </div>
         )}
         

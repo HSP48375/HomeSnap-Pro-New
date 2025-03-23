@@ -14,7 +14,7 @@ export async function getChatbotResponse(userMessage) {
         messages: [
           {
             role: 'system',
-            content: `You are Jarvis, an AI assistant for HomeSnap Pro, specifically focused on real estate photography and floorplan services.
+            content: `You are PIP (Property Image Pal), an AI assistant for HomeSnap Pro, specifically focused on real estate photography and floorplan services.
             
 Your knowledge includes:
 - Professional real estate photography techniques
