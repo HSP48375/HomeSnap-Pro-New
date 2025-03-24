@@ -15,6 +15,7 @@ import { colors } from '../theme/colors';
 import { useAuthStore } from '../stores/authStore';
 import { supabase } from '../lib/supabase';
 import Toast from 'react-native-toast-message';
+import { useOnboardingTour } from '../hooks/useOnboardingTour';
 
 interface Profile {
   id: string;
@@ -43,6 +44,12 @@ const ProfileScreen = ({ navigation }) => {
     paymentUpdates: true,
     marketing: false,
   });
+
+  const { resetTour } = useOnboardingTour();
+
+  const handleResetTour = () => {
+    resetTour();
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -293,7 +300,7 @@ const ProfileScreen = ({ navigation }) => {
         {/* Notification Preferences */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Notification Preferences</Text>
-          
+
           <View style={styles.preferenceItem}>
             <View>
               <Text style={styles.preferenceTitle}>In-App Notifications</Text>
@@ -388,6 +395,24 @@ const ProfileScreen = ({ navigation }) => {
             />
           </View>
         </View>
+
+        {/* Settings Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Settings</Text>
+
+          <TouchableOpacity style={styles.settingItem}>
+            <Icon name="bell" size={22} color="#00EEFF" style={styles.settingIcon} />
+            <Text style={styles.settingLabel}>Notifications</Text>
+            <Icon name="chevron-right" size={22} color="#888" style={{marginLeft: 'auto'}} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.settingItem} onPress={handleResetTour}>
+            <Icon name="help-circle" size={22} color="#00EEFF" style={styles.settingIcon} />
+            <Text style={styles.settingLabel}>Restart App Tour</Text>
+            <Icon name="chevron-right" size={22} color="#888" style={{marginLeft: 'auto'}} />
+          </TouchableOpacity>
+        </View>
+
 
         {/* Sign Out Button */}
         <View style={styles.section}>
@@ -535,6 +560,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 8,
+  },
+  settingItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  settingIcon: {
+    marginRight: 16,
+  },
+  settingLabel: {
+    flex: 1,
+    fontSize: 16,
+    color: colors.text,
   },
 });
 

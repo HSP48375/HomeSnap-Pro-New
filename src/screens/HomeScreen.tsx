@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,13 +10,29 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import OnboardingTour from '../components/OnboardingTour';
+import { useOnboardingTour } from '../hooks/useOnboardingTour';
 
 const HomeScreen = ({ navigation }) => {
   const { width } = useWindowDimensions();
+  const { isTourVisible, endTour } = useOnboardingTour();
+
+  const handleTourComplete = () => {
+    endTour();
+  };
+
+  const handleTourSkip = () => {
+    endTour();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        <OnboardingTour
+          isVisible={isTourVisible}
+          onComplete={handleTourComplete}
+          onSkip={handleTourSkip}
+        />
         {/* Hero Section */}
         <View style={styles.hero}>
           <Text style={styles.heroTitle}>Transform Your Real Estate Photos</Text>

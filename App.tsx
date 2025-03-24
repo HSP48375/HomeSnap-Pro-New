@@ -19,6 +19,8 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import FloorplanScreen from "./mobile/src/screens/FloorplanScreen";
 import FloorplanEditorScreen from "./mobile/src/screens/FloorplanEditorScreen";
 import RevisionRequestScreen from "./src/screens/RevisionRequestScreen";
+// Import OnboardingTour component
+import OnboardingTour from "./src/components/OnboardingTour";
 
 // Admin Panel Pages
 import { 

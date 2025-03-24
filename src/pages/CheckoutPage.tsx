@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createOrder } from '../lib/api';
@@ -41,7 +40,7 @@ const CheckoutPage = () => {
     try {
       // Combine all selected services
       const services = [selectedPackage.name, ...(selectedAddons || []).map(addon => addon.name)];
-      
+
       // Create new order
       const order = await createOrder({
         propertyAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zipCode}`,
@@ -55,7 +54,7 @@ const CheckoutPage = () => {
         },
         notes: formData.notes
       });
-      
+
       // Navigate to confirmation/success page (we can add this later)
       navigate('/orders', { state: { orderSuccess: true, orderId: order.id } });
     } catch (error) {
@@ -219,21 +218,21 @@ const CheckoutPage = () => {
         </div>
 
         <div>
-          <div className="bg-gray-800 rounded-lg p-6 sticky top-6">
+          <div className="bg-gray-800 rounded-lg p-6 sticky top-6" id="checkout-area"> {/* Added ID here */}
             <h2 className="text-lg font-medium mb-4">Order Summary</h2>
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span>{selectedPackage.name}</span>
                 <span>${selectedPackage.price.toFixed(2)}</span>
               </div>
-              
+
               {selectedAddons && selectedAddons.map((addon) => (
                 <div key={addon.id} className="flex justify-between">
                   <span>{addon.name}</span>
                   <span>${addon.price.toFixed(2)}</span>
                 </div>
               ))}
-              
+
               <div className="pt-3 border-t border-gray-700">
                 <div className="flex justify-between font-bold">
                   <span>Total</span>

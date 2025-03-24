@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import getChatbotResponse, { photographyPrompts, floorplanPrompts } from './src/Chatbot';
 
@@ -11,7 +10,7 @@ const ChatInterface = () => {
     type: 'bot',
     text: "Hi there! I'm PIP, your Property Image Pal! 📸 I'm here to support you on your amazing real estate photography journey! Have questions or need help with anything in the app? Just ask me!"
   }]);
-  
+
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -24,20 +23,20 @@ const ChatInterface = () => {
 
   const handleSendMessage = async () => {
     if (userMessage.trim() === '') return;
-    
+
     const newUserMessage = userMessage;
     setUserMessage('');
-    
+
     // Add user message to chat
     setMessages(prev => [...prev, { type: 'user', text: newUserMessage }]);
-    
+
     // Show loading state
     setIsLoading(true);
-    
+
     try {
       // Get response from chatbot
       const response = await getChatbotResponse(newUserMessage);
-      
+
       // Add bot response to chat
       setMessages(prev => [...prev, { type: 'bot', text: response }]);
     } catch (error) {
@@ -50,24 +49,24 @@ const ChatInterface = () => {
       setIsLoading(false);
     }
   };
-  
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
-  
+
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
-  
+
   const handlePromptClick = (prompt) => {
     setUserMessage(prompt);
   };
 
   return (
-    <div style={{
+    <div id="chat-interface" style={{
       position: 'absolute',
       bottom: 20,
       right: 20,
@@ -105,7 +104,7 @@ const ChatInterface = () => {
           {isExpanded ? '−' : '+'}
         </button>
       </div>
-      
+
       {isExpanded && (
         <div style={{
           display: 'flex',
@@ -136,7 +135,7 @@ const ChatInterface = () => {
           ))}
         </div>
       )}
-      
+
       <div style={{
         flex: 1,
         overflowY: 'auto',
@@ -170,7 +169,7 @@ const ChatInterface = () => {
             </p>
           </div>
         ))}
-        
+
         {isLoading && (
           <div style={{
             alignSelf: 'flex-start',
@@ -191,10 +190,10 @@ const ChatInterface = () => {
             <span style={{ color: '#CCCCCC', fontSize: '14px' }}>PIP is thinking...</span>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
-      
+
       <div style={{
         padding: '12px 16px',
         backgroundColor: '#1A1A2E',
@@ -243,7 +242,7 @@ const ChatInterface = () => {
           </svg>
         </button>
       </div>
-      
+
       <style>{`
         @keyframes pulse {
           0% { opacity: 0.6; }
