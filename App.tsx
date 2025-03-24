@@ -18,6 +18,7 @@ import LoginScreen from "./src/screens/LoginScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import FloorplanScreen from "./mobile/src/screens/FloorplanScreen";
 import FloorplanEditorScreen from "./mobile/src/screens/FloorplanEditorScreen";
+import RevisionRequestScreen from "./src/screens/RevisionRequestScreen";
 
 // Admin Panel Pages
 import { 
@@ -126,6 +127,7 @@ const App = () => {
           <Stack.Screen name="floorplan/:id" component={FloorplanDetailsPage} />
           <Stack.Screen name="floorplan-scan" component={FloorplanScreen} />
           <Stack.Screen name="floorplan-editor" component={FloorplanEditorScreen} />
+          <Stack.Screen name="revision-request" component={RevisionRequestScreen} />
           
           {/* Admin Panel Routes */}
           <Stack.Screen name="admin" component={AdminDashboard} />

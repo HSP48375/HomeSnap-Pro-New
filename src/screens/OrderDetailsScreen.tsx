@@ -196,13 +196,25 @@ const OrderDetailsScreen = ({ route, navigation }) => {
 
         {/* Download Button */}
         {order.status === 'completed' && (
-          <TouchableOpacity
-            style={styles.downloadButton}
-            onPress={handleDownload}
-          >
-            <Icon name="download" size={20} color={colors.dark} />
-            <Text style={styles.downloadButtonText}>Download Photos</Text>
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity
+              style={styles.downloadButton}
+              onPress={handleDownload}
+            >
+              <Icon name="download" size={20} color={colors.dark} />
+              <Text style={styles.downloadButtonText}>Download Photos</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.revisionButton]}
+              onPress={() => navigation.navigate('revision-request', {
+                orderId: order.id,
+                orderDetails: order
+              })}
+            >
+              <Icon name="edit-2" size={20} color="#FFF" style={styles.buttonIcon} />
+              <Text style={styles.revisionButtonText}>Request Additional Edits</Text>
+            </TouchableOpacity>
+          </>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -358,6 +370,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 8,
   },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    borderRadius: 12,
+  },
+  revisionButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#00EEFF',
+    marginTop: 12,
+  },
+  revisionButtonText: {
+    color: '#FFF',
+    fontWeight: '600',
+  },
+  buttonIcon: {
+    marginRight: 8,
+  }
 });
 
 export default OrderDetailsScreen;
