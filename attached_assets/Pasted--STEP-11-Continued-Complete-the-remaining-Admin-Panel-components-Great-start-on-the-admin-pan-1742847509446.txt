@@ -1,0 +1,84 @@
+### STEP 11 (Continued): Complete the remaining Admin Panel components
+
+Great start on the admin panel! Please continue by implementing the remaining components to complete the full HomeSnap Pro admin system:
+
+1. Notification Management:
+   - Create a NotificationManager.tsx with:
+     * Control panel for all app notifications
+     * Notification scheduling system
+     * Template editor for notification messages
+     * Manual notification sender to users/editors
+     * Notification history log
+
+2. Sub-Admin (Editor) Management:
+   - Create an EditorManagement.tsx with:
+     * Editor onboarding interface
+     * Permission assignment system
+     * Payment rate configuration
+     * Performance review dashboard
+     * Communication tools
+
+3. Add-On Service Management:
+   - Build an AddOnManagement.tsx with:
+     * Service pricing controls
+     * Service availability toggles
+     * Before/after example upload system
+     * Service description editor
+     * Usage analytics
+
+4. Job Folder System:
+   - Create a JobFolderSystem.tsx with:
+     * Hierarchical folder structure for each job
+     * File upload/download interface
+     * Versioning system for edits
+     * Comment/note attachment capability
+     * Before/after comparison tools
+
+5. Discount & Coupon System:
+   - Build a DiscountManager.tsx with:
+     * Coupon code generator
+     * Discount type selector (fixed/percentage)
+     * Usage limitation settings
+     * Expiration date controls
+     * Analytics on coupon usage
+
+6. Stripe Payment Integration:
+   - Create a PaymentDashboard.tsx with:
+     * Transaction history viewer
+     * Order-payment matching system
+     * Refund processing interface
+     * Payment status indicators
+     * Revenue analytics
+
+7. Tutorial Management:
+   - Build a TutorialManager.tsx with:
+     * Video upload interface
+     * Categorization system
+     * In-panel video preview
+     * Visibility controls
+     * Usage analytics
+
+8. Smart Suggestions Configuration:
+   - Create a SuggestionsConfig.tsx with:
+     * Trigger condition settings
+     * Suggestion text editor
+     * Toggle controls for each suggestion type
+     * Performance metrics for suggestion conversions
+
+9. Floorplan Management:
+   - Build a FloorplanManager.tsx with:
+     * LiDAR scan review interface
+     * Specialist assignment system
+     * Approval workflow
+     * Client feedback handling
+     * Measurement adjustment tools
+
+10. Analytics & Reporting:
+    - Create a ReportingDashboard.tsx with:
+      * Customizable report generator
+      * Data export functionality (CSV, PDF)
+      * Trend visualization tools
+      * KPI tracking system
+      * Scheduled report delivery
+
+Please ensure all components maintain the same design language and functionality as the components you've already created. Each component should be properly linked in the admin navigation system and have appropriate routes added to the router configuration.
