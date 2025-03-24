@@ -19,6 +19,25 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import FloorplanScreen from "./mobile/src/screens/FloorplanScreen";
 import FloorplanEditorScreen from "./mobile/src/screens/FloorplanEditorScreen";
 
+// Admin Panel Pages
+import { 
+  AdminDashboard, 
+  OrderManagement, 
+  EditorAssignment, 
+  QualityControl,
+  UserManagement,
+  NotificationManager,
+  EditorManagement,
+  AddOnManagement,
+  JobFolderSystem,
+  DiscountManager,
+  PaymentDashboard,
+  TutorialManager,
+  SuggestionsConfig,
+  FloorplanManager,
+  ReportingDashboard
+} from "./src/pages/admin";
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -113,6 +132,17 @@ const App = () => {
           <Stack.Screen name="admin/orders" component={OrderManagement} />
           <Stack.Screen name="admin/editor-assignment" component={EditorAssignment} />
           <Stack.Screen name="admin/quality-control" component={QualityControl} />
+          <Stack.Screen name="admin/users" component={UserManagement} />
+          <Stack.Screen name="admin/notifications" component={NotificationManager} />
+          <Stack.Screen name="admin/editor-management" component={EditorManagement} />
+          <Stack.Screen name="admin/add-on-management" component={AddOnManagement} />
+          <Stack.Screen name="admin/job-folders" component={JobFolderSystem} />
+          <Stack.Screen name="admin/discounts" component={DiscountManager} />
+          <Stack.Screen name="admin/payments" component={PaymentDashboard} />
+          <Stack.Screen name="admin/tutorials" component={TutorialManager} />
+          <Stack.Screen name="admin/suggestions" component={SuggestionsConfig} />
+          <Stack.Screen name="admin/floorplans" component={FloorplanManager} />
+          <Stack.Screen name="admin/reports" component={ReportingDashboard} />
         </Stack.Navigator>
         <Toast />
       </NavigationContainer>
