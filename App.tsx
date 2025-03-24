@@ -107,6 +107,12 @@ const App = () => {
           <Stack.Screen name="floorplan/:id" component={FloorplanDetailsPage} />
           <Stack.Screen name="floorplan-scan" component={FloorplanScreen} />
           <Stack.Screen name="floorplan-editor" component={FloorplanEditorScreen} />
+          
+          {/* Admin Panel Routes */}
+          <Stack.Screen name="admin" component={AdminDashboard} />
+          <Stack.Screen name="admin/orders" component={OrderManagement} />
+          <Stack.Screen name="admin/editor-assignment" component={EditorAssignment} />
+          <Stack.Screen name="admin/quality-control" component={QualityControl} />
         </Stack.Navigator>
         <Toast />
       </NavigationContainer>
