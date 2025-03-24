@@ -1,0 +1,72 @@
+### STEP 12 (continued): Implement Optional Subscription Plans System
+
+Now that we've implemented the Interactive Onboarding Experience, please create the Optional Subscription Plans System, which will exist alongside the standard pay-per-use model:
+
+1. Create a SubscriptionPlansScreen.tsx that clearly presents subscriptions as an optional alternative to pay-per-use:
+   - Add an intro section explaining: "Choose what works for you: Pay-per-use with no commitment, or save up to 56% with our monthly subscription plans"
+   - Include a toggle or tab system to compare "Pay-Per-Use" vs "Subscription Plans"
+   - Emphasize the flexibility to switch between models at any time
+   
+   Display these subscription tiers:
+   
+   * **Starter Package - $49/month**
+     * 40 photo edits per month ($1.22/photo - 19% savings)
+     * 1 free virtual staging per month
+     * Basic priority queue (24-hour turnaround)
+     * Unused edits roll over (max 20)
+
+   * **Realtor Pro - $99/month**
+     * 100 photo edits per month ($0.99/photo - 34% savings)
+     * 2 free twilight conversions per month
+     * 1 free listing description
+     * Standard priority queue (16-hour turnaround)
+     * Unused edits roll over (max 50)
+
+   * **Team Basic - $249/month**
+     * 250 photo edits per month ($0.99/photo - 34% savings)
+     * 5 free twilight conversions per month
+     * 3 free virtual stagings per month
+     * 3 free listing descriptions
+     * 3 free floorplans per month
+     * High priority queue (under 16-hour turnaround)
+     * Can be shared across team members (up to 3 agents)
+
+   * **Agency Premium - $499/month**
+     * 600 photo edits per month ($0.83/photo - 45% savings)
+     * 10 free twilight conversions per month
+     * 8 free virtual stagings per month 
+     * 6 free listing descriptions
+     * 5 free floorplans per month
+     * Rush priority queue (12-hour turnaround)
+     * Can be shared across team members (up to 7 agents)
+
+   * **Enterprise - $999/month**
+     * 1,500 photo edits per month ($0.66/photo - 56% savings)
+     * Unlimited twilight conversions
+     * 20 free virtual stagings per month
+     * 15 free listing descriptions
+     * 10 free floorplans per month
+     * VIP priority queue (8-10 hour turnaround)
+     * Can be shared across unlimited team members
+     * White-label branding options available (see account manager for details)
+     * VIP account manager access
+
+2. Add subscription management:
+   * Create SubscriptionService.ts to handle plan purchases and management
+   * Implement credit tracking system for remaining edits and services
+   * Add team management for shared subscriptions
+   * Create admin panel integration for subscription management
+   * Include functions to switch between pay-per-use and subscription models
+
+3. Add subscription promotion throughout the app (without being intrusive):
+   * Add "Save 19-56% with subscriptions" link in checkout flow
+   * Include subscription cards in Dashboard view
+   * Add subscription tab in main navigation
+   * Display credit usage and remaining balance for subscribers
+   * Show occasional suggestion for high-volume users to consider subscriptions
+
+4. Implement the necessary database schema updates:
+   * Create subscriptions table
+   * Create subscription_credits table
+   * Add relationships to users and teams tables
+   * Store user preference for payment model (subscription vs pay-per-use)
