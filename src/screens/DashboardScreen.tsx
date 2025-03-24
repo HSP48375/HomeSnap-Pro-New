@@ -1,20 +1,43 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import { colors } from '../theme/colors';
 import { useAuthStore } from '../stores/authStore';
 import { format } from 'date-fns';
+import { hasActiveSubscription, getRemainingCredits } from '../lib/subscriptionService';
 
 const DashboardScreen = ({ navigation }) => {
   const { user } = useAuthStore();
+  const [hasSubscription, setHasSubscription] = useState(false);
+  const [subscriptionCredits, setSubscriptionCredits] = useState(null);
+  const [orderCount, setOrderCount] = useState(0);
+
+  useEffect(() => {
+    // Check if user has active subscription
+    hasActiveSubscription()
+      .then(result => {
+        setHasSubscription(result);
+        if (result) {
+          // If they have a subscription, get their remaining credits
+          return getRemainingCredits();
+        }
+        return null;
+      })
+      .then(credits => {
+        if (credits) {
+          setSubscriptionCredits(credits);
+        }
+      })
+      .catch(error => {
+        console.error('Failed to load subscription data:', error);
+      });
+
+    // Get order count for non-subscribers to determine if they're high-volume users
+    // This would come from your orders API
+    // For now, just setting a mock value for demonstration
+    setOrderCount(25);
+  }, []);
 
   const stats = {
     totalOrders: 12,
@@ -76,6 +99,67 @@ const DashboardScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         </View>
+
+        {/* Subscription promotion for high-volume users */}
+        {!hasSubscription && orderCount >= 20 && (
+          <TouchableOpacity 
+            style={styles.subscriptionPromoBanner}
+            onPress={() => navigation.navigate('SubscriptionPlans')}
+          >
+            <View style={styles.promoIconContainer}>
+              <Icon name="star" size={20} color="#FFF" />
+            </View>
+            <View style={styles.promoTextContainer}>
+              <Text style={styles.promoTitle}>You're a power user!</Text>
+              <Text style={styles.promoText}>
+                Save up to 56% with our subscription plans
+              </Text>
+            </View>
+            <Icon name="chevron-right" size={20} color="#00EEFF" />
+          </TouchableOpacity>
+        )}
+
+        {/* Subscription credits display for subscribers */}
+        {hasSubscription && subscriptionCredits && (
+          <View style={styles.creditsContainer}>
+            <View style={styles.creditsHeader}>
+              <Text style={styles.creditsTitle}>Your Subscription Credits</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('ProfileSubscriptions')}>
+                <Text style={styles.manageText}>Manage</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.creditsGrid}>
+              <View style={styles.creditItem}>
+                <Text style={styles.creditValue}>{subscriptionCredits.photoEdits}</Text>
+                <Text style={styles.creditLabel}>Photo Edits</Text>
+              </View>
+
+              {subscriptionCredits.twilightConversions !== undefined && (
+                <View style={styles.creditItem}>
+                  <Text style={styles.creditValue}>
+                    {subscriptionCredits.twilightConversions === 'Unlimited' ? '∞' : subscriptionCredits.twilightConversions}
+                  </Text>
+                  <Text style={styles.creditLabel}>Twilight</Text>
+                </View>
+              )}
+
+              {subscriptionCredits.virtualStaging !== undefined && subscriptionCredits.virtualStaging > 0 && (
+                <View style={styles.creditItem}>
+                  <Text style={styles.creditValue}>{subscriptionCredits.virtualStaging}</Text>
+                  <Text style={styles.creditLabel}>Staging</Text>
+                </View>
+              )}
+
+              {subscriptionCredits.floorplans !== undefined && subscriptionCredits.floorplans > 0 && (
+                <View style={styles.creditItem}>
+                  <Text style={styles.creditValue}>{subscriptionCredits.floorplans}</Text>
+                  <Text style={styles.creditLabel}>Floorplans</Text>
+                </View>
+              )}
+            </View>
+          </View>
+        )}
 
         {/* Stats Grid */}
         <View style={styles.statsGrid}>
@@ -201,10 +285,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
+    padding: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
   },
   welcomeText: {
     fontSize: 16,
@@ -363,6 +447,84 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.text,
     opacity: 0.8,
+  },
+  subscriptionPromoBanner: {
+    backgroundColor: 'rgba(0, 238, 255, 0.1)',
+    marginHorizontal: 16,
+    marginBottom: 20,
+    borderRadius: 12,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  promoIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#00EEFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  promoTextContainer: {
+    flex: 1,
+  },
+  promoTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFF',
+    marginBottom: 4,
+  },
+  promoText: {
+    fontSize: 14,
+    color: '#CCC',
+  },
+  creditsContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    marginHorizontal: 16,
+    marginBottom: 20,
+    borderRadius: 12,
+    padding: 16,
+  },
+  creditsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  creditsTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFF',
+  },
+  manageText: {
+    fontSize: 14,
+    color: '#00EEFF',
+    fontWeight: '600',
+  },
+  creditsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  creditItem: {
+    width: '22%',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 8,
+    padding: 12,
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  creditValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#00EEFF',
+    marginBottom: 4,
+  },
+  creditLabel: {
+    fontSize: 12,
+    color: '#CCC',
+    textAlign: 'center',
   },
 });
 

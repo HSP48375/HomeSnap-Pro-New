@@ -123,6 +123,9 @@ const App = () => {
           <Stack.Screen name="photo-addons" component={PhotoAddonsPage} />
           <Stack.Screen name="checkout" component={CheckoutPage} />
           <Stack.Screen name="property/:id" component={PropertyDetailsPage} />
+          <Stack.Screen name="SubscriptionPlans" component={SubscriptionPlansScreen} />
+          <Stack.Screen name="SubscriptionConfirmation" component={SubscriptionConfirmationScreen} />
+          <Stack.Screen name="ProfileSubscriptions" component={ProfileSubscriptionsScreen} />
           
           {/* Floorplan Routes */}
           <Stack.Screen name="floorplans" component={FloorplanPage} />

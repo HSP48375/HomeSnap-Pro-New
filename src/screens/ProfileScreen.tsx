@@ -574,6 +574,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
   },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  menuIcon: {
+    marginRight: 16,
+  },
+  menuText: {
+    flex: 1,
+    fontSize: 16,
+    color: colors.text,
+  },
 });
 
 export default ProfileScreen;

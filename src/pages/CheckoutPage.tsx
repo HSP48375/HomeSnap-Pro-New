@@ -18,6 +18,7 @@ const CheckoutPage = () => {
     scheduledDate: '',
     notes: ''
   });
+  const [showSubscriptionPromo, setShowSubscriptionPromo] = useState(true);
 
   // If no package was selected, redirect back
   if (!selectedPackage) {
@@ -199,6 +200,43 @@ const CheckoutPage = () => {
                 </div>
               </div>
             </div>
+
+            {/* Subscription Promo */}
+            {showSubscriptionPromo && (
+              <div className="my-4 bg-gradient-to-r from-blue-900/20 to-purple-900/20 rounded-lg p-4 border border-blue-500/30">
+                <div className="flex items-start">
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-md mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <h3 className="text-white font-medium text-sm">Save up to 56% with subscriptions</h3>
+                      <button onClick={() => setShowSubscriptionPromo(false)} className="text-gray-400 hover:text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                    <p className="text-gray-300 text-xs mt-1">
+                      High-volume users can save significantly with our monthly plans.
+                    </p>
+                    <div className="mt-2">
+                      <a 
+                        href="/subscription-plans"
+                        className="text-xs text-cyan-400 hover:text-cyan-300 inline-flex items-center"
+                      >
+                        View Subscription Plans
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="flex justify-end">
               <button 
