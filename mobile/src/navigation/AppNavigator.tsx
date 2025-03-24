@@ -19,6 +19,9 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import FloorplansScreen from '../screens/FloorplansScreen';
 import ChatbotScreen from '../screens/ChatbotScreen'; // Added import for ChatbotScreen
+import NotificationsScreen from '../screens/NotificationsScreen'; // Added import for NotificationsScreen
+
+import NotificationBell from '../components/NotificationBell'; // Added import for NotificationBell
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -48,7 +51,7 @@ const TabBarCenterButton = ({ children, onPress }) => {
 export const TabNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={({ route, navigation }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -104,6 +107,7 @@ export const TabNavigator = () => {
             style={StyleSheet.absoluteFill} 
           />
         ),
+        headerRight: () => <NotificationBell navigation={navigation} />, // Added headerRight for NotificationBell
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -151,7 +155,8 @@ export const MainStackNavigator = () => {
       <MainStack.Screen name="Tabs" component={TabNavigator} />
       <MainStack.Screen name="PropertyDetail" component={PropertyDetailScreen} />
       <MainStack.Screen name="Floorplans" component={FloorplansScreen} />
-      <MainStack.Screen name="Chatbot" component={ChatbotScreen} /> {/* Added ChatbotScreen to the navigator */}
+      <MainStack.Screen name="Chatbot" component={ChatbotScreen} />
+      <MainStack.Screen name="Notifications" component={NotificationsScreen} /> {/* Added Notifications Screen */}
     </MainStack.Navigator>
   );
 };

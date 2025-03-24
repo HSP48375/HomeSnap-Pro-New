@@ -429,3 +429,165 @@ const api = {
 };
 
 export { api };
+
+
+// Make a generic API request
+export const apiRequest = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', data?: any) => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      },
+      ...(data ? { body: JSON.stringify(data) } : {}),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('API request failed:', error);
+    throw error;
+  }
+};
+
+// Notification functions for the web app
+export const sendWebNotification = (title: string, body: string, icon?: string, onClick?: () => void) => {
+  if (!("Notification" in window)) {
+    console.log("This browser does not support desktop notification");
+    return;
+  }
+
+  if (Notification.permission === "granted") {
+    const notification = new Notification(title, {
+      body,
+      icon: icon || '/assets/logo.png'
+    });
+
+    if (onClick) {
+      notification.onclick = onClick;
+    }
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        const notification = new Notification(title, {
+          body,
+          icon: icon || '/assets/logo.png'
+        });
+
+        if (onClick) {
+          notification.onclick = onClick;
+        }
+      }
+    });
+  }
+};
+
+// Notification trigger functions
+export const notifyOrderStatusChange = async (orderId: string, newStatus: string, property: string) => {
+  // Send to backend (for mobile push notifications)
+  try {
+    await apiRequest('/notifications/order-status', 'POST', {
+      orderId,
+      status: newStatus,
+      property
+    });
+
+    // Local web notification
+    let statusText = '';
+    switch (newStatus) {
+      case 'processing':
+        statusText = 'is being processed';
+        break;
+      case 'editing':
+        statusText = 'is being edited';
+        break;
+      case 'completed':
+        statusText = 'has been completed';
+        break;
+      case 'delivered':
+        statusText = 'has been delivered';
+        break;
+      default:
+        statusText = `status changed to ${newStatus}`;
+    }
+
+    sendWebNotification(
+      'Order Update', 
+      `Your order for ${property} ${statusText}`,
+      undefined,
+      () => {
+        window.location.href = `/orders/${orderId}`;
+      }
+    );
+  } catch (error) {
+    console.error('Failed to send order status notification', error);
+  }
+};
+
+export const notifyPhotoEditingComplete = async (orderId: string, property: string) => {
+  try {
+    await apiRequest('/notifications/photo-ready', 'POST', {
+      orderId,
+      property
+    });
+
+    sendWebNotification(
+      'Photos Ready', 
+      `Your edited photos for ${property} are ready to view!`,
+      undefined,
+      () => {
+        window.location.href = `/orders/${orderId}`;
+      }
+    );
+  } catch (error) {
+    console.error('Failed to send photo editing notification', error);
+  }
+};
+
+export const notifyPaymentProcessed = async (orderId: string, amount: number, property: string) => {
+  try {
+    await apiRequest('/notifications/payment', 'POST', {
+      orderId,
+      amount,
+      property
+    });
+
+    sendWebNotification(
+      'Payment Processed', 
+      `Your payment of $${amount.toFixed(2)} for ${property} has been processed.`,
+      undefined,
+      () => {
+        window.location.href = `/orders/${orderId}`;
+      }
+    );
+  } catch (error) {
+    console.error('Failed to send payment notification', error);
+  }
+};
+
+export const notifyFloorplanUpdate = async (floorplanId: string, status: string, property: string) => {
+  try {
+    await apiRequest('/notifications/floorplan', 'POST', {
+      floorplanId,
+      status,
+      property
+    });
+
+    sendWebNotification(
+      'Floorplan Update', 
+      `Your floorplan for ${property} ${status}.`,
+      undefined,
+      () => {
+        window.location.href = `/floorplan/${floorplanId}`;
+      }
+    );
+  } catch (error) {
+    console.error('Failed to send floorplan notification', error);
+  }
+};

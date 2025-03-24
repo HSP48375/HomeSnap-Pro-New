@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   View, 
@@ -15,6 +14,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { getUploadQueue } from '../utils/storage';
 import { syncQueuedData } from '../services/SyncService';
 import { colors } from '../theme/AppTheme';
+import NotificationManager from '../utils/NotificationManager';
+
 
 const OfflineManager: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean | null>(true);
@@ -24,22 +25,30 @@ const OfflineManager: React.FC = () => {
   const [queueDetails, setQueueDetails] = useState<any[]>([]);
   const slideAnim = useRef(new Animated.Value(0)).current;
   const syncTimeout = useRef<NodeJS.Timeout | null>(null);
+  const animatedHeight = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     // Subscribe to network state changes
     const unsubscribe = NetInfo.addEventListener(state => {
       const connected = state.isConnected && state.isInternetReachable;
+      const wasOffline = isConnected === false;
+
       setIsConnected(connected);
-      
-      // If coming back online, trigger sync
-      if (connected && !isConnected) {
+
+      // If coming back online, trigger sync and send notification
+      if (wasOffline && connected) {
+        NotificationManager.sendLocalNotification(
+          'Connection Restored',
+          'You are back online. Your changes will sync now.',
+          'appUpdates'
+        );
         triggerSync();
       }
     });
 
     // Check queue size periodically
     const queueInterval = setInterval(updateQueueSize, 10000);
-    
+
     // Initial check
     updateQueueSize();
     checkNetworkStatus();
@@ -60,7 +69,13 @@ const OfflineManager: React.FC = () => {
       duration: 300,
       useNativeDriver: true,
     }).start();
-  }, [isConnected, slideAnim]);
+
+    Animated.timing(animatedHeight, {
+      toValue: !isConnected ? 1 : 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  }, [isConnected, slideAnim, animatedHeight]);
 
   const checkNetworkStatus = async () => {
     const state = await NetInfo.fetch();
@@ -79,16 +94,21 @@ const OfflineManager: React.FC = () => {
 
   const triggerSync = async () => {
     if (isSyncing || queueSize === 0) return;
-    
+
     setIsSyncing(true);
     try {
       await syncQueuedData();
       await updateQueueSize();
+      NotificationManager.sendLocalNotification(
+        'Sync Complete',
+        'Your data has been synchronized successfully.',
+        'appUpdates'
+      );
     } catch (error) {
       console.error('Sync error:', error);
     } finally {
       setIsSyncing(false);
-      
+
       // Schedule another sync if there are still items in the queue
       if (queueSize > 0) {
         syncTimeout.current = setTimeout(triggerSync, 60000); // Try again in a minute
@@ -145,7 +165,7 @@ const OfflineManager: React.FC = () => {
                 <MaterialIcons name="close" size={24} color={colors.text} />
               </TouchableOpacity>
             </View>
-            
+
             {queueSize === 0 ? (
               <View style={styles.emptyQueueContainer}>
                 <MaterialIcons name="check-circle" size={48} color={colors.success} />
@@ -156,7 +176,7 @@ const OfflineManager: React.FC = () => {
                 {queueDetails.map(renderQueueDetailItem)}
               </ScrollView>
             )}
-            
+
             <View style={styles.modalFooter}>
               <TouchableOpacity 
                 style={[
@@ -179,6 +199,11 @@ const OfflineManager: React.FC = () => {
     );
   };
 
+  const bannerHeight = animatedHeight.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 60], // Height of the banner
+  });
+
   return (
     <>
       <Animated.View 
@@ -187,7 +212,7 @@ const OfflineManager: React.FC = () => {
           { transform: [{ translateY: slideAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [-60, 0]
-          })}] }
+          })}] , height: bannerHeight}
         ]}
       >
         <View style={styles.content}>
@@ -195,7 +220,7 @@ const OfflineManager: React.FC = () => {
           <Text style={styles.text}>You're offline</Text>
         </View>
       </Animated.View>
-      
+
       {queueSize > 0 && (
         <TouchableOpacity 
           style={styles.queueButton} 
@@ -216,7 +241,7 @@ const OfflineManager: React.FC = () => {
           </View>
         </TouchableOpacity>
       )}
-      
+
       {renderQueueDetailsModal()}
     </>
   );
@@ -230,6 +255,7 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: '#E53935',
     zIndex: 1000,
+    overflow: 'hidden',
   },
   content: {
     flexDirection: 'row',

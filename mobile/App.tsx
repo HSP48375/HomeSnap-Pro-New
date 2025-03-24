@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StatusBar } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFonts } from 'expo-font';
+import { View, Text, ActivityIndicator, StatusBar } from 'react-native';
+import * as Notifications from 'expo-notifications';
 import { TabNavigator, AuthStackNavigator } from './src/navigation/AppNavigator';
 import ChatInterface from './src/components/ChatInterface';
 import FloatingChatButton from './src/components/FloatingChatButton';
 import { colors } from './src/theme/AppTheme';
-import { View, StyleSheet } from 'react-native';
-import OfflineManager from './src/components/OfflineManager'; // Placeholder
+import { StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFonts } from 'expo-font';
+import OfflineManager from './src/components/OfflineManager';
+import NotificationManager from './src/utils/NotificationManager'; // Placeholder - Needs implementation
 
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isReady, setIsReady] = useState(false); // Added for notification initialization
 
   // Load custom fonts
   const [fontsLoaded] = useFonts({
@@ -39,14 +42,50 @@ const App = () => {
       }
     };
 
+    const initializeApp = async () => {
+      try {
+        // Set up notification handler
+        Notifications.setNotificationHandler({
+          handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+          }),
+        });
+
+        // Listen for notifications
+        const subscription = Notifications.addNotificationReceivedListener(notification => {
+          console.log('Notification received:', notification);
+        });
+
+        // Initialize notification manager
+        await NotificationManager.initialize(); // Placeholder - Needs implementation
+
+        // Get push token
+        const token = await NotificationManager.registerForPushNotifications(); // Placeholder - Needs implementation
+        console.log('Push notification token:', token);
+
+        setIsReady(true);
+
+        return () => {
+          subscription.remove();
+        };
+      } catch (error) {
+        console.error('Error initializing app:', error);
+        setIsReady(true); // Continue even if there's an error
+      }
+    };
+
     checkAuth();
+    initializeApp();
   }, []);
 
-  if (isLoading || !fontsLoaded) {
-    // Return a loading screen if needed
+  if (isLoading || !fontsLoaded || !isReady) {
     return (
       <View style={styles.loadingContainer}>
         <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+        <ActivityIndicator size="large" color="#00EEFF" />
+        <Text style={{ color: 'white', marginTop: 16 }}>Initializing app...</Text>
       </View>
     );
   }
@@ -72,7 +111,8 @@ const App = () => {
             <>
               <TabNavigator />
               <FloatingChatButton />
-              <OfflineManager /> {/* Added OfflineManager */}
+              <OfflineManager />
+              {/* Placeholder for in-app notification bell component */}
             </>
           ) : (
             <AuthStackNavigator />
