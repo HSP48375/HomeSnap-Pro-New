@@ -19,6 +19,7 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import FloorplanScreen from "./mobile/src/screens/FloorplanScreen";
 import FloorplanEditorScreen from "./mobile/src/screens/FloorplanEditorScreen";
 import RevisionRequestScreen from "./src/screens/RevisionRequestScreen";
+import NotificationPreferencesScreen from "./src/screens/NotificationPreferencesScreen";
 // Import OnboardingTour component
 import OnboardingTour from "./src/components/OnboardingTour";
 
@@ -126,6 +127,7 @@ const App = () => {
           <Stack.Screen name="SubscriptionPlans" component={SubscriptionPlansScreen} />
           <Stack.Screen name="SubscriptionConfirmation" component={SubscriptionConfirmationScreen} />
           <Stack.Screen name="ProfileSubscriptions" component={ProfileSubscriptionsScreen} />
+          <Stack.Screen name="NotificationPreferences" component={NotificationPreferencesScreen} />
           
           {/* Floorplan Routes */}
           <Stack.Screen name="floorplans" component={FloorplanPage} />

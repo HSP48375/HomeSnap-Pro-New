@@ -400,7 +400,7 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Settings</Text>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('NotificationPreferences')}>
             <Icon name="bell" size={22} color="#00EEFF" style={styles.settingIcon} />
             <Text style={styles.settingLabel}>Notifications</Text>
             <Icon name="chevron-right" size={22} color="#888" style={{marginLeft: 'auto'}} />

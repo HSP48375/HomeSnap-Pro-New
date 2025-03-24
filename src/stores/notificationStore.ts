@@ -11,6 +11,10 @@ export interface Notification {
   deep_link?: string;
   created_at: string;
   read_at?: string;
+  property_id?: string;
+  order_id?: string;
+  group_id?: string;
+  actions?: { id: string; label: string; action_type: string }[];
 }
 
 interface NotificationPreferences {
@@ -22,55 +26,84 @@ interface NotificationPreferences {
   payment_updates: boolean;
   editor_assignments: boolean;
   marketing: boolean;
+  group_by_property: boolean;
+  custom_sounds: Record<string, string>; // Add custom sounds
+  silent_start: Date | string; // Add silent hours
+  silent_end: Date | string;   // Add silent hours
 }
 
 interface NotificationState {
   notifications: Notification[];
+  groupedNotifications: Record<string, Notification[]>;
   unreadCount: number;
   preferences: NotificationPreferences | null;
   loading: boolean;
   error: string | null;
-  
+
   // Notification actions
   fetchNotifications: () => Promise<void>;
   markAsRead: (notificationId: string) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   deleteNotification: (notificationId: string) => Promise<void>;
-  
+
   // Preferences actions
   fetchPreferences: () => Promise<void>;
   updatePreferences: (preferences: Partial<NotificationPreferences>) => Promise<void>;
-  
+
   // Push notification actions
-  subscribeToPushNotifications: () => Promise<void>;
-  unsubscribeFromPushNotifications: () => Promise<void>;
+  registerForPushNotifications: () => Promise<string | undefined>;
+  executeNotificationAction: (notificationId: string, actionId: string) => Promise<void>;
+  shouldShowNotification: (type: string) => boolean;
 }
+
+const isInSilentHours = (preferences: NotificationPreferences): boolean => {
+  const now = new Date();
+  const silentStart = typeof preferences.silent_start === 'string' ? new Date(preferences.silent_start) : preferences.silent_start;
+  const silentEnd = typeof preferences.silent_end === 'string' ? new Date(preferences.silent_end) : preferences.silent_end;
+
+  return now >= silentStart && now <= silentEnd;
+};
+
 
 export const useNotificationStore = create<NotificationState>((set, get) => ({
   notifications: [],
+  groupedNotifications: {},
   unreadCount: 0,
   preferences: null,
   loading: false,
   error: null,
-  
+
   fetchNotifications: async () => {
     set({ loading: true, error: null });
-    
+
     try {
-      // Fetch notifications
       const { data: notifications, error } = await supabase
         .from('notifications')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(50);
-      
+
       if (error) throw error;
-      
-      // Count unread notifications
-      const unreadCount = notifications?.filter(n => n.status === 'unread').length || 0;
-      
+
+      const notificationsData = notifications || [];
+      const unreadCount = notificationsData.filter(n => n.status === 'unread').length;
+
+      const { preferences } = get();
+      let groupedNotifications = {};
+
+      if (preferences?.group_by_property) {
+        notificationsData.forEach(notification => {
+          const groupKey = notification.property_id || notification.order_id || notification.group_id || 'other';
+          if (!groupedNotifications[groupKey]) {
+            groupedNotifications[groupKey] = [];
+          }
+          groupedNotifications[groupKey].push(notification);
+        });
+      }
+
       set({ 
-        notifications: notifications || [], 
+        notifications: notificationsData, 
+        groupedNotifications,
         unreadCount,
         loading: false 
       });
@@ -79,72 +112,109 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
       set({ error: error.message, loading: false });
     }
   },
-  
+
   markAsRead: async (notificationId: string) => {
     try {
-      // Call the RPC function to mark notification as read
       const { error } = await supabase.rpc('mark_notification_as_read', {
         notification_id: notificationId
       });
-      
+
       if (error) throw error;
-      
-      // Update local state
-      set(state => ({
-        notifications: state.notifications.map(notification => 
+
+      set(state => {
+        const updatedNotifications = state.notifications.map(notification => 
           notification.id === notificationId 
-            ? { ...notification, status: 'read' as const, read_at: new Date().toISOString() } 
+            ? { ...notification, status: 'read', read_at: new Date().toISOString() } 
             : notification
-        ),
-        unreadCount: Math.max(0, state.unreadCount - 1)
-      }));
+        );
+        
+        let groupedNotifications = {};
+        if (state.preferences?.group_by_property) {
+          updatedNotifications.forEach(notification => {
+            const groupKey = notification.property_id || notification.order_id || notification.group_id || 'other';
+            if (!groupedNotifications[groupKey]) {
+              groupedNotifications[groupKey] = [];
+            }
+            groupedNotifications[groupKey].push(notification);
+          });
+        }
+
+        return {
+          notifications: updatedNotifications,
+          groupedNotifications,
+          unreadCount: Math.max(0, state.unreadCount - 1)
+        };
+      });
     } catch (error: any) {
       console.error('Error marking notification as read:', error);
       toast.error('Failed to mark notification as read');
     }
   },
-  
+
   markAllAsRead: async () => {
     try {
-      // Call the RPC function to mark all notifications as read
       const { error } = await supabase.rpc('mark_all_notifications_as_read');
-      
+
       if (error) throw error;
-      
-      // Update local state
-      set(state => ({
-        notifications: state.notifications.map(notification => 
+
+      set(state => {
+        const updatedNotifications = state.notifications.map(notification => 
           notification.status === 'unread' 
-            ? { ...notification, status: 'read' as const, read_at: new Date().toISOString() } 
+            ? { ...notification, status: 'read', read_at: new Date().toISOString() } 
             : notification
-        ),
-        unreadCount: 0
-      }));
-      
+        );
+
+        let groupedNotifications = {};
+        if (state.preferences?.group_by_property) {
+          updatedNotifications.forEach(notification => {
+            const groupKey = notification.property_id || notification.order_id || notification.group_id || 'other';
+            if (!groupedNotifications[groupKey]) {
+              groupedNotifications[groupKey] = [];
+            }
+            groupedNotifications[groupKey].push(notification);
+          });
+        }
+
+        return {
+          notifications: updatedNotifications,
+          groupedNotifications,
+          unreadCount: 0
+        };
+      });
+
       toast.success('All notifications marked as read');
     } catch (error: any) {
       console.error('Error marking all notifications as read:', error);
       toast.error('Failed to mark all notifications as read');
     }
   },
-  
+
   deleteNotification: async (notificationId: string) => {
     try {
       const { error } = await supabase
         .from('notifications')
         .delete()
         .eq('id', notificationId);
-      
+
       if (error) throw error;
-      
-      // Update local state
+
       set(state => {
-        const notification = state.notifications.find(n => n.id === notificationId);
-        const isUnread = notification?.status === 'unread';
-        
+        const updatedNotifications = state.notifications.filter(n => n.id !== notificationId);
+
+        let groupedNotifications = {};
+        if (state.preferences?.group_by_property) {
+          updatedNotifications.forEach(notification => {
+            const groupKey = notification.property_id || notification.order_id || notification.group_id || 'other';
+            if (!groupedNotifications[groupKey]) {
+              groupedNotifications[groupKey] = [];
+            }
+            groupedNotifications[groupKey].push(notification);
+          });
+        }
         return {
-          notifications: state.notifications.filter(n => n.id !== notificationId),
-          unreadCount: isUnread ? Math.max(0, state.unreadCount - 1) : state.unreadCount
+          notifications: updatedNotifications,
+          groupedNotifications,
+          unreadCount: Math.max(0, state.unreadCount - (state.notifications.find(n => n.id === notificationId)?.status === 'unread' ? 1 : 0))
         };
       });
     } catch (error: any) {
@@ -152,139 +222,92 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
       toast.error('Failed to delete notification');
     }
   },
-  
+
   fetchPreferences: async () => {
     set({ loading: true, error: null });
-    
+
     try {
       const { data, error } = await supabase
         .from('notification_preferences')
         .select('*')
         .single();
-      
+
       if (error && error.code !== 'PGRST116') throw error;
-      
-      set({ preferences: data, loading: false });
+
+      let preferences = data;
+      if (preferences) {
+        if (typeof preferences.silent_start === 'string') {
+          preferences.silent_start = new Date(preferences.silent_start);
+        }
+        if (typeof preferences.silent_end === 'string') {
+          preferences.silent_end = new Date(preferences.silent_end);
+        }
+      }
+
+      set({ preferences, loading: false });
     } catch (error: any) {
       console.error('Error fetching notification preferences:', error);
       set({ error: error.message, loading: false });
     }
   },
-  
+
   updatePreferences: async (preferences: Partial<NotificationPreferences>) => {
     try {
-      const { data: currentPrefs } = await supabase
-        .from('notification_preferences')
-        .select('id')
-        .single();
-      
-      if (!currentPrefs) {
-        // Insert new preferences if they don't exist
-        const { error } = await supabase
-          .from('notification_preferences')
-          .insert({
-            ...preferences
-          });
-        
-        if (error) throw error;
-      } else {
-        // Update existing preferences
-        const { error } = await supabase
-          .from('notification_preferences')
-          .update({
-            ...preferences,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', currentPrefs.id);
-        
-        if (error) throw error;
+      const { preferences: currentPrefs } = get();
+      const updatedPreferences = { ...currentPrefs, ...preferences } as NotificationPreferences;
+
+      const dataForDb = { ...updatedPreferences };
+      if (dataForDb.silent_start instanceof Date) {
+        dataForDb.silent_start = dataForDb.silent_start.toISOString();
       }
-      
-      // Update local state
-      set(state => ({
-        preferences: state.preferences 
-          ? { ...state.preferences, ...preferences } 
-          : { id: '', ...preferences } as NotificationPreferences
-      }));
-      
+      if (dataForDb.silent_end instanceof Date) {
+        dataForDb.silent_end = dataForDb.silent_end.toISOString();
+      }
+
+      const { error } = await supabase
+        .from('notification_preferences')
+        .upsert(dataForDb);
+
+      if (error) throw error;
+
+      set({ preferences: updatedPreferences });
       toast.success('Notification preferences updated');
     } catch (error: any) {
       console.error('Error updating notification preferences:', error);
       toast.error('Failed to update notification preferences');
     }
   },
-  
-  subscribeToPushNotifications: async () => {
-    try {
-      // Check if push notifications are supported
-      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-        throw new Error('Push notifications are not supported in this browser');
-      }
-      
-      // Request permission
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') {
-        throw new Error('Permission for notifications was denied');
-      }
-      
-      // Register service worker (in a real app)
-      // const registration = await navigator.serviceWorker.register('/service-worker.js');
-      
-      // Subscribe to push notifications (simplified for demo)
-      // In a real app, you would use the actual subscription object
-      const subscription = {
-        endpoint: 'https://fcm.googleapis.com/fcm/send/example-endpoint',
-        keys: {
-          p256dh: 'example-p256dh-key',
-          auth: 'example-auth-key'
-        }
-      };
-      
-      // Save subscription to database
-      const { error } = await supabase
-        .from('push_subscriptions')
-        .insert({
-          endpoint: subscription.endpoint,
-          p256dh: subscription.keys.p256dh,
-          auth: subscription.keys.auth
-        });
-      
-      if (error) throw error;
-      
-      // Update preferences to enable push notifications
-      await get().updatePreferences({ push: true });
-      
-      toast.success('Push notifications enabled');
-    } catch (error: any) {
-      console.error('Error subscribing to push notifications:', error);
-      toast.error(error.message || 'Failed to enable push notifications');
-    }
+
+  registerForPushNotifications: async () => {
+    //Implementation for push notifications would go here.  This is a placeholder.
+    return undefined;
   },
-  
-  unsubscribeFromPushNotifications: async () => {
-    try {
-      // In a real app, you would unsubscribe from the push service
-      // const registration = await navigator.serviceWorker.ready;
-      // const subscription = await registration.pushManager.getSubscription();
-      // if (subscription) {
-      //   await subscription.unsubscribe();
-      // }
-      
-      // Delete subscription from database
-      const { error } = await supabase
-        .from('push_subscriptions')
-        .delete()
-        .is('user_id', supabase.auth.getUser());
-      
-      if (error) throw error;
-      
-      // Update preferences to disable push notifications
-      await get().updatePreferences({ push: false });
-      
-      toast.success('Push notifications disabled');
-    } catch (error: any) {
-      console.error('Error unsubscribing from push notifications:', error);
-      toast.error('Failed to disable push notifications');
+
+  executeNotificationAction: async (notificationId: string, actionId: string) => {
+    //Implementation for executing notification actions would go here. This is a placeholder.
+    return;
+  },
+
+  shouldShowNotification: (type: string): boolean => {
+    const { preferences } = get();
+
+    if (!preferences) return true;
+
+    if (isInSilentHours(preferences)) {
+      return false;
+    }
+
+    switch (type) {
+      case 'order_update':
+        return preferences.order_updates;
+      case 'payment_update':
+        return preferences.payment_updates;
+      case 'editor_assignment':
+        return preferences.editor_assignments;
+      case 'marketing':
+        return preferences.marketing;
+      default:
+        return true;
     }
   }
 }));

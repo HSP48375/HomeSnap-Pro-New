@@ -22,6 +22,33 @@ interface Photo {
   fileSize: number;
 }
 
+interface Suggestion {
+  id: string;
+  text: string;
+  ctaAction: string;
+  ctaPayload: any;
+}
+
+const SmartSuggestions = ({ imageUrls, propertyType, onSuggestionSelected }) => {
+  // Placeholder for image analysis and suggestion generation
+  const suggestions: Suggestion[] = [
+    { id: '1', text: 'Empty room detected, suggest virtual staging?', ctaAction: 'add_service', ctaPayload: { service: 'virtualStaging' } },
+    { id: '2', text: 'Exterior shot, suggest twilight conversion?', ctaAction: 'add_service', ctaPayload: { service: 'twilightConversion' } },
+    { id: '3', text: 'Cluttered space detected, suggest virtual decluttering?', ctaAction: 'add_service', ctaPayload: { service: 'decluttering' } },
+  ];
+
+  return (
+    <View>
+      {suggestions.map(suggestion => (
+        <TouchableOpacity key={suggestion.id} onPress={() => onSuggestionSelected(suggestion)}>
+          <Text>{suggestion.text}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
+
+
 const UploadScreen = ({ navigation }) => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [selectedServices, setSelectedServices] = useState({
@@ -30,6 +57,7 @@ const UploadScreen = ({ navigation }) => {
     twilightConversion: false,
     decluttering: false,
   });
+  const [propertyType, setPropertyType] = useState(''); // Add property type state
 
   const handleTakePhoto = async () => {
     try {
@@ -239,6 +267,19 @@ const UploadScreen = ({ navigation }) => {
               <Icon name="arrow-right" size={20} color="#000" />
             </TouchableOpacity>
           </View>
+        )}
+        {photos.length > 0 && (
+          <SmartSuggestions imageUrls={photos.map(photo => photo.uri)} propertyType={propertyType} onSuggestionSelected={(suggestion) => {
+            if (suggestion.ctaAction === 'add_service') {
+              const service = suggestion.ctaPayload.service;
+              setSelectedServices(prev => ({ ...prev, [service]: true }));
+              Toast.show({
+                type: 'success',
+                text1: 'Service Added',
+                text2: `Added ${service.replace('_', ' ')} to your order.`,
+              });
+            }
+          }} />
         )}
       </ScrollView>
     </SafeAreaView>
