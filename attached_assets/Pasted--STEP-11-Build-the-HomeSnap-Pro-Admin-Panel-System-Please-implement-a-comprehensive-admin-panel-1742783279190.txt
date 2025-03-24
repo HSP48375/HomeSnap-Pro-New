@@ -1,0 +1,133 @@
+### STEP 11: Build the HomeSnap Pro Admin Panel System
+
+Please implement a comprehensive admin panel for HomeSnap Pro according to the following detailed specifications:
+
+1. Dashboard Overview:
+   - Create an AdminDashboard.tsx with:
+     * Business metrics overview (orders, revenue, images processed)
+     * Charts/graphs for daily/weekly/monthly data visualization
+     * Editor workload tracking
+     * User activity metrics (most active, highest spenders)
+     * Alert section for items needing immediate attention
+
+2. Order Management:
+   - Build an OrderManagement.tsx with:
+     * Complete order list with filtering capabilities (status, date, type)
+     * Detailed order view showing property address, submission time, photo count
+     * Photo preview gallery for each order
+     * Editor assignment status
+     * Internal notes system
+     * Add-on service tracking
+
+3. Editor Assignment System:
+   - Create an EditorAssignment.tsx with:
+     * Manual editor assignment interface
+     * Auto-assignment algorithm based on workload
+     * Editor profile cards showing current assignments
+     * Performance metrics for each editor
+     * Timezone and availability indicators
+
+4. Quality Control System:
+   - Build a QualityControl.tsx with:
+     * Review queue for completed edits
+     * Accept/Reject functionality
+     * Rejection reason form with deadline setter
+     * Before/after comparison view
+     * Notification trigger on rejection/acceptance
+
+5. Notification Management:
+   - Create a NotificationManager.tsx with:
+     * Control panel for all app notifications
+     * Notification scheduling system
+     * Template editor for notification messages
+     * Manual notification sender to users/editors
+     * Notification history log
+
+6. User Management:
+   - Build a UserManagement.tsx with:
+     * Complete user database with filtering
+     * User profile view (contact info, order history, spending)
+     * Account status controls (active/disabled)
+     * Custom discount assignment interface
+     * Direct messaging capability
+
+7. Sub-Admin (Editor) Management:
+   - Create an EditorManagement.tsx with:
+     * Editor onboarding interface
+     * Permission assignment system
+     * Payment rate configuration
+     * Performance review dashboard
+     * Communication tools
+
+8. Add-On Service Management:
+   - Build an AddOnManagement.tsx with:
+     * Service pricing controls
+     * Service availability toggles
+     * Before/after example upload system
+     * Service description editor
+     * Usage analytics
+
+9. Job Folder System:
+   - Create a JobFolderSystem.tsx with:
+     * Hierarchical folder structure for each job
+     * File upload/download interface
+     * Versioning system for edits
+     * Comment/note attachment capability
+     * Before/after comparison tools
+
+10. Discount & Coupon System:
+    - Build a DiscountManager.tsx with:
+      * Coupon code generator
+      * Discount type selector (fixed/percentage)
+      * Usage limitation settings
+      * Expiration date controls
+      * Analytics on coupon usage
+
+11. Stripe Payment Integration:
+    - Create a PaymentDashboard.tsx with:
+      * Transaction history viewer
+      * Order-payment matching system
+      * Refund processing interface
+      * Payment status indicators
+      * Revenue analytics
+
+12. Tutorial Management:
+    - Build a TutorialManager.tsx with:
+      * Video upload interface
+      * Categorization system
+      * In-panel video preview
+      * Visibility controls
+      * Usage analytics
+
+13. Smart Suggestions Configuration:
+    - Create a SuggestionsConfig.tsx with:
+      * Trigger condition settings
+      * Suggestion text editor
+      * Toggle controls for each suggestion type
+      * Performance metrics for suggestion conversions
+
+14. Floorplan Management:
+    - Build a FloorplanManager.tsx with:
+      * LiDAR scan review interface
+      * Specialist assignment system
+      * Approval workflow
+      * Client feedback handling
+      * Measurement adjustment tools
+
+15. Analytics & Reporting:
+    - Create a ReportingDashboard.tsx with:
+      * Customizable report generator
+      * Data export functionality (CSV, PDF)
+      * Trend visualization tools
+      * KPI tracking system
+      * Scheduled report delivery
+
+Global Requirements:
+- Create a responsive, modern UI using tailwind and the existing app styles
+- Implement role-based access control (admin, sub-admin)
+- Ensure mobile responsiveness for on-the-go management
+- Add comprehensive error handling and data validation
+- Include search functionality across all sections
+- Create a unified navigation system between all admin panels
+
+The admin panel should connect to the same data sources as the main app to ensure consistency across platforms. Focus on creating an intuitive interface that allows efficient management of the entire HomeSnap Pro operation.
