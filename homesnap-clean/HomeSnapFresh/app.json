@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "HomeSnap Pro",
+    "slug": "homesnapfresh",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.naudi.jay.homesnappro"
+    },
+    "android": {
+      "package": "com.naudi.jay.homesnappro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e2fcbafb-f70c-4f37-9faf-200ca254db9c"
+      }
+    }
+  }
+}

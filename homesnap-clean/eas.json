@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 7.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_SDK_VERSION": "52.0.0"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_SDK_VERSION": "52.0.0"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_SDK_VERSION": "52.0.0"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

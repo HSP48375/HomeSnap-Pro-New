@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "HomeSnap Pro",
+    "slug": "homesnap-pro",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "sdkVersion": "52.0.0",
+    "icon": "./attached_assets/HomeSnapPro_Logo.png",
+    "splash": {
+      "image": "./attached_assets/HomeSnapPro_Logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.naudi.jay.homesnappro"
+    },
+    "ios": {
+      "bundleIdentifier": "com.naudi.jay.homesnappro",
+      "deploymentTarget": "16.0"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "adc8e0ed-bf62-498a-a497-189acfaa523e"
+      }
+    }
+  }
+}

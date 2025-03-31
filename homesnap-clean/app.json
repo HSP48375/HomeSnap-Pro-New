@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "HomeSnap Pro",
+    "slug": "homesnap-clean",
+    "version": "1.0.0",
+    "sdkVersion": "52.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.naudi.jay.homesnappro",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.naudi.jay.homesnappro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9b7f0517-c7e8-4978-ab8a-7c2ed2ffe5b4"
+      }
+    }
+  }
+}
