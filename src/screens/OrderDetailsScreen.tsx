@@ -176,7 +176,6 @@ const OrderDetailsScreen = ({ route, navigation }) => {
                 <Image
                   source={{ uri: photo.storage_path }}
                   style={styles.photo}
-                  defaultSource={require('../assets/photo-placeholder.png')}
                 />
                 <View style={[
                   styles.photoStatus,
