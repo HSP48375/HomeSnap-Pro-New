@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/Feather';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 
-import { colors, glassmorphism } from '../theme/AppTheme';
 
 // Screens
 import HomeScreen from '../screens/HomeScreen';
@@ -35,10 +34,10 @@ const TabBarCenterButton = ({ children, onPress }) => {
       activeOpacity={0.8}
     >
       <LinearGradient
-        colors={['#9D00FF', '#FF00C1']}
+        colors={['#E91E63', '#2196F3']} // Vivid Magenta and Electric Blue
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.centerButtonGradient}
+        style={[styles.centerButtonGradient, styles.glowingEffect]} // Apply glowing effect
       >
         <View style={styles.centerButtonInner}>
           {children}
@@ -79,17 +78,17 @@ export const TabNavigator = () => {
           return <Icon name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.5)',
+        tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.6)', // Lighter inactive color
         tabBarShowLabel: true,
         tabBarLabelStyle: {
           fontSize: 12,
-          fontFamily: 'Outfit',
+          fontFamily: 'Poppins', // Use Poppins font
           marginBottom: 6,
         },
         tabBarStyle: {
           height: 60,
-          backgroundColor: 'rgba(10, 10, 20, 0.85)',
-          borderTopWidth: 1,
+          backgroundColor: 'rgba(20, 20, 30, 0.85)', // Darker gray
+          borderTopWidth: 0, // Remove border
           borderTopColor: 'rgba(255, 255, 255, 0.05)',
           elevation: 0,
           position: 'absolute',
@@ -102,7 +101,7 @@ export const TabNavigator = () => {
         },
         tabBarBackground: () => (
           <BlurView 
-            intensity={80} 
+            intensity={90} // Slightly stronger blur
             tint="dark" 
             style={StyleSheet.absoluteFill} 
           />
@@ -130,9 +129,9 @@ export const AuthStackNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: colors.background },
+        contentStyle: { backgroundColor: '#1a1a2e' }, // Dark gray background
         animation: 'fade_from_bottom',
-      }}
+}}
     >
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
@@ -148,9 +147,9 @@ export const MainStackNavigator = () => {
     <MainStack.Navigator
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: colors.background },
+        contentStyle: { backgroundColor: '#1a1a2e' }, // Dark gray background
         animation: 'slide_from_right',
-      }}
+}}
     >
       <MainStack.Screen name="Tabs" component={TabNavigator} />
       <MainStack.Screen name="PropertyDetail" component={PropertyDetailScreen} />
@@ -166,10 +165,10 @@ const styles = StyleSheet.create({
     top: -20,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: colors.tertiary,
+    shadowColor: '#2196F3', // Electric blue for glowing effect
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 10,
+    shadowOpacity: 0.7, // Increased opacity for stronger glow
+    shadowRadius: 15, // Increased radius for larger glow
     elevation: 8,
   },
   centerButtonGradient: {
@@ -183,8 +182,15 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: 'rgba(10, 10, 20, 0.2)',
+    backgroundColor: 'rgba(20, 20, 30, 0.5)', // Slightly darker and more opaque
     justifyContent: 'center',
     alignItems: 'center',
+  },
+ glowingEffect: {
+    shadowColor: '#2196F3', // Electric blue glow
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 15,
+    elevation: 10,
   },
 });

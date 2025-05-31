@@ -10,7 +10,6 @@ import {
   TextStyle
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, gradients, fontSizes, spacing, borderRadius, shadows } from '../../theme/AppTheme';
 
 interface ButtonProps extends TouchableOpacityProps {
   variant?: 'primary' | 'secondary' | 'outline';
@@ -22,6 +21,7 @@ interface ButtonProps extends TouchableOpacityProps {
   fullWidth?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -34,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   style,
   textStyle,
+  className,
   ...props
 }) => {
   const getButtonStyle = () => {
@@ -90,7 +91,7 @@ const Button: React.FC<ButtonProps> = ({
 
   const renderContent = () => {
     if (loading) {
-      return <ActivityIndicator color={variant === 'outline' ? colors.primary : '#FFFFFF'} />;
+      return <ActivityIndicator color={variant === 'outline' ? '#E93B81' : '#FFFFFF'} />; // Using neon magenta for outline variant
     }
 
     return (
@@ -106,6 +107,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <TouchableOpacity
         activeOpacity={0.8}
+ className={`rounded-md overflow-hidden ${getSizeClass()} ${fullWidth ? 'w-full' : ''} ${className}`}
         style={[
           styles.button,
           getSizeStyle(),
@@ -117,7 +119,7 @@ const Button: React.FC<ButtonProps> = ({
       >
         <LinearGradient
           colors={gradients.button}
-          start={{ x: 0, y: 0 }}
+ start={{ x: 0, y: 0.5 }} // Adjust gradient start/end for a potentially better look
           end={{ x: 1, y: 1 }}
           style={[styles.gradientBackground, getSizeStyle()]}
         >
@@ -130,11 +132,12 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      style={[
-        styles.button,
-        getButtonStyle(),
-        getSizeStyle(),
-        fullWidth && styles.fullWidth,
+ className={`rounded-md overflow-hidden ${getButtonClass()} ${getSizeClass()} ${fullWidth ? 'w-full' : ''} ${
+ className
+      }`}
+ style={[
+ styles.button,
+ // Styles from getButtonStyle and getSizeStyle will be replaced by Tailwind classes
         style,
       ]}
       disabled={loading || props.disabled}
@@ -145,77 +148,70 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
+// Helper to get Tailwind classes for button variant
+const getButtonClass = (variant: ButtonProps['variant']) => {
+  switch (variant) {
+    case 'primary':
+      return 'bg-neon-magenta shadow-neon-magenta hover:shadow-neon-magenta-glow focus:shadow-neon-magenta-glow';
+    case 'secondary':
+      return 'bg-dark-gray border border-electric-blue';
+    case 'outline':
+      return 'bg-transparent border border-light-gray text-light-gray';
+    default:
+      return 'bg-neon-magenta shadow-neon-magenta hover:shadow-neon-magenta-glow focus:shadow-neon-magenta-glow';
+  }
+};
+
+// Helper to get Tailwind classes for button size
+const getSizeClass = (size: ButtonProps['size']) => {
+  switch (size) {
+    case 'small':
+      return 'py-2 px-4 text-sm min-h-[32px]';
+    case 'medium':
+      return 'py-3 px-6 text-base min-h-[44px]';
+    case 'large':
+      return 'py-4 px-8 text-lg min-h-[56px]';
+    default:
+      return 'py-3 px-6 text-base min-h-[44px]';
+  }
+};
+
+// Helper to get Tailwind classes for text color based on variant
+const getTextClass = (variant: ButtonProps['variant']) => {
+  switch (variant) {
+    case 'primary':
+      return 'text-white font-semibold';
+    case 'secondary':
+      return 'text-neon-magenta font-medium';
+    case 'outline':
+      return 'text-light-gray font-medium';
+    default:
+      return 'text-white font-semibold';
+  }
+};
+
+const gradients = {
+  button: ['#E93B81', '#FF8A00'], // Neon magenta to vibrant orange gradient
+};
+
+// Placeholder for theme colors, replace with actual Tailwind color names if available
+const colors = { primary: '#E93B81', foreground: '#A0A0A0' };
+
 const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: borderRadius.md,
-    overflow: 'hidden',
+    // Removed fixed width and height, using padding and minHeight from getSizeClass
+    // Removed shadow styles, using Tailwind shadow classes
   },
   gradientBackground: {
     width: '100%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  primaryButton: {
-    backgroundColor: colors.primary,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  secondaryButton: {
-    backgroundColor: 'rgba(20, 20, 40, 0.7)',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 238, 255, 0.3)',
-  },
-  outlineButton: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  primaryText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-  secondaryText: {
-    color: colors.primary,
-    fontWeight: '500',
-  },
-  outlineText: {
-    color: colors.foreground,
-    fontWeight: '500',
-  },
-  smallButton: {
-    paddingVertical: spacing.xs,
-    paddingHorizontal: spacing.md,
-    minHeight: 32,
-  },
-  mediumButton: {
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.lg,
-    minHeight: 44,
-  },
-  largeButton: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
-    minHeight: 56,
-  },
-  smallText: {
-    fontSize: fontSizes.sm,
-  },
-  mediumText: {
-    fontSize: fontSizes.md,
-  },
-  largeText: {
-    fontSize: fontSizes.lg,
-  },
-  fullWidth: {
-    width: '100%',
+    flexDirection: 'row', // Keep this for icon and text alignment
   },
 });
 

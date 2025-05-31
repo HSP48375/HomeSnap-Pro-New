@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
-  StyleSheet, 
+
   FlatList, 
   Image, 
   TouchableOpacity, 
   ActivityIndicator,
   Alert,
+  StyleSheet,
+
   useWindowDimensions
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
@@ -16,6 +18,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as Sharing from 'expo-sharing';
 import * as MediaLibrary from 'expo-media-library';
+
+import { StatusBadge } from '../components/ui/StatusBadge';
 
 import { getAllPhotos, PhotoData, deletePhoto, enhanceImage } from '../services/PhotoService';
 
@@ -25,12 +29,12 @@ const GalleryScreen = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoData | null>(null);
   const [processing, setProcessing] = useState(false);
   
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const { width } = useWindowDimensions();
-  const imageSize = width / 3 - 2;
-  
+
   useEffect(() => {
     loadPhotos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   const loadPhotos = async () => {
@@ -121,11 +125,27 @@ const GalleryScreen = () => {
   };
   
   const renderItem = ({ item }: { item: PhotoData }) => (
-    <TouchableOpacity onPress={() => handlePhotoPress(item)}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => handlePhotoPress(item)}
+    >
       <Image 
         source={{ uri: item.uri }} 
-        style={[styles.thumbnail, { width: imageSize, height: imageSize }]}
+        style={styles.thumbnail}
       />
+      <View style={styles.cardContent}>
+        <Text style={styles.cardTitle}>Project: {item.id.substring(0, 8)}</Text>
+        <Text style={styles.cardDate}>
+          Submitted: {new Date(item.timestamp).toLocaleDateString()}
+        </Text>
+        <View style={styles.statusBadgeContainer}>
+          {/* Replace with actual job status logic */}
+          <StatusBadge status={
+            item.id.endsWith('a') ? 'In Progress' :
+            item.id.endsWith('b') ? 'Delivered' : 'Edit Requested'
+          } />
+        </View>
+      </View>
     </TouchableOpacity>
   );
   
@@ -163,12 +183,7 @@ const GalleryScreen = () => {
           style={styles.previewImage}
           resizeMode="contain"
         />
-        
         <View style={styles.previewFooter}>
-          <Text style={styles.previewText}>
-            {new Date(selectedPhoto.timestamp).toLocaleString()}
-          </Text>
-          <Text style={styles.previewText}>
             {selectedPhoto.type === 'standard' ? 'Standard' : 
              selectedPhoto.type === 'hdr' ? 'HDR' : 'Burst'}
           </Text>
@@ -180,7 +195,7 @@ const GalleryScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
-      
+
       {selectedPhoto ? (
         renderPhotoPreview()
       ) : (
@@ -192,7 +207,7 @@ const GalleryScreen = () => {
             >
               <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>
-            <Text style={styles.title}>Gallery</Text>
+            <Text style={styles.title}>Projects Gallery</Text>
             <View style={{ width: 40 }} />
           </View>
           
@@ -213,11 +228,12 @@ const GalleryScreen = () => {
             </View>
           ) : (
             <FlatList
-              data={photos}
+              data={photos.filter(photo => photo.type !== 'enhanced')} // Filter out enhanced photos
               renderItem={renderItem}
               keyExtractor={item => item.id}
-              numColumns={3}
-              contentContainerStyle={styles.gridContainer}
+              numColumns={1} // Display in a single column for card layout
+              contentContainerStyle={styles.cardGridContainer}
+              key={1} // Add key to force re-render when filtering
             />
           )}
         </>
@@ -225,9 +241,10 @@ const GalleryScreen = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#0D0D2B', // Deep space background
+    paddingHorizontal: 10,
     flex: 1,
     backgroundColor: '#000',
   },
@@ -235,8 +252,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 50,
-    paddingBottom: 10,
+    paddingTop: 60,
+    paddingBottom: 15,
     paddingHorizontal: 20,
     backgroundColor: '#0A0A14',
   },
@@ -248,14 +265,45 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
+    textShadowColor: '#00EEFF', // Neon blue glow
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
   },
-  gridContainer: {
-    padding: 1,
+  cardGridContainer: {
+    paddingVertical: 10,
+  },
+  card: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)', // Soft glassmorphism
+    borderRadius: 15,
+    marginBottom: 15,
+    overflow: 'hidden',
+    borderColor: '#00EEFF', // Neon border
+    borderWidth: 1,
+    shadowColor: '#00EEFF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 5,
   },
   thumbnail: {
-    margin: 1,
+    width: '100%',
+    height: 200, // Adjust as needed
+    resizeMode: 'cover',
+  },
+  cardContent: {
+    padding: 15,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#BBEEFF', // Lighter neon blue
+    marginBottom: 5,
+  },
+  cardDate: {
+    fontSize: 14,
+    color: '#99CCFF', // Even lighter neon blue
   },
   loadingContainer: {
     flex: 1,
@@ -266,7 +314,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    paddingVertical: 50,
   },
   emptyText: {
     color: '#666',
@@ -274,14 +322,18 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   button: {
-    backgroundColor: '#00EEFF',
+    backgroundColor: 'rgba(0, 238, 255, 0.2)', // Semi-transparent neon
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 25,
     marginTop: 20,
+    borderColor: '#00EEFF',
+    borderWidth: 1,
+    shadowColor: '#00EEFF',
+    shadowRadius: 10,
   },
   buttonText: {
-    color: '#000',
+    color: '#00EEFF', // Neon blue text
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -293,8 +345,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 50,
-    paddingBottom: 10,
+    paddingTop: 60,
+    paddingBottom: 15,
     paddingHorizontal: 20,
   },
   closeButton: {
@@ -319,14 +371,17 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   previewFooter: {
-    padding: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     backgroundColor: '#0A0A14',
+    alignItems: 'center',
   },
   previewText: {
     color: '#aaa',
     fontSize: 14,
     marginBottom: 5,
   },
+  statusBadgeContainer: { marginTop: 10 },
 });
 
 export default GalleryScreen;

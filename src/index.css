@@ -75,7 +75,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-white font-outfit;
+    @apply bg-dark text-light-gray font-poppins;
   }
 }
 

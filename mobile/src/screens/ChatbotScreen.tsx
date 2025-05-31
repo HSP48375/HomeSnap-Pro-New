@@ -20,6 +20,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { getChatbotResponse } from '../Chatbot';
 import { colors } from '../theme/AppTheme';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TypingIndicatorPremium from '../../components/ui/TypingIndicator';
 
 const ChatbotScreen = () => {
   const [messages, setMessages] = useState([
@@ -156,23 +157,8 @@ const ChatbotScreen = () => {
       <ScrollView 
         ref={scrollViewRef}
         style={styles.messagesContainer}
-        contentContainerStyle={styles.messagesContent}
+ contentContainerStyle={{ paddingBottom: isLoading ? 80 : 20 }}
       >
-        {messages.map((message) => (
-          <View 
-            key={message.id} 
-            style={[
-              styles.messageBubble, 
-              message.sender === 'user' ? styles.userBubble : styles.botBubble
-            ]}
-          >
-            {message.image && (
-              <Image source={{ uri: message.image }} style={styles.messageImage} />
-            )}
-            <Text style={styles.messageText}>{message.text}</Text>
-          </View>
-        ))}
-        
         {isLoading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="small" color={colors.primary} />
@@ -180,6 +166,26 @@ const ChatbotScreen = () => {
           </View>
         )}
       </ScrollView>
+
+      {isLoading && (
+ <View className="absolute bottom-20 left-4">
+ <TypingIndicatorPremium />
+ </View>
+      )}
+ {messages.map((message) => (
+ <View
+ key={message.id}
+ style={[
+ styles.messageBubble,
+ message.sender === 'user' ? styles.userBubble : styles.botBubble
+ ]}
+          >
+            {message.image && (
+ <Image source={{ uri: message.image }} style={styles.messageImage} />
+            )}
+            <Text style={styles.messageText}>{message.text}</Text>
+ </View>
+ ))}
       
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -231,7 +237,8 @@ const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1,    
+    position: 'relative', // Needed for absolute positioned glowing elements
     backgroundColor: '#0A0A14',
   },
   header: {
@@ -279,14 +286,24 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   userBubble: {
-    backgroundColor: '#7928CA',
+    backgroundColor: 'rgba(0, 238, 255, 0.2)', // Electric blue with transparency
     alignSelf: 'flex-end',
     borderBottomRightRadius: 4,
+    borderWidth: 1,
+    borderColor: '#00EEFF', // Electric blue border
+    // Add glassmorphism effects (adjust opacity and backdropFilter as needed)
+    // Note: backdropFilter might not be fully supported on all React Native platforms/versions without extra libraries.
+    // For a more consistent glassmorphism, consider using libraries or custom shaders.
+  },
+  messageTextUser: { // Added for user message text color
+    color: '#00EEFF', // Electric blue text
   },
   botBubble: {
-    backgroundColor: '#2A2A40',
+    backgroundColor: 'rgba(255, 0, 255, 0.2)', // Magenta with transparency
     alignSelf: 'flex-start',
     borderBottomLeftRadius: 4,
+    borderWidth: 1,
+    borderColor: '#FF00FF', // Magenta border
   },
   messageText: {
     color: '#fff',
@@ -313,25 +330,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   inputContainer: {
+    position: 'relative', // Needed for absolute positioned glowing border
     flexDirection: 'row',
     padding: 10,
-    backgroundColor: '#1A1A2E',
+    backgroundColor: 'rgba(26, 26, 46, 0.7)', // Soft dark background
     borderTopWidth: 1,
     borderTopColor: 'rgba(255, 255, 255, 0.1)',
     alignItems: 'center',
+    borderRadius: 25, // Rounded corners for the input bar
+    marginHorizontal: 10, // Add some margin
+    marginBottom: 10, // Add some margin
+    overflow: 'hidden', // Clip glowing border
+  },
+  inputContainerGlow: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#00EEFF', // Electric blue glow color
+    opacity: 0.5, // Subtle glow
   },
   attachButton: {
     padding: 8,
     marginRight: 8,
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#2A2A40',
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    color: '#fff',
-    maxHeight: 100,
   },
   sendButton: {
     backgroundColor: '#7928CA',

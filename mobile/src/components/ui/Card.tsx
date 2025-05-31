@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = ({
   style,
   children,
   ...props
-}) => {
+}: CardProps) => {
   const getCardStyle = () => {
     switch (variant) {
       case 'standard':
@@ -45,26 +45,20 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     overflow: 'hidden',
     margin: 4,
+ ...glassmorphism.container, // Apply glassmorphism container styles
   },
   blurView: {
     width: '100%',
     height: '100%',
+    ...glassmorphism.blurView, // Apply glassmorphism blur styles
   },
   contentContainer: {
     padding: 16,
     width: '100%',
     height: '100%',
+    // No specific glassmorphism styles needed for content container itself
   },
   standardCard: {
-    backgroundColor: glassmorphism.backgroundBlack,
-    borderWidth: 1,
-    borderColor: glassmorphism.border,
-    borderRadius: borderRadius.lg,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
   },
   interactiveCard: {
     backgroundColor: glassmorphism.backgroundLight,

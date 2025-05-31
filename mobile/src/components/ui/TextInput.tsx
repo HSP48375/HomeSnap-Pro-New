@@ -1,15 +1,15 @@
 
 import React, { useState } from 'react';
-import { 
-  View, 
-  TextInput as RNTextInput, 
-  StyleSheet, 
+import {
+  View,
+  TextInput as RNTextInput,
+  StyleSheet,
   TextInputProps as RNTextInputProps,
   ViewStyle,
   TextStyle,
   TouchableOpacity,
 } from 'react-native';
-import { colors, glassmorphism, fontSizes, borderRadius, spacing } from '../../theme/AppTheme';
+import { colors, glassmorphism, fontSizes, borderRadius, spacing, neonGlow } from '../../theme/AppTheme';
 
 interface TextInputProps extends RNTextInputProps {
   icon?: React.ReactNode;
@@ -32,9 +32,10 @@ const TextInput: React.FC<TextInputProps> = ({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <View style={containerStyle}>
+    <View style={[containerStyle, isFocused && styles.glowingBorder]}>
       <View style={[
         styles.container,
+        // Remove native styles that will be replaced by Tailwind
         isFocused && styles.containerFocused,
         error && styles.containerError,
       ]}>
@@ -47,7 +48,7 @@ const TextInput: React.FC<TextInputProps> = ({
             inputStyle,
           ]}
           placeholderTextColor={colors.textMuted}
-          selectionColor={colors.primary}
+          selectionColor={colors.electricBlue}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           {...props}
@@ -55,8 +56,8 @@ const TextInput: React.FC<TextInputProps> = ({
         {rightIcon && (
           <TouchableOpacity 
             style={styles.rightIconContainer} 
-            onPress={onRightIconPress}
-            disabled={!onRightIconPress}
+            // onPress={onRightIconPress} // Use Tailwind classes for onPress
+            // disabled={!onRightIconPress} // Use Tailwind classes for disabled
           >
             {rightIcon}
           </TouchableOpacity>
@@ -69,20 +70,24 @@ const TextInput: React.FC<TextInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    // Use Tailwind classes for alignment
     alignItems: 'center',
-    backgroundColor: glassmorphism.backgroundLight,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: glassmorphism.border,
+    // Use Tailwind classes for background, border, and padding
     paddingHorizontal: spacing.md,
     height: 50,
   },
+  // These styles will be replaced by Tailwind
   containerFocused: {
     borderColor: 'rgba(0, 238, 255, 0.5)',
     shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
+    elevation: 5,
+  },
+  glowingBorder: {
+    borderRadius: borderRadius.md, // Maintain border radius from theme
+    ...neonGlow.electricBlue, // Apply the glowing effect
     elevation: 5,
   },
   containerError: {

@@ -41,14 +41,14 @@ const OrdersScreen = () => {
   const getStatusStyle = (status) => {
     switch (status) {
       case 'Active':
-        return styles.statusActive;
+        return styles.statusInProgress;
       case 'Complete':
         return styles.statusComplete;
       case 'Processing':
-        return styles.statusProcessing;
+        return styles.statusInProgress; // Assuming Processing is also In Progress
       default:
         return styles.statusDefault;
-    }
+    } 
   };
 
   const getStatusTextStyle = (status) => {
@@ -56,7 +56,7 @@ const OrdersScreen = () => {
       case 'Active':
         return styles.statusTextActive;
       case 'Complete':
-        return styles.statusTextComplete;
+        return styles.statusTextComplete; 
       case 'Processing':
         return styles.statusTextProcessing;
       default:
@@ -79,10 +79,15 @@ const OrdersScreen = () => {
 
   const renderGridItem = ({ item }) => (
     <TouchableOpacity 
-      style={styles.gridItem}
+      style={[styles.card, styles.gridItem]}
       onPress={() => navigateToPropertyDetail(item.id)}
     >
       <View style={styles.gridThumbnail}>
+        <View style={[styles.statusBadge, getStatusStyle(item.status)]}>
+          <Text style={[styles.statusText, getStatusTextStyle(item.status)]}>
+            {item.status}
+          </Text>
+        </View>
         {item.thumbnail ? (
           <Image source={{ uri: item.thumbnail }} style={styles.thumbnailImage} />
         ) : (
@@ -90,9 +95,6 @@ const OrdersScreen = () => {
             <Ionicons name="home-outline" size={40} color="#888" />
           </View>
         )}
-        <View style={[styles.statusBadge, getStatusStyle(item.status)]}>
-          <Text style={[styles.statusText, getStatusTextStyle(item.status)]}>{item.status}</Text>
-        </View>
       </View>
       <View style={styles.gridContent}>
         <Text style={styles.propertyTitle} numberOfLines={1}>{item.nickname}</Text>
@@ -106,15 +108,19 @@ const OrdersScreen = () => {
           <Text style={styles.gridFooterText}>{item.photos} photos</Text>
         </View>
       </View>
+      <TouchableOpacity style={styles.detailsButton} onPress={() => navigateToPropertyDetail(item.id)}>
+        <Text style={styles.detailsButtonText}>View Details</Text>
+        <Ionicons name="arrow-forward-circle-outline" size={18} color="#0A0A14" />
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 
   const renderListItem = ({ item }) => (
     <TouchableOpacity 
-      style={styles.listItem}
+      style={[styles.card, styles.listItem]}
       onPress={() => navigateToPropertyDetail(item.id)}
     >
-      <View style={styles.listThumbnail}>
+      <View style={[styles.listThumbnail, { position: 'relative' }]}>
         {item.thumbnail ? (
           <Image source={{ uri: item.thumbnail }} style={styles.listThumbnailImage} />
         ) : (
@@ -124,14 +130,21 @@ const OrdersScreen = () => {
         )}
       </View>
       <View style={styles.listContent}>
-        <Text style={styles.propertyTitle} numberOfLines={1}>{item.nickname}</Text>
-        <Text style={styles.propertyAddress} numberOfLines={1}>{item.address}</Text>
+        <Text style={styles.propertyTitle} numberOfLines={1}>
+          {item.nickname}
+        </Text>
+        <Text style={styles.propertyAddress} numberOfLines={1}>
+          {item.address}
+        </Text>
+        <Text style={styles.listDate}>Submitted: {formatDate(item.lastUpdated)}</Text>
       </View>
       <View style={styles.listRight}>
         <View style={[styles.listStatusBadge, getStatusStyle(item.status)]}>
           <Text style={[styles.statusText, getStatusTextStyle(item.status)]}>{item.status}</Text>
         </View>
-        <Text style={styles.listDate}>{formatDate(item.lastUpdated)}</Text>
+        <TouchableOpacity style={styles.detailsButton} onPress={() => navigateToPropertyDetail(item.id)}>
+          <Text style={styles.detailsButtonText}>View Details</Text>
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
@@ -186,8 +199,8 @@ const OrdersScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#0A0A14',
+ flex: 1,
+    backgroundColor: '#0D0D2D', // Dark background
   },
   header: {
     flexDirection: 'row',
@@ -195,6 +208,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 16,
+    borderBottomWidth: 1, // Subtle neon border at the bottom
   },
   title: {
     color: 'white',
@@ -252,15 +266,17 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   gridItem: {
-    flex: 1,
-    margin: 8,
-    backgroundColor: '#1A1A24',
+    flex: 0.5, // Adjust flex for proper spacing in grid
+    marginHorizontal: 4, // Reduced horizontal margin
+    marginVertical: 8, // Increased vertical margin
+    backgroundColor: 'rgba(26, 26, 36, 0.5)', // Semi-transparent dark background
     borderRadius: 12,
     overflow: 'hidden',
-    maxWidth: '47%',
+    borderColor: '#00EEFF', // Neon border
+    borderWidth: 1,
+    shadowColor: '#00EEFF', // Neon glow
   },
   gridThumbnail: {
-    height: 120,
     backgroundColor: '#0F0F1A',
     position: 'relative',
   },
@@ -283,26 +299,44 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 16,
   },
-  statusActive: {
-    backgroundColor: 'rgba(0, 122, 255, 0.2)',
-  },
   statusComplete: {
-    backgroundColor: 'rgba(52, 199, 89, 0.2)',
+    backgroundColor: 'rgba(52, 199, 89, 0.2)', // Green for Delivered
+    borderColor: '#34C759', // Green border
+    borderWidth: 1,
+    shadowColor: '#34C759', // Green glow
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
   },
-  statusProcessing: {
-    backgroundColor: 'rgba(255, 204, 0, 0.2)',
+  statusInProgress: {
+    backgroundColor: 'rgba(255, 204, 0, 0.2)', // Yellow for In Progress
+    borderColor: '#FFCC00', // Yellow border
+    borderWidth: 1,
+    shadowColor: '#FFCC00', // Yellow glow
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  statusEditRequested: { // Red for Edit Requested
+    backgroundColor: 'rgba(255, 59, 48, 0.2)', 
+    borderColor: '#FF3B30',
+    borderWidth: 1,
+    shadowColor: '#FF3B30',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
   },
   statusDefault: {
-    backgroundColor: 'rgba(142, 142, 147, 0.2)',
+    backgroundColor: 'rgba(142, 142, 147, 0.2)', // Default grey
   },
   statusText: {
     fontSize: 12,
     fontWeight: '600',
   },
   statusTextActive: {
-    color: '#007AFF',
-  },
-  statusTextComplete: {
     color: '#34C759',
   },
   statusTextProcessing: {
@@ -336,16 +370,17 @@ const styles = StyleSheet.create({
   },
   listItem: {
     flexDirection: 'row',
-    backgroundColor: '#1A1A24',
+    backgroundColor: 'rgba(26, 26, 36, 0.5)', // Semi-transparent dark background
     borderRadius: 12,
     padding: 12,
-    marginVertical: 6,
-    marginHorizontal: 8,
+    marginVertical: 8, // Increased vertical margin
+    marginHorizontal: 4, // Reduced horizontal margin
     alignItems: 'center',
+    borderColor: '#00EEFF', // Neon border
+    borderWidth: 1,
+    shadowColor: '#00EEFF', // Neon glow
   },
   listThumbnail: {
-    width: 50,
-    height: 50,
     borderRadius: 8,
     backgroundColor: '#0F0F1A',
     marginRight: 12,

@@ -65,7 +65,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="font-poppins bg-dark-gray text-light-gray min-h-screen">
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<MainLayout />}>
@@ -117,8 +117,8 @@ function App() {
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      <ChatInterface />
-    </>
+      {/* <ChatInterface /> */}
+    </div>
   );
 }
 export default App;

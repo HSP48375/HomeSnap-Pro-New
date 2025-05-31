@@ -9,6 +9,8 @@ import {
   Switch,
   Alert
 } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import NotificationManager, { NotificationData, NotificationPreferences } from '../utils/NotificationManager';

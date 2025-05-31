@@ -1,10 +1,13 @@
 // mobile/src/utils/storage.js
+// mobile/src/utils/storage.js
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const savePhotoLocally = async (uri, metadata) => {
   try {
     const id = Date.now(); // Simple ID generation, replace with a better solution
     const data = { uri, ...metadata, id };
     const stringifiedData = JSON.stringify(data);
-    localStorage.setItem(`photo-${id}`, stringifiedData);
+    await AsyncStorage.setItem(`photo-${id}`, stringifiedData);
     return data;
   } catch (error) {
     console.error('Error saving photo locally:', error);
